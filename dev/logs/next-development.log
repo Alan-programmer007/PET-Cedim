@@ -1,0 +1,259 @@
+[00:00:01.247] Server  WARN    ⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+[00:00:01.490] Server  LOG     ✓ Ready in 984ms
+[00:00:05.019] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:05.216] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:00:05.216] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/registros","route":"/registros"}
+[00:00:05.216] Browser LOG     %c[Vercel Web Analytics]%c [view] http://localhost:3000/registros color: rgb(120, 120, 120) color: inherit {"dp":"/registros","o":"http://localhost:3000/registros","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1783614456181} /_vercel/insights/view
+[00:00:07.888] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:08.059] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:00:08.059] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/registros","route":"/registros"}
+[00:00:08.059] Browser LOG     %c[Vercel Web Analytics]%c [view] http://localhost:3000/registros color: rgb(120, 120, 120) color: inherit {"dp":"/registros","o":"http://localhost:3000/registros","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1783614459025} /_vercel/insights/view
+[00:00:24.772] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:25.028] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:00:25.028] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/","route":"/"}
+[00:00:25.028] Browser LOG     %c[Vercel Web Analytics]%c [view] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1783614475993} /_vercel/insights/view
+[00:01:39.917] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:40.117] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:01:40.117] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/registros","route":"/registros"}
+[00:01:40.117] Browser LOG     %c[Vercel Web Analytics]%c [view] http://localhost:3000/registros color: rgb(120, 120, 120) color: inherit {"dp":"/registros","o":"http://localhost:3000/registros","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1783614551080} /_vercel/insights/view
+[00:01:41.879] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:42.057] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:01:42.057] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/registros","route":"/registros"}
+[00:01:42.057] Browser LOG     %c[Vercel Web Analytics]%c [view] http://localhost:3000/registros color: rgb(120, 120, 120) color: inherit {"dp":"/registros","o":"http://localhost:3000/registros","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1783614553021} /_vercel/insights/view
+[00:01:46.336] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:46.517] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:01:46.517] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/registros","route":"/registros"}
+[00:01:46.517] Browser LOG     %c[Vercel Web Analytics]%c [view] http://localhost:3000/registros color: rgb(120, 120, 120) color: inherit {"dp":"/registros","o":"http://localhost:3000/registros","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1783614557481} /_vercel/insights/view
+[00:01:47.999] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:48.227] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:01:48.227] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/metricas","route":"/metricas"}
+[00:01:48.227] Browser LOG     %c[Vercel Web Analytics]%c [view] http://localhost:3000/metricas color: rgb(120, 120, 120) color: inherit {"dp":"/metricas","o":"http://localhost:3000/metricas","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1783614559152} /_vercel/insights/view
+[00:01:48.227] Browser WARN    Tried to use the 'fill' option without the 'Filler' plugin enabled. Please import and register the 'Filler' plugin and make sure it is not disabled in the options
+[00:01:48.227] Browser WARN    Tried to use the 'fill' option without the 'Filler' plugin enabled. Please import and register the 'Filler' plugin and make sure it is not disabled in the options
+[00:02:04.804] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:02:05.060] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:02:05.060] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/","route":"/"}
+[00:02:05.060] Browser LOG     %c[Vercel Web Analytics]%c [view] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1783614576023} /_vercel/insights/view
+[00:03:18.467] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:03:18.684] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:03:18.684] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/metricas","route":"/metricas"}
+[00:03:18.684] Browser LOG     %c[Vercel Web Analytics]%c [view] http://localhost:3000/metricas color: rgb(120, 120, 120) color: inherit {"dp":"/metricas","o":"http://localhost:3000/metricas","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1783614649636} /_vercel/insights/view
+[00:03:18.841] Browser WARN    Tried to use the 'fill' option without the 'Filler' plugin enabled. Please import and register the 'Filler' plugin and make sure it is not disabled in the options
+[00:03:18.841] Browser WARN    Tried to use the 'fill' option without the 'Filler' plugin enabled. Please import and register the 'Filler' plugin and make sure it is not disabled in the options
+[00:03:22.761] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:03:22.944] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:03:22.944] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/registros","route":"/registros"}
+[00:03:22.944] Browser LOG     %c[Vercel Web Analytics]%c [view] http://localhost:3000/registros color: rgb(120, 120, 120) color: inherit {"dp":"/registros","o":"http://localhost:3000/registros","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1783614653909} /_vercel/insights/view
+[00:03:25.455] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:03:25.697] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:03:25.697] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/metricas","route":"/metricas"}
+[00:03:25.697] Browser LOG     %c[Vercel Web Analytics]%c [view] http://localhost:3000/metricas color: rgb(120, 120, 120) color: inherit {"dp":"/metricas","o":"http://localhost:3000/metricas","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1783614656612} /_vercel/insights/view
+[00:03:25.697] Browser WARN    Tried to use the 'fill' option without the 'Filler' plugin enabled. Please import and register the 'Filler' plugin and make sure it is not disabled in the options
+[00:03:25.697] Browser WARN    Tried to use the 'fill' option without the 'Filler' plugin enabled. Please import and register the 'Filler' plugin and make sure it is not disabled in the options
+[00:03:55.235] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:03:55.510] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:03:55.510] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/","route":"/"}
+[00:03:55.510] Browser LOG     %c[Vercel Web Analytics]%c [view] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1783614686460} /_vercel/insights/view
+[00:03:56.545] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:03:56.736] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:03:56.736] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/registros","route":"/registros"}
+[00:03:56.736] Browser LOG     %c[Vercel Web Analytics]%c [view] http://localhost:3000/registros color: rgb(120, 120, 120) color: inherit {"dp":"/registros","o":"http://localhost:3000/registros","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1783614687698} /_vercel/insights/view
+[00:03:57.895] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:03:58.126] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:03:58.126] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/metricas","route":"/metricas"}
+[00:03:58.126] Browser LOG     %c[Vercel Web Analytics]%c [view] http://localhost:3000/metricas color: rgb(120, 120, 120) color: inherit {"dp":"/metricas","o":"http://localhost:3000/metricas","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1783614689042} /_vercel/insights/view
+[00:03:58.126] Browser WARN    Tried to use the 'fill' option without the 'Filler' plugin enabled. Please import and register the 'Filler' plugin and make sure it is not disabled in the options
+[00:03:58.126] Browser WARN    Tried to use the 'fill' option without the 'Filler' plugin enabled. Please import and register the 'Filler' plugin and make sure it is not disabled in the options
+[00:04:00.062] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:04:00.261] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:04:00.261] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/registros","route":"/registros"}
+[00:04:00.261] Browser LOG     %c[Vercel Web Analytics]%c [view] http://localhost:3000/registros color: rgb(120, 120, 120) color: inherit {"dp":"/registros","o":"http://localhost:3000/registros","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1783614691226} /_vercel/insights/view
+[00:04:01.994] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:04:02.236] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:04:02.236] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/","route":"/"}
+[00:04:02.236] Browser LOG     %c[Vercel Web Analytics]%c [view] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1783614693200} /_vercel/insights/view
+[00:04:06.081] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:04:06.333] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:04:06.333] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/metricas","route":"/metricas"}
+[00:04:06.334] Browser LOG     %c[Vercel Web Analytics]%c [view] http://localhost:3000/metricas color: rgb(120, 120, 120) color: inherit {"dp":"/metricas","o":"http://localhost:3000/metricas","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1783614697239} /_vercel/insights/view
+[00:04:06.334] Browser WARN    Tried to use the 'fill' option without the 'Filler' plugin enabled. Please import and register the 'Filler' plugin and make sure it is not disabled in the options
+[00:04:06.334] Browser WARN    Tried to use the 'fill' option without the 'Filler' plugin enabled. Please import and register the 'Filler' plugin and make sure it is not disabled in the options
+[00:04:06.665] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:04:06.869] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:04:06.869] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/registros","route":"/registros"}
+[00:04:06.869] Browser LOG     %c[Vercel Web Analytics]%c [view] http://localhost:3000/registros color: rgb(120, 120, 120) color: inherit {"dp":"/registros","o":"http://localhost:3000/registros","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1783614697830} /_vercel/insights/view
+[00:04:07.269] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:04:07.517] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:04:07.517] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/","route":"/"}
+[00:04:07.517] Browser LOG     %c[Vercel Web Analytics]%c [view] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1783614698478} /_vercel/insights/view
+[00:09:23.273] Server  ERROR   ⨯ ./components/anamnesis-form.jsx:969:15
+Parsing ecmascript source code failed
+  967 |               </div>
+  968 |             </div>
+> 969 |         </div>
+      |               ^
+> 970 |
+      | ^
+> 971 |         <div className="flex gap-4 w-full md:w-auto mt-8 justify-end">
+      | ^^^^^^^^^
+  972 |           <Button
+  973 |             onClick={handleSave}
+  974 |             variant="outline-primary-bold"
+
+Expected '</', got 'jsx text'
+
+Import trace:
+  Server Component:
+    ./components/anamnesis-form.jsx
+    ./app/page.jsx
+
+
+[00:09:23.291] Server  LOG     ✓ Compiled in 558ms
+[00:09:23.401] Browser ERROR   ./components/anamnesis-form.jsx:969:15
+Parsing ecmascript source code failed
+  967 |               </div>
+  968 |             </div>
+> 969 |         </div>
+      |               ^
+> 970 |
+      | ^
+> 971 |         <div className="flex gap-4 w-full md:w-auto mt-8 justify-end">
+      | ^^^^^^^^^
+  972 |           <Button
+  973 |             onClick={handleSave}
+  974 |             variant="outline-primary-bold"
+
+Expected '</', got 'jsx text'
+
+Import trace:
+  Server Component:
+    ./components/anamnesis-form.jsx
+    ./app/page.jsx
+[00:09:23.969] Browser ERROR   ./components/anamnesis-form.jsx:969:15
+Parsing ecmascript source code failed
+  967 |               </div>
+  968 |             </div>
+> 969 |         </div>
+      |               ^
+> 970 |
+      | ^
+> 971 |         <div className="flex gap-4 w-full md:w-auto mt-8 justify-end">
+      | ^^^^^^^^^
+  972 |           <Button
+  973 |             onClick={handleSave}
+  974 |             variant="outline-primary-bold"
+
+Expected '</', got 'jsx text'
+
+Import trace:
+  Server Component:
+    ./components/anamnesis-form.jsx
+    ./app/page.jsx
+[00:09:23.970] Browser ERROR   ./components/anamnesis-form.jsx:969:15
+Parsing ecmascript source code failed
+  967 |               </div>
+  968 |             </div>
+> 969 |         </div>
+      |               ^
+> 970 |
+      | ^
+> 971 |         <div className="flex gap-4 w-full md:w-auto mt-8 justify-end">
+      | ^^^^^^^^^
+  972 |           <Button
+  973 |             onClick={handleSave}
+  974 |             variant="outline-primary-bold"
+
+Expected '</', got 'jsx text'
+
+Import trace:
+  Server Component:
+    ./components/anamnesis-form.jsx
+    ./app/page.jsx
+[00:09:24.301] Browser ERROR   ./components/anamnesis-form.jsx:969:15
+Parsing ecmascript source code failed
+  967 |               </div>
+  968 |             </div>
+> 969 |         </div>
+      |               ^
+> 970 |
+      | ^
+> 971 |         <div className="flex gap-4 w-full md:w-auto mt-8 justify-end">
+      | ^^^^^^^^^
+  972 |           <Button
+  973 |             onClick={handleSave}
+  974 |             variant="outline-primary-bold"
+
+Expected '</', got 'jsx text'
+
+Import trace:
+  Server Component:
+    ./components/anamnesis-form.jsx
+    ./app/page.jsx
+[00:09:24.530] Browser ERROR   uncaughtError: Error: ./components/anamnesis-form.jsx:969:15
+Parsing ecmascript source code failed
+  967 |               </div>
+  968 |             </div>
+> 969 |         </div>
+      |               ^
+> 970 |
+      | ^
+> 971 |         <div className="flex gap-4 w-full md:w-auto mt-8 justify-end">
+      | ^^^^^^^^^
+  972 |           <Button
+  973 |             onClick={handleSave}
+  974 |             variant="outline-primary-bold"
+
+Expected '</', got 'jsx text'
+
+Import trace:
+  Server Component:
+    ./components/anamnesis-form.jsx
+    ./app/page.jsx
+
+
+[00:09:24.752] Browser ERROR   ./components/anamnesis-form.jsx:969:15
+Parsing ecmascript source code failed
+  967 |               </div>
+  968 |             </div>
+> 969 |         </div>
+      |               ^
+> 970 |
+      | ^
+> 971 |         <div className="flex gap-4 w-full md:w-auto mt-8 justify-end">
+      | ^^^^^^^^^
+  972 |           <Button
+  973 |             onClick={handleSave}
+  974 |             variant="outline-primary-bold"
+
+Expected '</', got 'jsx text'
+
+Import trace:
+  Server Component:
+    ./components/anamnesis-form.jsx
+    ./app/page.jsx
+[00:09:24.752] Browser ERROR   ./components/anamnesis-form.jsx:969:15
+Parsing ecmascript source code failed
+  967 |               </div>
+  968 |             </div>
+> 969 |         </div>
+      |               ^
+> 970 |
+      | ^
+> 971 |         <div className="flex gap-4 w-full md:w-auto mt-8 justify-end">
+      | ^^^^^^^^^
+  972 |           <Button
+  973 |             onClick={handleSave}
+  974 |             variant="outline-primary-bold"
+
+Expected '</', got 'jsx text'
+
+Import trace:
+  Server Component:
+    ./components/anamnesis-form.jsx
+    ./app/page.jsx
+[00:09:40.606] Server  LOG     ✓ Compiled in 94ms
+[00:09:41.155] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:09:41.500] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:09:41.500] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/","route":"/"}
+[00:09:41.500] Browser LOG     %c[Vercel Web Analytics]%c [view] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.3.1","sv":"0.1.3","ts":1783615032452} /_vercel/insights/view
+[00:10:07.510] Server  LOG     ✓ Compiled in 163ms

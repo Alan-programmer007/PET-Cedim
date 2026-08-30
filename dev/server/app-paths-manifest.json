@@ -1,0 +1,7 @@
+{
+  "/api/anamneses/route": "app/api/anamneses/route.js",
+  "/api/save-anamnese/route": "app/api/save-anamnese/route.js",
+  "/metricas/page": "app/metricas/page.js",
+  "/page": "app/page.js",
+  "/registros/page": "app/registros/page.js"
+}

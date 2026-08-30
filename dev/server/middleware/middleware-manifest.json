@@ -1,0 +1,31 @@
+{
+  "sorted_middleware": [],
+  "middleware": {
+    "/": {
+      "files": [
+        "server/edge/chunks/node_modules_next_dist_56fa3cae._.js",
+        "server/edge/chunks/[root-of-the-server]__140a91e5._.js",
+        "server/edge/chunks/turbopack-node_modules_next_dist_esm_build_templates_edge-wrapper_04d940bb.js"
+      ],
+      "name": "middleware",
+      "page": "/",
+      "matchers": [
+        {
+          "regexp": "/:nextData(_next/data/[^/]{1,})?/((?!_next|api/auth/login|cedim.png|CEDIM_LOGO.jpg|favicon.ico).*){(\\\\.json)}?",
+          "originalSource": "/((?!_next|api/auth/login|cedim.png|CEDIM_LOGO.jpg|favicon.ico).*)"
+        }
+      ],
+      "wasm": [],
+      "assets": [],
+      "env": {
+        "__NEXT_BUILD_ID": "development",
+        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "fZGVIBxZpDPPVF3M1aQs8+cV+jdKmU1QMYUk7AHwFXM=",
+        "__NEXT_PREVIEW_MODE_ID": "a2009b94cb1628b8657bcef61d04a0ce",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "e340e17f94aaf3b9f094bda43e5d23eb8011ad0cab5b0c618407af124861257a",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "1cb24852817082b72fdf1ee9c1d98b988c31b622025a4dfa415b956ddce2883f"
+      }
+    }
+  },
+  "instrumentation": null,
+  "functions": {}
+}

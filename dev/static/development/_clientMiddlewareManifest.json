@@ -1,0 +1,6 @@
+[
+  {
+    "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?(?:\\/((?!_next|api\\/auth\\/login|cedim.png|CEDIM_LOGO.jpg|favicon.ico).*))(\\\\.json)?[\\/#\\?]?$",
+    "originalSource": "/((?!_next|api/auth/login|cedim.png|CEDIM_LOGO.jpg|favicon.ico).*)"
+  }
+]

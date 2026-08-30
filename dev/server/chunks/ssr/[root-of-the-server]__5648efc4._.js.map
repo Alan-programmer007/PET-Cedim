@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 20, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/Eduardo/Documents/Projetos/ANAMNESES_CEDIM/ANAMNESES_CEDIM/app/page.jsx"],"sourcesContent":["import { AnamnesisForm } from \"@/components/anamnesis-form\";\r\n\r\nexport default function Home() {\r\n  return (\r\n    <main className=\"flex min-h-screen flex-col items-center justify-between p-24\">\r\n      <AnamnesisForm />\r\n    </main>\r\n  );\r\n}"],"names":[],"mappings":";;;;;AAAA;;;AAEe,SAAS;IACtB,qBACE,8OAAC;QAAK,WAAU;kBACd,cAAA,8OAAC,iJAAa;;;;;;;;;;AAGpB"}}]
+}

@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 16, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/middleware.js"],"sourcesContent":["import { NextResponse } from 'next/server'\r\n\r\nexport function middleware(req) {\r\n  const token = req.cookies.get('token');\r\n  const isLoginPage = req.nextUrl.pathname === '/login';\r\n\r\n  if (!token && !isLoginPage) {\r\n    return NextResponse.redirect(new URL('/login', req.url));\r\n  }\r\n\r\n  if (token && isLoginPage) {\r\n    return NextResponse.redirect(new URL('/', req.url));\r\n  }\r\n\r\n  return NextResponse.next();\r\n}\r\n\r\nexport const config = {\r\n  matcher: ['/((?!_next|api/auth/login|cedim.png|CEDIM_LOGO.jpg|favicon.ico).*)']\r\n}\r\n"],"names":[],"mappings":";;;;;;AAAA;AAAA;;AAEO,SAAS,WAAW,GAAG;IAC5B,MAAM,QAAQ,IAAI,OAAO,CAAC,GAAG,CAAC;IAC9B,MAAM,cAAc,IAAI,OAAO,CAAC,QAAQ,KAAK;IAE7C,IAAI,CAAC,SAAS,CAAC,aAAa;QAC1B,OAAO,gMAAY,CAAC,QAAQ,CAAC,IAAI,IAAI,UAAU,IAAI,GAAG;IACxD;IAEA,IAAI,SAAS,aAAa;QACxB,OAAO,gMAAY,CAAC,QAAQ,CAAC,IAAI,IAAI,KAAK,IAAI,GAAG;IACnD;IAEA,OAAO,gMAAY,CAAC,IAAI;AAC1B;AAEO,MAAM,SAAS;IACpB,SAAS;QAAC;KAAqE;AACjF"}}]
+}
