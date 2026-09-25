@@ -1,3 +1,40 @@
+> # ⚠️ DOCUMENTO OBSOLETO — NÃO SIGA ESTAS INSTRUÇÕES
+>
+> Este arquivo é anterior à adoção do **Prisma** e descreve um caminho de instalação que
+> **quebra a aplicação**.
+>
+> O schema em `db/schema.sql` é **incompatível** com o que o sistema realmente usa:
+>
+> | | `db/schema.sql` (este diretório) | migration do Prisma (a que roda) |
+> |---|---|---|
+> | `anamneses.id` | `BIGINT AUTO_INCREMENT` | `VARCHAR(191)` |
+> | Colunas das imagens | `imagem_mama_a`, `imagem_mama_b` | `imagemMamaA`, `imagemMamaB` |
+> | Carimbo de tempo | `created_at` | `createdAt` |
+> | Tamanho da imagem | `TEXT` (limite de 64 KB) | `LONGTEXT` |
+> | Vínculo com usuário | `user_id` + chave estrangeira | não existe |
+>
+> Quem criar o banco por aqui terá uma aplicação que não funciona: o código grava `id` como string
+> em coluna numérica, e os nomes das colunas não batem. `TEXT` também estouraria com as imagens
+> reais, medidas em torno de 250 KB.
+>
+> ## O caminho correto
+>
+> A fonte de verdade do banco é **`prisma/schema.prisma`** e as migrations em
+> `prisma/migrations/`. Para preparar o banco:
+>
+> ```bash
+> npm run db:setup
+> ```
+>
+> Veja o [README principal](../README.md) e o [modelo de dados](../docs/modelo-de-dados.md).
+>
+> ---
+>
+> O conteúdo abaixo é mantido apenas como registro histórico. A remoção desta pasta está
+> registrada como item D2 em [docs/MELHORIAS.md](../docs/MELHORIAS.md).
+
+---
+
 Banco de dados - instruções rápidas
 
 1) Criar banco (exemplo MySQL local):

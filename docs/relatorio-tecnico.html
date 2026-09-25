@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Relatório Técnico — Sistema de Anamneses CEDIM</title>
+<style>
+/* ===== ABNT NBR 14724 =====
+   A4; margens superior 3cm, direita 2cm, inferior 2cm, esquerda 3cm
+   Arial 12; entrelinhas 1,5; recuo de primeira linha 1,25cm            */
+@page { size: A4; margin: 3cm 2cm 2cm 3cm; }
+* { box-sizing: border-box; }
+body { font-family: Arial, Helvetica, sans-serif; font-size: 12pt; line-height: 1.5;
+       color: #000; margin: 0; text-align: justify; hyphens: auto; }
+p { text-indent: 1.25cm; margin: 0 0 .5em 0; orphans: 3; widows: 3; }
+p.sem-recuo { text-indent: 0; }
+h1 { font-size: 12pt; font-weight: bold; text-transform: uppercase; text-align: left;
+     text-indent: 0; page-break-before: always; margin: 0 0 1.5em 0; }
+h2 { font-size: 12pt; font-weight: bold; text-align: left; text-indent: 0;
+     margin: 1.5em 0 .8em 0; page-break-after: avoid; }
+h3 { font-size: 12pt; font-weight: normal; font-style: italic; text-align: left;
+     text-indent: 0; margin: 1.2em 0 .6em 0; page-break-after: avoid; }
+blockquote { margin: 1em 0 1em 4cm; font-size: 10pt; line-height: 1; text-indent: 0; }
+table { border-collapse: collapse; width: 100%; font-size: 10pt; line-height: 1.2;
+        margin: .4em 0 .2em 0; page-break-inside: avoid; }
+th, td { border: 1px solid #000; padding: 3px 5px; text-align: left; vertical-align: top; }
+th { background: #e8e8e8; font-weight: bold; }
+.titulo-quadro { font-size: 10pt; text-indent: 0; margin: 1.2em 0 0 0; text-align: left;
+                 page-break-after: avoid; }
+.fonte-quadro { font-size: 10pt; text-indent: 0; margin: 0 0 1.2em 0; text-align: left;
+                page-break-before: avoid; }
+code { font-family: "Courier New", monospace; font-size: 10pt; }
+pre { font-family: "Courier New", monospace; font-size: 10pt; line-height: 1.2;
+      background: #f4f4f4; border: 1px solid #ccc; padding: 8px; text-indent: 0;
+      white-space: pre-wrap; word-break: break-all; page-break-inside: avoid; margin: .6em 0; }
+.capa, .folha-rosto { page-break-after: always; height: 24.7cm;
+                      display: flex; flex-direction: column; text-align: center; }
+.capa .inst, .folha-rosto .inst { text-indent: 0; text-transform: uppercase; font-weight: bold; line-height: 1.5; }
+.capa .autor, .folha-rosto .autor { text-indent: 0; margin-top: 3cm; text-transform: uppercase; }
+.capa .titulo, .folha-rosto .titulo { text-indent: 0; margin-top: auto; margin-bottom: auto;
+                                      font-weight: bold; text-transform: uppercase; font-size: 14pt; }
+.capa .local, .folha-rosto .local { text-indent: 0; margin-top: auto; text-transform: uppercase; font-weight: bold; }
+.natureza { width: 8cm; margin-left: auto; margin-right: 0; text-align: justify; font-size: 10pt;
+            line-height: 1; text-indent: 0; margin-top: 1cm; margin-bottom: 2cm; }
+.pre-textual { page-break-after: always; }
+.pre-textual h1 { page-break-before: avoid; text-align: center; margin-bottom: 1.5em; }
+.palavras-chave { text-indent: 0; margin-top: 1.5em; }
+.sumario-item { text-indent: 0; margin: 0; display: flex; align-items: baseline; }
+.sumario-item .txt { white-space: pre; }
+.sumario-item .pontos { flex: 1; border-bottom: 1px dotted #000; margin: 0 4px 4px 4px; }
+.sumario-item.n1 { font-weight: bold; text-transform: uppercase; margin-top: .5em; }
+.sumario-item.n2 { padding-left: 1cm; }
+.referencia { text-indent: 0; text-align: left; line-height: 1; margin: 0 0 1em 0; }
+.confirmar { background: #f0f0f0; }
+</style>
+</head>
+<body>
+
+<!-- ============================= CAPA ============================= -->
+<section class="capa">
+  <p class="inst">Universidade Estadual de Ciências da Saúde de Alagoas<br>
+  Programa de Educação pelo Trabalho para a Saúde — PET-Saúde<br>
+  Centro de Diagnóstico e Imagem Professor Alberto Cardoso — CEDIM</p>
+  <p class="autor">José Alan de Aquino Santos</p>
+  <p class="titulo">Avaliação técnica do Sistema de Anamneses CEDIM:<br>
+  campos, segurança e plano de trabalho</p>
+  <p class="local">Maceió<br>2026</p>
+</section>
+
+<!-- ========================= FOLHA DE ROSTO ======================== -->
+<section class="folha-rosto">
+  <p class="autor" style="margin-top:0">José Alan de Aquino Santos</p>
+  <p class="titulo">Avaliação técnica do Sistema de Anamneses CEDIM:<br>
+  campos, segurança e plano de trabalho</p>
+  <p class="natureza">Relatório técnico apresentado à equipe de desenvolvimento e à orientação do
+  Programa de Educação pelo Trabalho para a Saúde (PET-Saúde) da Universidade Estadual de Ciências
+  da Saúde de Alagoas, como registro da verificação realizada na plataforma de anamneses do CEDIM
+  e como proposta de distribuição de tarefas.</p>
+  <p class="local">Maceió<br>2026</p>
+</section>
+
+<!-- ============================ RESUMO ============================ -->
+<section class="pre-textual">
+  <h1>RESUMO</h1>
+  <p class="sem-recuo">Este relatório registra a verificação técnica da plataforma de anamneses
+  mamárias do CEDIM, desenvolvida no âmbito do PET-Saúde da UNCISAL. A verificação foi conduzida
+  com a aplicação em execução, de modo que cada defeito relatado corresponde a um comportamento
+  observado, e não a uma suspeita levantada por leitura de código. O documento cumpre três
+  objetivos. Primeiro, descreve os campos que compõem a anamnese, o que cada um representa e em
+  que formato é gravado, suprindo uma lacuna de documentação do projeto. Segundo, apresenta os
+  vinte e nove pontos de melhoria identificados, dos quais o mais grave anula por completo o
+  controle de acesso: o componente que protege as rotas verifica apenas a presença do identificador
+  de sessão, sem conferir sua autenticidade, de forma que qualquer pessoa lê e grava prontuários
+  sem credencial válida. Terceiro, propõe uma distribuição de tarefas entre os três desenvolvedores
+  e a orientação do projeto, separando o que depende de conhecimento técnico do que depende de
+  conhecimento clínico. Recomenda-se que a plataforma não receba dados de pacientes reais antes da
+  conclusão da primeira etapa do plano apresentado.</p>
+  <p class="palavras-chave"><strong>Palavras-chave:</strong> Registro eletrônico em saúde. Segurança
+  da informação. Controle de acesso. Anamnese mamária. PET-Saúde.</p>
+</section>
+
+<!-- ============================ SUMÁRIO =========================== -->
+<section class="pre-textual">
+  <h1>SUMÁRIO</h1>
+  <p class="sumario-item n1"><span class="txt">1 INTRODUÇÃO</span><span class="pontos"></span><span>5</span></p>
+  <p class="sumario-item n1"><span class="txt">2 METODOLOGIA</span><span class="pontos"></span><span>6</span></p>
+  <p class="sumario-item n1"><span class="txt">3 O SISTEMA AVALIADO</span><span class="pontos"></span><span>7</span></p>
+  <p class="sumario-item n1"><span class="txt">4 OS CAMPOS DA ANAMNESE</span><span class="pontos"></span><span>8</span></p>
+  <p class="sumario-item n2"><span class="txt">4.1 Identificação da paciente</span><span class="pontos"></span><span>8</span></p>
+  <p class="sumario-item n2"><span class="txt">4.2 Histórico mamário</span><span class="pontos"></span><span>9</span></p>
+  <p class="sumario-item n2"><span class="txt">4.3 História reprodutiva</span><span class="pontos"></span><span>9</span></p>
+  <p class="sumario-item n2"><span class="txt">4.4 História familiar e hábitos</span><span class="pontos"></span><span>10</span></p>
+  <p class="sumario-item n2"><span class="txt">4.5 Exame físico</span><span class="pontos"></span><span>10</span></p>
+  <p class="sumario-item n2"><span class="txt">4.6 Pontos a confirmar com a orientação</span><span class="pontos"></span><span>11</span></p>
+  <p class="sumario-item n1"><span class="txt">5 RESULTADOS DA VERIFICAÇÃO</span><span class="pontos"></span><span>12</span></p>
+  <p class="sumario-item n2"><span class="txt">5.1 Segurança</span><span class="pontos"></span><span>12</span></p>
+  <p class="sumario-item n2"><span class="txt">5.2 Defeitos funcionais</span><span class="pontos"></span><span>13</span></p>
+  <p class="sumario-item n2"><span class="txt">5.3 Desempenho e modelo de dados</span><span class="pontos"></span><span>13</span></p>
+  <p class="sumario-item n2"><span class="txt">5.4 Documentação e qualidade</span><span class="pontos"></span><span>13</span></p>
+  <p class="sumario-item n1"><span class="txt">6 PLANO DE AÇÃO</span><span class="pontos"></span><span>15</span></p>
+  <p class="sumario-item n1"><span class="txt">7 DISTRIBUIÇÃO DE TAREFAS</span><span class="pontos"></span><span>16</span></p>
+  <p class="sumario-item n2"><span class="txt">7.1 José Alan — Segurança e autenticação</span><span class="pontos"></span><span>16</span></p>
+  <p class="sumario-item n2"><span class="txt">7.2 Alan da Silva — Dados e desempenho</span><span class="pontos"></span><span>16</span></p>
+  <p class="sumario-item n2"><span class="txt">7.3 Lucas — Interface e qualidade</span><span class="pontos"></span><span>17</span></p>
+  <p class="sumario-item n2"><span class="txt">7.4 Professor Gustavo — Definição clínica</span><span class="pontos"></span><span>17</span></p>
+  <p class="sumario-item n1"><span class="txt">8 CONSIDERAÇÕES FINAIS</span><span class="pontos"></span><span>19</span></p>
+  <p class="sumario-item n1"><span class="txt">REFERÊNCIAS</span><span class="pontos"></span><span>20</span></p>
+</section>
+
+<!-- ========================== 1 INTRODUÇÃO ======================== -->
+<h1>1 INTRODUÇÃO</h1>
+
+<p>O Sistema de Anamneses CEDIM é uma plataforma web que substitui o preenchimento em papel da
+anamnese mamária: a estudante ou profissional preenche um formulário clínico na tela, marca achados
+sobre um desenho esquemático das mamas e grava o registro, que fica disponível para consulta,
+exportação em planilha e agregação em gráficos.</p>
+
+<p>Um sistema assim guarda aquilo que a Lei Geral de Proteção de Dados Pessoais define como
+<em>dado pessoal sensível</em> — informação referente à saúde de pessoa identificada (BRASIL, 2018,
+art. 5º, II) —, submetido a regime de proteção mais estrito que o dos dados comuns. A qualidade
+técnica da plataforma deixa, portanto, de ser conveniência e passa a ser questão de conformidade
+legal.</p>
+
+<p>Este relatório registra a verificação realizada em 23 de setembro de 2026. Não pretende criticar
+o trabalho feito, que resolve o problema proposto e está em funcionamento, mas produzir um retrato
+do estado atual, documentar os campos da anamnese e propor uma divisão de tarefas para a equipe.
+Os conceitos técnicos são explicados à medida que aparecem, pois o documento se dirige também à
+orientação do projeto.</p>
+
+<!-- ========================= 2 METODOLOGIA ======================== -->
+<h1>2 METODOLOGIA</h1>
+
+<p>A verificação foi conduzida com a aplicação em execução, e não apenas por leitura do
+código-fonte. A distinção importa: ler o código levanta suspeitas, mas só a execução confirma que o
+problema acontece. Cada defeito da seção 5 foi reproduzido ao menos uma vez.</p>
+
+<p>O ambiente foi montado de forma isolada, seguindo o procedimento de instalação da própria
+documentação do projeto — o que permitiu verificar, de passagem, se essas instruções ainda
+funcionam. Com o sistema no ar, foram exercitados o fluxo de autenticação, as seis rotas de
+programação (com e sem credenciais), a gravação de registros completos, vazios e repetidos, a
+remoção de registros existentes e inexistentes, e a medição do volume de dados trafegado. A
+descrição dos campos da seção 4 foi extraída do código do formulário, única fonte existente sobre o
+assunto até este trabalho.</p>
+
+<!-- ====================== 3 O SISTEMA AVALIADO ==================== -->
+<h1>3 O SISTEMA AVALIADO</h1>
+
+<p>A plataforma usa Next.js, estrutura que reúne num mesmo projeto as telas e a programação de
+servidor. O armazenamento fica em banco MySQL, acessado pelo Prisma. São quatro telas: formulário
+de anamnese, listagem de registros, painel de métricas e tela de acesso. Não há autocadastro; um
+usuário administrador é criado na instalação.</p>
+
+<p>Um ponto da arquitetura explica vários achados adiante. Todo o conteúdo clínico é gravado em uma
+única coluna do banco, no formato JSON — um texto estruturado. A tabela possui seis colunas, e
+nenhuma corresponde a um campo clínico: <code>id</code>, <code>data</code> (o bloco JSON com tudo),
+três colunas de imagem e a data de gravação.</p>
+
+<p>A consequência é que o banco não sabe o que guarda. Para ele, a anamnese inteira é um texto só.
+Não há como exigir que toda anamnese tenha nome de paciente, nem como localizar uma paciente sem
+percorrer todos os registros.</p>
+
+<!-- ==================== 4 OS CAMPOS DA ANAMNESE =================== -->
+<h1>4 OS CAMPOS DA ANAMNESE</h1>
+
+<p>Esta seção descreve os campos do formulário: o que cada um representa e em que formato é
+gravado. Até este trabalho, essa informação existia apenas no código-fonte, o que obrigava cada
+nova integrante da equipe a redescobri-la por leitura.</p>
+
+<p>Os quadros indicam o nome técnico do campo — o mesmo que aparece nas planilhas exportadas —,
+o rótulo exibido na tela e o formato gravado. As linhas destacadas em cinza indicam campos cuja
+definição clínica precisa ser confirmada pela orientação, conforme a seção 4.6.</p>
+
+<h2>4.1 Identificação da paciente</h2>
+
+<p class="titulo-quadro"><strong>Quadro 1</strong> — Campos de identificação</p>
+<table>
+<tr><th style="width:26%">Campo técnico</th><th style="width:30%">Rótulo na tela</th><th>Formato e observações</th></tr>
+<tr><td><code>nome</code></td><td>Nome</td><td>Texto livre</td></tr>
+<tr><td><code>telefone</code></td><td>Telefone</td><td>Texto livre, sem máscara nem validação</td></tr>
+<tr><td><code>cidade</code></td><td>Cidade</td><td>Texto livre — sem lista fixa, o que gera grafias divergentes nos gráficos</td></tr>
+<tr><td><code>dataNascimento</code></td><td>Data de Nascimento</td><td>Data. Base do cálculo de idade no painel de métricas</td></tr>
+<tr><td><code>motivo</code></td><td>Motivo do Exame</td><td>Texto livre — alimenta o gráfico de casos clínicos</td></tr>
+<tr><td><code>exame</code></td><td>Data do Exame</td><td>Data informada pela usuária</td></tr>
+<tr><td class="confirmar"><code>idExamesAnteriores</code></td><td class="confirmar">ID do Paciente</td><td class="confirmar">Texto livre. O nome técnico sugere exames anteriores, mas o rótulo diz identificação da paciente</td></tr>
+</table>
+<p class="fonte-quadro">Fonte: elaborado pelo autor a partir de <code>components/anamnesis-form.jsx</code>.</p>
+
+<h2>4.2 Histórico mamário</h2>
+
+<p class="titulo-quadro"><strong>Quadro 2</strong> — Campos de histórico mamário</p>
+<table>
+<tr><th style="width:26%">Campo técnico</th><th style="width:30%">Rótulo na tela</th><th>Formato e observações</th></tr>
+<tr><td><code>aproveitarExames</code></td><td>Realizou exames anteriores</td><td>Sim ou não</td></tr>
+<tr><td><code>jaFezMamo</code></td><td>Já fez mamografia ou ultrassonografia</td><td>Sim ou não</td></tr>
+<tr><td><code>sintomas</code></td><td>Sintomas apresentados</td><td>Três marcações independentes: dor, massa e secreção</td></tr>
+<tr><td><code>corSecrecao</code></td><td>Cor da secreção</td><td>Texto livre</td></tr>
+<tr><td class="confirmar"><code>especifiqueSintomas</code></td><td class="confirmar">Secreção sai espontânea?</td><td class="confirmar">Texto livre. Nome técnico genérico para pergunta específica</td></tr>
+<tr><td><code>jaFezCirurgia</code></td><td>Já fez cirurgia das mamas</td><td>Quatro marcações: mamoplastia, prótese, nódulos e câncer</td></tr>
+<tr><td><code>tempoCirurgia</code></td><td>Tempo de cada cirurgia</td><td>Texto livre, um por tipo de cirurgia</td></tr>
+<tr><td><code>cancer</code></td><td>Diagnóstico de câncer pessoal</td><td>Sim ou não</td></tr>
+<tr><td><code>especificarCancer</code></td><td>Localização do câncer</td><td>Texto livre</td></tr>
+<tr><td><code>historiaDoenca</code></td><td>História da doença mamária</td><td>Campo de texto longo — o único do formulário</td></tr>
+</table>
+<p class="fonte-quadro">Fonte: elaborado pelo autor.</p>
+
+<h2>4.3 História reprodutiva</h2>
+
+<p class="titulo-quadro"><strong>Quadro 3</strong> — Campos de história reprodutiva</p>
+<table>
+<tr><th style="width:26%">Campo técnico</th><th style="width:30%">Rótulo na tela</th><th>Formato e observações</th></tr>
+<tr><td><code>numeroGestacoes</code></td><td>Número de gestações</td><td>Número, gravado como texto</td></tr>
+<tr><td><code>numeroPartos</code></td><td>Número de partos</td><td>Número, gravado como texto</td></tr>
+<tr><td><code>numeroAbortos</code></td><td>Número de abortos</td><td>Número, gravado como texto</td></tr>
+<tr><td><code>historiaReprodutiva</code></td><td>Amamentou · Menopausa · Hormônio</td><td>Três marcações independentes</td></tr>
+<tr><td class="confirmar"><code>dum</code></td><td class="confirmar">DUM (data da última menstruação)</td><td class="confirmar">Data. <strong>Só aparece quando "Amamentou" está marcado</strong></td></tr>
+<tr><td><code>tempoMenopausa</code></td><td>Tempo de menopausa</td><td>Texto livre; exibido apenas se "Menopausa" marcado</td></tr>
+<tr><td><code>tempoHormonio</code></td><td>Tempo com hormônio</td><td>Texto livre; exibido apenas se "Hormônio" marcado</td></tr>
+</table>
+<p class="fonte-quadro">Fonte: elaborado pelo autor.</p>
+
+<h2>4.4 História familiar e hábitos</h2>
+
+<p class="titulo-quadro"><strong>Quadro 4</strong> — Campos de história familiar e hábitos</p>
+<table>
+<tr><th style="width:26%">Campo técnico</th><th style="width:30%">Rótulo na tela</th><th>Formato e observações</th></tr>
+<tr><td><code>alguemComCancer</code></td><td>Alguém com câncer de mama na família</td><td>Sim ou não</td></tr>
+<tr><td><code>parentescoCancer</code></td><td>Parentesco</td><td>Texto livre; exibido apenas se a resposta for "sim". Não distingue grau de parentesco nem idade ao diagnóstico</td></tr>
+<tr><td><code>habitos</code></td><td>Fuma · Bebe · Exercício físico · Alimentação saudável · Auto-exame</td><td>Cinco marcações independentes. Aparecem duas vezes no relatório impresso: como "Hábitos" e como "Fatores de risco" — são os mesmos dados</td></tr>
+</table>
+<p class="fonte-quadro">Fonte: elaborado pelo autor.</p>
+
+<h2>4.5 Exame físico</h2>
+
+<p>A seção de exame físico combina dois desenhos esquemáticos das mamas, sobre os quais a usuária
+marca achados com o mouse ou com o dedo, e campos de seleção associados a cada desenho.</p>
+
+<p class="titulo-quadro"><strong>Quadro 5</strong> — Campos de exame físico</p>
+<table>
+<tr><th style="width:26%">Campo técnico</th><th style="width:30%">Rótulo na tela</th><th>Formato e observações</th></tr>
+<tr><td class="confirmar"><code>imagemMamaA</code></td><td class="confirmar">Canvas A</td><td class="confirmar">Desenho com as marcações, gravado como imagem. A tela não informa o que distingue este desenho do seguinte</td></tr>
+<tr><td><code>exameFisicoA.massa</code></td><td>Massa na mama?</td><td>Sim ou não</td></tr>
+<tr><td class="confirmar"><code>indicada</code></td><td class="confirmar">Indicada</td><td class="confirmar">Paciente, médico ou técnico. O rótulo não explicita o que está sendo indicado</td></tr>
+<tr><td class="confirmar"><code>imagemMamaB</code></td><td class="confirmar">Canvas B</td><td class="confirmar">Segundo desenho, mesmo formato do anterior</td></tr>
+<tr><td><code>exameFisicoB.alteracaoPele</code></td><td>Alteração na pele?</td><td>Coloração vermelha, verruga ou sinais, outros</td></tr>
+<tr><td><code>exameFisicoB.alteracaoMamilo</code></td><td>Alteração do mamilo</td><td>Retração, espessamento, erosão, coloração vermelha, outros</td></tr>
+</table>
+<p class="fonte-quadro">Fonte: elaborado pelo autor.</p>
+
+<p>Quando a opção escolhida é "outros", abre-se um campo de texto para descrição livre. As
+marcações feitas sobre os desenhos são gravadas apenas como imagem: não podem ser reabertas nem
+ajustadas depois, e seu conteúdo não é pesquisável.</p>
+
+<h2>4.6 Pontos a confirmar com a orientação</h2>
+
+<p>Os itens a seguir não podem ser resolvidos por análise técnica, pois dependem do protocolo
+clínico adotado pelo serviço. Constituem a pauta sugerida para a orientação do projeto.</p>
+
+<p class="titulo-quadro"><strong>Quadro 6</strong> — Pontos que dependem de definição clínica</p>
+<table>
+<tr><th style="width:6%">Nº</th><th style="width:34%">Questão</th><th>Situação atual</th></tr>
+<tr><td>1</td><td>A DUM deve mesmo aparecer apenas quando "Amamentou" está marcado?</td><td>É o comportamento atual; a associação não é evidente</td></tr>
+<tr><td>2</td><td>O que distingue clinicamente o Canvas A do Canvas B?</td><td>A tela não informa; os dois são idênticos em função</td></tr>
+<tr><td>3</td><td>O campo "Indicada" se refere a quem indicou o exame?</td><td>Aceita paciente, médico ou técnico, sem explicação na tela</td></tr>
+<tr><td>4</td><td>Quais campos devem ser obrigatórios?</td><td>Nenhum é. O sistema grava anamnese inteiramente vazia</td></tr>
+<tr><td>5</td><td>O vocabulário de alterações de pele e mamilo está adequado?</td><td>Lista fixa; "coloração vermelha" aparece nos dois campos com grafias internas divergentes</td></tr>
+<tr><td>6</td><td>O parentesco deve registrar grau e idade ao diagnóstico?</td><td>Hoje é texto livre, o que impede estratificação de risco familiar</td></tr>
+<tr><td>7</td><td>"Motivo do exame" e "Cidade" devem ter lista fixa de opções?</td><td>São texto livre; grafias divergentes fragmentam os gráficos</td></tr>
+</table>
+<p class="fonte-quadro">Fonte: elaborado pelo autor.</p>
+
+<!-- ================== 5 RESULTADOS DA VERIFICAÇÃO ================= -->
+<h1>5 RESULTADOS DA VERIFICAÇÃO</h1>
+
+<p>Foram identificados vinte e nove pontos de melhoria: quatro de segurança, sete de defeitos
+funcionais, quatro de desempenho e modelo de dados, sete de documentação e sete de qualidade de
+código. Esta seção detalha os mais relevantes.</p>
+
+<h2>5.1 Segurança</h2>
+
+<p>Quando alguém acerta usuário e senha, o servidor emite um <em>token</em>: um texto que funciona
+como crachá digital e fica guardado no navegador. O token é assinado criptograficamente, de modo
+que qualquer alteração em seu conteúdo invalida a assinatura e denuncia a falsificação.</p>
+
+<p>O sistema emite o crachá corretamente, mas <strong>nunca confere a assinatura</strong>. O
+componente que protege as rotas verifica apenas se existe algum crachá, sem olhar o que está
+escrito nele, e as rotas que leem e gravam anamneses não refazem essa verificação. Apresentando-se
+um crachá de conteúdo arbitrário, sem nenhuma credencial:</p>
+
+<pre>Cookie: token=isso_nao_e_um_jwt
+  GET  /api/anamneses      → 200 (lista todas as anamneses)
+  POST /api/save-anamnese  → 200 (gravou um registro no banco)</pre>
+
+<p>A senha protege apenas a formalidade de obter um crachá; não protege os dados. A falha
+corresponde ao primeiro item da classificação da OWASP (2021), <em>Broken Access Control</em>, a
+categoria mais frequente em aplicações web. A correção exige validar a assinatura no componente de
+proteção <strong>e</strong> repetir a validação dentro de cada rota, pois esse componente não
+constitui, sozinho, uma fronteira de segurança.</p>
+
+<p>Há outros três pontos. Uma rota remanescente de versão anterior permite apagar qualquer arquivo
+do servidor, por não verificar o identificador recebido — confirmado apagando-se um arquivo criado
+fora do projeto; como é código sem uso, deve ser removida. As mensagens de erro devolvem ao
+navegador o caminho absoluto das pastas do servidor e sua estrutura interna. E a credencial do
+usuário administrador está publicada na documentação do repositório.</p>
+
+<h2>5.2 Defeitos funcionais</h2>
+
+<p class="titulo-quadro"><strong>Quadro 7</strong> — Defeitos que afetam o uso diário</p>
+<table>
+<tr><th style="width:40%">Defeito</th><th>Efeito observado</th></tr>
+<tr><td>Tela de anamnese completa busca os dados no lugar errado</td><td>Exibe sempre "Registro não encontrado"</td></tr>
+<tr><td>Ausência total de validação</td><td>Grava anamnese sem nome de paciente</td></tr>
+<tr><td>Resumo e download individual sem acionamento</td><td>Não há como ver a anamnese completa na tela</td></tr>
+<tr><td>Campo "Sexo" cobrado pelo painel, inexistente no formulário</td><td>Coluna sempre vazia na planilha exportada</td></tr>
+<tr><td>Não há edição de anamnese</td><td>Corrigir um erro de digitação exige apagar e refazer tudo</td></tr>
+<tr><td>Marcações dos desenhos não podem ser reabertas</td><td>Achados ficam congelados na imagem</td></tr>
+<tr><td>Códigos de erro incorretos</td><td>Registro inexistente responde como falha do servidor</td></tr>
+</table>
+<p class="fonte-quadro">Fonte: elaborado pelo autor.</p>
+
+<h2>5.3 Desempenho e modelo de dados</h2>
+
+<p>A tela de listagem exibe apenas nome, data e cidade, mas a rota que a alimenta devolve todos os
+registros com todos os campos, incluindo as três imagens de cada um. Não há paginação nem seleção
+de campos. A medição, com um registro contendo as três imagens, resultou em <strong>781 KB
+armazenados e 800 KB trafegados</strong>. Com 500 anamneses — volume modesto para um serviço de
+diagnóstico — cada abertura da tela transferiria cerca de 400 MB, e o painel de métricas repetiria
+o esforço.</p>
+
+<p>A causa está no modelo descrito na seção 3: como nenhum campo clínico é coluna, não há como
+pedir apenas o nome e a data. Soma-se a isso que a imagem do relatório reproduz um conteúdo já
+gravado integralmente no bloco JSON — o mesmo dado ocupa espaço duas vezes, e a versão em imagem
+não pode ser corrigida nem pesquisada. Registre-se, ainda, que o sistema não guarda quem criou ou
+apagou cada anamnese.</p>
+
+<h2>5.4 Documentação e qualidade</h2>
+
+<p>A documentação apresentava um problema de natureza distinta. O arquivo de apresentação do
+projeto declarava:</p>
+
+<blockquote>Sistema Fechado: Todo o acesso (rotas de registros, formulários e métricas) é
+protegido por Middleware. É necessário estar logado.</blockquote>
+
+<p>A afirmação não corresponde ao comportamento do sistema. O problema não é o erro em si, mas seu
+efeito: quem lesse a frase concluiria que a proteção estava resolvida e não investigaria adiante. A
+documentação atuava para impedir a descoberta da falha. A lição é generalizável: documentação que
+afirma garantias de segurança precisa ser verificada com o mesmo rigor aplicado ao código, porque é
+lida como prova.</p>
+
+<p>Quanto à qualidade do código, o projeto soma 2.944 linhas próprias e 13 comentários — 0,4%. O
+arquivo central, com o formulário inteiro, tem 1.004 linhas e nenhum comentário. Para uma equipe
+que se renova a cada ciclo do PET, isso significa reconstruir o entendimento do zero a cada turma.
+Permanecem ainda uma tela órfã, uma função de sessenta linhas nunca chamada, arquivos duplicados e
+uma pasta de 77 MB de compilação incluída no repositório por engano.</p>
+
+<!-- ======================== 6 PLANO DE AÇÃO ====================== -->
+<h1>6 PLANO DE AÇÃO</h1>
+
+<p>Os vinte e nove pontos não têm a mesma urgência. A ordenação a seguir parte do risco envolvido,
+e não da facilidade de execução.</p>
+
+<p class="titulo-quadro"><strong>Quadro 8</strong> — Plano de ação por etapas</p>
+<table>
+<tr><th style="width:15%">Etapa</th><th style="width:43%">Ações</th><th>Justificativa</th></tr>
+<tr><td><strong>1ª</strong><br>Antes de qualquer dado real</td>
+    <td>Validar a assinatura do token nas rotas; remover a rota vulnerável; deixar de expor mensagens internas de erro; trocar as credenciais publicadas; implantar validação do formulário</td>
+    <td>Sem estas, o sistema não oferece proteção alguma aos dados que armazena</td></tr>
+<tr><td><strong>2ª</strong><br>Estrutural</td>
+    <td>Restringir os campos devolvidos pela listagem e paginar; promover nome, cidade e datas a colunas próprias; deixar de gravar a imagem do relatório; corrigir a tela de anamnese completa; implementar edição</td>
+    <td>Determinam se o sistema suporta o volume de um serviço real</td></tr>
+<tr><td><strong>3ª</strong><br>Definição clínica</td>
+    <td>Responder aos sete pontos do Quadro 6; definir campos obrigatórios e listas fixas; registrar autoria dos registros</td>
+    <td>Dependem de conhecimento que não está no código</td></tr>
+<tr><td><strong>4ª</strong><br>Dívida técnica</td>
+    <td>Remover a pasta de compilação e o código sem uso; restabelecer a verificação automática de qualidade; comentar o arquivo central</td>
+    <td>Reduzem o custo de toda alteração futura</td></tr>
+</table>
+<p class="fonte-quadro">Fonte: elaborado pelo autor.</p>
+
+<p>Reforça-se a recomendação central: <strong>a plataforma não deve receber dados de pacientes
+reais antes da conclusão da primeira etapa</strong>, ainda que utilizada apenas em rede interna.</p>
+
+<!-- ==================== 7 DISTRIBUIÇÃO DE TAREFAS ================ -->
+<h1>7 DISTRIBUIÇÃO DE TAREFAS</h1>
+
+<p>A equipe é formada por José Alan, Alan da Silva e Lucas, sob orientação do Professor Gustavo. A divisão proposta agrupa as
+tarefas por afinidade técnica, de modo que cada pessoa trabalhe em arquivos distintos e os três
+possam avançar em paralelo, sem conflito de edição.</p>
+
+<h2>7.1 José Alan — Segurança e autenticação</h2>
+
+<p>Responsável pela primeira etapa do plano, que é bloqueante para as demais.</p>
+
+<p class="titulo-quadro"><strong>Quadro 9</strong> — Tarefas de José Alan</p>
+<table>
+<tr><th style="width:46%">Tarefa</th><th>Onde</th></tr>
+<tr><td>Validar a assinatura do token no componente de proteção de rotas</td><td><code>middleware.js</code></td></tr>
+<tr><td>Repetir a validação dentro de cada rota que lê ou grava anamneses</td><td><code>app/api/anamneses/</code>, <code>app/api/save-anamnese/</code></td></tr>
+<tr><td>Remover a rota vulnerável, que não é usada por nenhuma tela</td><td><code>app/api/delete-anamnese/</code></td></tr>
+<tr><td>Parar de devolver a mensagem técnica do erro ao navegador</td><td><code>app/api/save-anamnese/</code></td></tr>
+<tr><td>Validar no servidor os campos definidos como obrigatórios pela orientação</td><td>rotas de gravação</td></tr>
+<tr><td>Corrigir os códigos de erro: registro inexistente e identificador repetido</td><td>rotas de anamnese</td></tr>
+</table>
+<p class="fonte-quadro">Fonte: elaborado pelo autor.</p>
+
+<h2>7.2 Alan da Silva — Dados e desempenho</h2>
+
+<p>Responsável pela segunda etapa. Trabalha na camada de banco e nas rotas de leitura.</p>
+
+<p class="titulo-quadro"><strong>Quadro 10</strong> — Tarefas de Alan da Silva</p>
+<table>
+<tr><th style="width:46%">Tarefa</th><th>Onde</th></tr>
+<tr><td>Excluir as colunas de imagem da listagem e implantar paginação</td><td><code>app/api/anamneses/</code></td></tr>
+<tr><td>Promover nome, cidade, data de emissão e data de nascimento a colunas próprias, com índice</td><td><code>prisma/schema.prisma</code> e nova migration</td></tr>
+<tr><td>Deixar de gravar a imagem do relatório; gerá-la sob demanda a partir do JSON</td><td>rota de gravação e tela de registros</td></tr>
+<tr><td>Registrar autoria: vincular cada anamnese ao usuário que a criou</td><td><code>prisma/schema.prisma</code></td></tr>
+<tr><td>Remover a pasta de compilação de 77 MB do repositório</td><td><code>dev/</code> e <code>.gitignore</code></td></tr>
+</table>
+<p class="fonte-quadro">Fonte: elaborado pelo autor.</p>
+
+<h2>7.3 Lucas — Interface e qualidade</h2>
+
+<p>Responsável pelos defeitos visíveis ao usuário e pela dívida técnica acumulada.</p>
+
+<p class="titulo-quadro"><strong>Quadro 11</strong> — Tarefas de Lucas</p>
+<table>
+<tr><th style="width:46%">Tarefa</th><th>Onde</th></tr>
+<tr><td>Validar o formulário antes do envio, conforme os campos obrigatórios definidos</td><td><code>components/anamnesis-form.jsx</code></td></tr>
+<tr><td>Corrigir a tela de anamnese completa, que busca os dados no lugar errado</td><td><code>app/registros/[id]/page.jsx</code></td></tr>
+<tr><td>Implementar a edição de anamnese já gravada</td><td>formulário e nova rota</td></tr>
+<tr><td>Acionar o resumo e o download individual, hoje sem botão</td><td><code>app/registros/page.jsx</code></td></tr>
+<tr><td>Remover a coluna "Sexo" da exportação ou acrescentar o campo ao formulário</td><td><code>app/metricas/page.jsx</code></td></tr>
+<tr><td>Aplicar as listas fixas definidas pela orientação para cidade e motivo</td><td>formulário</td></tr>
+<tr><td>Remover o código sem uso e comentar o arquivo central por seção clínica</td><td>vários</td></tr>
+</table>
+<p class="fonte-quadro">Fonte: elaborado pelo autor.</p>
+
+<h2>7.4 Professor Gustavo — Definição clínica</h2>
+
+<p>Nenhuma das tarefas abaixo pode ser resolvida pela equipe de desenvolvimento, pois dependem do
+protocolo do serviço e da leitura radiológica, área de formação do orientador. São, ao mesmo tempo, pré-requisito para parte do
+trabalho dos três desenvolvedores.</p>
+
+<p class="titulo-quadro"><strong>Quadro 12</strong> — Tarefas do Professor Gustavo</p>
+<table>
+<tr><th style="width:52%">Tarefa</th><th>Desbloqueia</th></tr>
+<tr><td>Responder aos sete pontos do Quadro 6, em especial a condição da DUM e a distinção entre os dois desenhos esquemáticos</td><td>Lucas</td></tr>
+<tr><td>Definir quais campos são obrigatórios para que a anamnese seja considerada válida</td><td>José Alan e Lucas</td></tr>
+<tr><td>Revisar o vocabulário de alterações de pele e mamilo, à luz da terminologia radiológica adotada</td><td>Lucas</td></tr>
+<tr><td>Definir se o parentesco deve registrar grau e idade ao diagnóstico, para estratificação de risco</td><td>Alan da Silva e Lucas</td></tr>
+<tr><td>Definir as listas fixas de "motivo do exame" e "cidade"</td><td>Lucas</td></tr>
+<tr><td>Validar o significado de cada campo descrito na seção 4, para incorporação à documentação</td><td>Equipe</td></tr>
+<tr><td>Definir por quanto tempo os registros devem ser conservados e quem pode acessá-los</td><td>José Alan e Alan da Silva</td></tr>
+</table>
+<p class="fonte-quadro">Fonte: elaborado pelo autor.</p>
+
+<p>Sugere-se que a seção 4 deste relatório seja revisada em conjunto com a orientação e, uma vez
+validada, incorporada à documentação do repositório como dicionário de dados oficial do projeto.</p>
+
+<!-- ==================== 8 CONSIDERAÇÕES FINAIS =================== -->
+<h1>8 CONSIDERAÇÕES FINAIS</h1>
+
+<p>A plataforma cumpre o que se propôs: digitaliza um processo feito em papel, permite consultar e
+exportar o que foi registrado e produz indicadores agregados. A compilação de produção funciona, o
+procedimento de instalação da documentação foi executado com sucesso e as telas respondem como
+esperado. Não é pouco para um projeto estudantil.</p>
+
+<p>Os problemas relatados situam-se em camada distinta daquela em que o trabalho foi concebido. Não
+dizem respeito ao que o sistema faz, e sim às condições sob as quais pode operar com segurança e
+crescer. É uma diferença comum em software que nasce como prova de conceito e é promovido a
+ferramenta de trabalho sem etapa intermediária de revisão — e é essa etapa que este relatório
+registra.</p>
+
+<p>Chama-se a atenção, por fim, para o achado da seção 5.4, cujo alcance ultrapassa este projeto. A
+documentação afirmava que o controle de acesso funcionava, e essa afirmação bastava para encerrar o
+assunto aos olhos de quem a lesse. Documentação não é observação neutra sobre um sistema: ela
+orienta o que as pessoas vão ou não verificar. Quando descreve garantias de segurança, precisa ser
+tratada como afirmação a comprovar, não como descrição a aceitar.</p>
+
+<!-- ========================= REFERÊNCIAS ========================= -->
+<h1>REFERÊNCIAS</h1>
+
+<p class="referencia">ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS. <strong>NBR 6023</strong>:
+informação e documentação: referências: elaboração. Rio de Janeiro: ABNT, 2018.</p>
+
+<p class="referencia">ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS. <strong>NBR 6024</strong>:
+informação e documentação: numeração progressiva das seções de um documento: apresentação.
+Rio de Janeiro: ABNT, 2012.</p>
+
+<p class="referencia">ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS. <strong>NBR 6028</strong>:
+informação e documentação: resumo, resenha e recensão: apresentação. Rio de Janeiro: ABNT, 2021.</p>
+
+<p class="referencia">ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS. <strong>NBR 14724</strong>:
+informação e documentação: trabalhos acadêmicos: apresentação. Rio de Janeiro: ABNT, 2011.</p>
+
+<p class="referencia">BRASIL. <strong>Lei nº 13.709, de 14 de agosto de 2018</strong>. Lei Geral de
+Proteção de Dados Pessoais (LGPD). Brasília, DF: Presidência da República, 2018.</p>
+
+<p class="referencia">OPEN WORLDWIDE APPLICATION SECURITY PROJECT. <strong>OWASP Top 10:2021</strong>:
+the ten most critical web application security risks. [<em>S. l.</em>]: OWASP Foundation, 2021.</p>
+
+</body>
+</html>
