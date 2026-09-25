@@ -34,9 +34,9 @@ Todo o conteúdo clínico é gravado como **um único blob JSON** na coluna `dat
 
 Leia [docs/MELHORIAS.md](docs/MELHORIAS.md) antes de propor mudanças. Os pontos que mais confundem:
 
-- **A autenticação não funciona.** O middleware só checa se o cookie existe; não valida o JWT, e as
-  rotas de API não verificam nada. Qualquer cookie `token` dá acesso total. Não presuma que rota
-  protegida por middleware está protegida.
+- **A verificação de sessão fica em `lib/auth.js`** e usa `jose`, não `jsonwebtoken` — o middleware
+  roda no Edge Runtime, onde o `crypto` do Node não existe. Toda rota nova que leia ou grave dados
+  deve chamar `lerSessao` por conta própria: o middleware não basta como fronteira de segurança.
 - **`app/registros.jsx` e `app/registros/[id]/page.jsx` leem `localStorage`** — são de antes do
   banco. O primeiro é órfão; o segundo é uma rota viva que sempre falha.
 - **`formatFormDataAsHtml` existe em dois arquivos.** A de `anamnesis-form.jsx` é usada; a de

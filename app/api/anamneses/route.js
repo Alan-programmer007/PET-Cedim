@@ -1,7 +1,18 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
+import { lerSessao } from '@/lib/auth';
 
-export async function GET() {
+// O middleware já valida a sessão, mas cada rota refaz a verificação: middleware
+// não é fronteira de segurança suficiente sozinho.
+async function exigirSessao(req) {
+  const sessao = await lerSessao(req);
+  return sessao ? null : NextResponse.json({ error: 'Não autenticado' }, { status: 401 });
+}
+
+export async function GET(req) {
+  const semSessao = await exigirSessao(req);
+  if (semSessao) return semSessao;
+
   try {
     const anamneses = await prisma.anamnese.findMany({
       orderBy: {
@@ -27,6 +38,9 @@ export async function GET() {
 }
 
 export async function DELETE(req) {
+  const semSessao = await exigirSessao(req);
+  if (semSessao) return semSessao;
+
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
@@ -41,6 +55,10 @@ export async function DELETE(req) {
 
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (err) {
+    // P2025 = o Prisma não encontrou o registro pedido
+    if (err?.code === 'P2025') {
+      return NextResponse.json({ error: 'Anamnese não encontrada' }, { status: 404 });
+    }
     console.error('Erro ao deletar anamnese:', err);
     return NextResponse.json({ error: 'Erro ao deletar anamnese' }, { status: 500 });
   }

@@ -9,9 +9,11 @@ item correspondente em [MELHORIAS.md](MELHORIAS.md).
 O login devolve um JWT (HS256, validade de 7 dias) num cookie `token` com `httpOnly`, `path=/`,
 `sameSite=lax` e `secure` quando `NODE_ENV=production`.
 
-> 🔴 **O token não é validado em lugar nenhum além de `/api/auth/me`.** O `middleware.js` apenas
-> verifica se o cookie existe, e as rotas de anamnese não verificam nada. Um cookie `token=` com
-> qualquer conteúdo dá acesso de leitura e escrita. Ver [MELHORIAS.md](MELHORIAS.md), item A1.
+A assinatura é verificada em `lib/auth.js`, com `jose` — escolhido porque o middleware roda no Edge
+Runtime, onde o `crypto` do Node não existe. A verificação acontece em **duas camadas**: no
+`middleware.js` e novamente dentro de cada rota que lê ou grava anamneses.
+
+Sem sessão válida, `/api/*` responde **`401`** em JSON e as páginas respondem `307` para `/login`.
 
 ---
 
@@ -43,9 +45,7 @@ Lê o cookie e valida a assinatura do JWT. É a **única** rota que faz essa ver
 | Situação | Status | Resposta |
 |---|---|---|
 | Token válido | `200` | `{"authenticated":true,"user":{"id":1,"email":"...","iat":...,"exp":...}}` |
-| Token ausente ou inválido | `200` | `{"authenticated":false}` |
-
-Note que token inválido devolve `200`, não `401`.
+| Token ausente ou inválido | `401` | `{"authenticated":false}` |
 
 ---
 
@@ -80,9 +80,7 @@ Remove um registro pelo `id` na query string.
 |---|---|---|
 | Removido | `200` | `{"success":true}` |
 | `id` ausente | `400` | `{"error":"ID não fornecido"}` |
-| **`id` inexistente** | **`500`** | `{"error":"Erro ao deletar anamnese"}` |
-
-O caso "não encontrado" devolve `500` em vez de `404`. Ver [MELHORIAS.md](MELHORIAS.md), item B3.
+| `id` inexistente | `404` | `{"error":"Anamnese não encontrada"}` |
 
 ---
 
@@ -95,14 +93,12 @@ Grava uma anamnese. O corpo é o objeto completo do formulário; `id`, `imagem`,
 |---|---|---|
 | Gravado | `200` | `{"success":true,"message":"Anamnese salva com sucesso"}` |
 | Sem `id` no corpo | `400` | `{"error":"Dados insuficientes"}` |
-| **`id` duplicado** | **`500`** | `{"error":"...","details":"<stack trace do Prisma>"}` |
+| `id` duplicado | `409` | `{"error":"Já existe uma anamnese com este identificador"}` |
+| Falta campo obrigatório | `400` | `{"error":"Preencha os campos obrigatórios: Nome"}` |
 
-Dois problemas verificados:
-
-1. **Nenhuma validação de conteúdo.** `{"id":"x"}` — sem nome, sem data, sem nada — é gravado com
-   `200`. Ver [MELHORIAS.md](MELHORIAS.md), item B2.
-2. **O campo `details` devolve `err.message` ao cliente**, expondo caminho absoluto do servidor,
-   estrutura interna e o ORM. Ver [MELHORIAS.md](MELHORIAS.md), item A3.
+A lista de campos obrigatórios está em `CAMPOS_OBRIGATORIOS`, no topo do arquivo da rota. Hoje exige
+apenas o nome; é **provisória** até a orientação definir o protocolo (item D4 de
+[MELHORIAS.md](MELHORIAS.md)).
 
 ---
 
