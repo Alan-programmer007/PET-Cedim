@@ -1,11 +1,56 @@
 # CLAUDE.md
 
-Orientação para sessões de IA neste repositório.
+Orientação para qualquer assistente de IA que trabalhe neste repositório.
 
-## O que é
+---
+
+## ⛔ REGRA INEGOCIÁVEL: código sem documentação não entra
+
+**Toda alteração de código exige a atualização da documentação correspondente, no mesmo
+commit.** Isto não é uma recomendação, não depende do tamanho da mudança e não é dispensável
+por pressa. Um pull request que altere código sem tocar a documentação **é barrado
+automaticamente** pela verificação `Documentação acompanha o código`, no GitHub Actions.
+
+O motivo é concreto e já aconteceu neste projeto: o `README.md` afirmava que todo o acesso era
+protegido por middleware. Era falso — o middleware só conferia se o cookie existia. Quem lia a
+frase concluía que a proteção estava resolvida e parava de investigar. **A documentação errada
+atrasou a descoberta de uma falha crítica.** Documentação desatualizada é pior que documentação
+nenhuma, porque é lida como prova.
+
+### O que atualizar, conforme o que você mexeu
+
+| Se você mexeu em… | Atualize |
+|---|---|
+| Qualquer rota em `app/api/` | [`docs/api.md`](docs/api.md) — contrato, códigos de resposta, exemplos |
+| Campos do formulário, `prisma/schema.prisma` | [`docs/modelo-de-dados.md`](docs/modelo-de-dados.md) |
+| Qualquer item listado em MELHORIAS | [`docs/MELHORIAS.md`](docs/MELHORIAS.md) — marque o item como resolvido, com a data |
+| Instalação, execução, variáveis de ambiente | `README.md` |
+| Arquitetura, armadilhas, convenções | este arquivo |
+| Comportamento que o relatório descreve | [`docs/relatorio-tecnico.html`](docs/relatorio-tecnico.html) e regere o PDF |
+
+### Ao resolver um item de MELHORIAS.md
+
+Não basta apagar o item. Marque-o como resolvido, com a data, e **substitua a seção "Correção"
+pela correção que foi de fato aplicada**. O documento é o histórico do projeto, não uma lista de
+afazeres.
+
+### Se você acha que sua mudança não precisa de documentação
+
+Você provavelmente está enganado. Renomear uma variável muda o que está escrito em `docs/api.md`
+se ela aparece num exemplo. Mudar um código de resposta muda o contrato. Se após reler a tabela
+acima ainda achar que não há o que atualizar, **diga isso ao usuário e deixe que ele decida** —
+não desative a verificação, não a contorne e não remova o job do workflow.
+
+---
+
+## O que é o projeto
 
 Sistema de registro de anamneses mamárias do CEDIM, feito para o PET-Saúde da UNCISAL.
 Next.js 16 (App Router, JSX puro — **não é TypeScript**), Prisma + MySQL, Tailwind 4 e Shadcn UI.
+
+Equipe: José Alan (segurança), Alan da Silva (dados e desempenho), Lucas Pedroza (interface),
+sob orientação do Professor Gustavo Figueiredo (definição clínica). A divisão de tarefas está na
+seção 8 do relatório técnico.
 
 ## Comandos
 
@@ -14,7 +59,7 @@ docker compose up -d     # sobe só o MySQL (porta 3307)
 npm install              # em npm 11+, rode antes: npm install-scripts approve @prisma/client @prisma/engines prisma @tailwindcss/oxide sharp fsevents
 npm run db:setup         # migrations + seed
 npm run dev              # servidor em :3000
-npm run build            # build de produção (funciona)
+npm run build            # build de produção
 npm run lint             # QUEBRADO: eslint não está instalado e não há config
 ```
 
@@ -24,8 +69,10 @@ npm run lint             # QUEBRADO: eslint não está instalado e não há conf
 - `components/anamnesis-form.jsx` — 1.004 linhas, o coração do sistema. Todo o formulário e o
   gerador do relatório HTML que vira JPEG.
 - `components/breast-marking-canvas.jsx` — canvas de marcação. Expõe só `getDataUrl`.
+- `lib/auth.js` — verificação de sessão. **Toda rota nova que leia ou grave dados deve chamar
+  `lerSessao` por conta própria**; o middleware não basta como fronteira de segurança.
 - `lib/prisma.js` — cliente Prisma (singleton). **`lib/db.js` é código morto**, pool mysql2 sem uso.
-- `middleware.js` — redireciona para `/login` quando não há cookie `token`.
+- `middleware.js` — valida a assinatura do token e devolve 401 em JSON para `/api/*`.
 
 Todo o conteúdo clínico é gravado como **um único blob JSON** na coluna `data`. Formato em
 [docs/modelo-de-dados.md](docs/modelo-de-dados.md).
@@ -34,9 +81,8 @@ Todo o conteúdo clínico é gravado como **um único blob JSON** na coluna `dat
 
 Leia [docs/MELHORIAS.md](docs/MELHORIAS.md) antes de propor mudanças. Os pontos que mais confundem:
 
-- **A verificação de sessão fica em `lib/auth.js`** e usa `jose`, não `jsonwebtoken` — o middleware
-  roda no Edge Runtime, onde o `crypto` do Node não existe. Toda rota nova que leia ou grave dados
-  deve chamar `lerSessao` por conta própria: o middleware não basta como fronteira de segurança.
+- **`lib/auth.js` usa `jose`, não `jsonwebtoken`.** O middleware roda no Edge Runtime, onde o
+  `crypto` do Node não existe. Não troque de biblioteca sem entender isso.
 - **`app/registros.jsx` e `app/registros/[id]/page.jsx` leem `localStorage`** — são de antes do
   banco. O primeiro é órfão; o segundo é uma rota viva que sempre falha.
 - **`formatFormDataAsHtml` existe em dois arquivos.** A de `anamnesis-form.jsx` é usada; a de
@@ -52,8 +98,14 @@ Leia [docs/MELHORIAS.md](docs/MELHORIAS.md) antes de propor mudanças. Os pontos
 - Comentários e documentação em **português**.
 - Nomes de campo em português (`nome`, `dataNascimento`), exceto a rota de login, que usa
   `email`/`password`.
-- O projeto tem `zod` como dependência, mas **não valida nada** hoje.
-- Não há testes.
+- O projeto tem `zod` como dependência, mas a validação atual é manual.
+- Não há testes. Valide as mudanças executando a aplicação, não só compilando.
+
+## Implantação
+
+A `main` vai a produção **automaticamente**, em cerca de 2 minutos, sem revisão humana.
+Trabalhe em branch e abra PR — o Actions valida antes. Um commit quebrado tira o site do ar até
+a reversão automática agir.
 
 ## Ao mexer no banco
 
