@@ -26,7 +26,7 @@ seção [Alterações de documentação](#alterações-de-documentação-feitas-
 > Enquanto A1 não for resolvido, o sistema **não deve receber dado de paciente real**, nem em rede
 > interna.
 
-### A1 — Bypass total de autenticação 🔴 *verificado*
+### A1 — Bypass total de autenticação 🔴 *verificado* — ✅ **resolvido em 25/09/2026**
 
 `middleware.js:4-5` verifica apenas se o cookie `token` **existe**; nunca valida a assinatura do
 JWT. Nenhuma rota de API refaz a verificação por conta própria — só `/api/auth/me` valida, e ela
@@ -41,9 +41,13 @@ curl -H 'Cookie: token=qualquer_coisa' -X POST /api/save-anamnese → 200 (gravo
 
 Qualquer pessoa que defina um cookie arbitrário lê e escreve prontuário.
 
-**Correção:** validar a assinatura no middleware — com `jose`, porque `jsonwebtoken` não roda no
-Edge Runtime — **e** revalidar dentro de cada route handler. Middleware sozinho não é fronteira de
-segurança.
+**Correção aplicada:** `lib/auth.js` centraliza a verificação com `jose` (Web Crypto, funciona no Edge
+e no Node). O `middleware.js` valida a assinatura e devolve `401` em JSON para `/api/*` — antes
+redirecionava, o que fazia o `fetch` receber HTML. Cada rota de anamnese refaz a verificação por
+conta própria, porque middleware não é fronteira de segurança suficiente sozinho.
+
+Verificado com um JWT bem formado assinado com chave errada: `401` nas rotas de API e `307` nas
+páginas.
 
 ### A2 — Exclusão arbitrária de arquivos 🔴 *verificado* — ✅ **resolvido em 25/09/2026**
 
@@ -56,12 +60,12 @@ Agravante: **a rota é código morto**, resquício da versão que gravava em dis
 **Correção aplicada:** a pasta `app/api/delete-anamnese/` foi removida. Como nenhuma tela a chamava,
 a remoção não altera o comportamento do sistema.
 
-### A3 — Vazamento de stack trace 🟠 *verificado*
+### A3 — Vazamento de stack trace 🟠 *verificado* — ✅ **resolvido em 25/09/2026**
 
 `app/api/save-anamnese/route.js:26` devolve `err.message` no campo `details`. Com `id` duplicado, a
 resposta expõe caminho absoluto do servidor, estrutura de chunks e o ORM.
 
-**Correção:** registrar o erro no servidor e devolver mensagem genérica ao cliente.
+**Correção aplicada:** o erro completo vai para `console.error` e o cliente recebe apenas a mensagem.
 
 ### A4 — Credenciais de teste em repositório público 🟠
 
@@ -83,19 +87,26 @@ sistema aponta para ela.
 
 **Correção:** consumir `/api/anamneses`, ou remover a rota.
 
-### B2 — Nenhuma validação ao salvar 🟠 *verificado*
+### B2 — Nenhuma validação ao salvar 🟠 *verificado* — 🟡 **servidor feito em 25/09/2026**
 
 `handleSave` não valida campo algum. `POST /api/save-anamnese` com `{"id":"x"}` responde `200` e
 grava. É possível registrar anamnese sem nome de paciente.
 
-**Correção:** validar no cliente e no servidor. `zod` já é dependência do projeto.
+**Correção parcial:** o servidor passou a recusar anamnese sem nome de paciente (`400`), com a lista
+de campos obrigatórios isolada em `CAMPOS_OBRIGATORIOS`, em `app/api/save-anamnese/route.js`.
 
-### B3 — Status HTTP incorretos 🟡 *verificado*
+⚠️ A lista é **provisória** — só o nome é exigido, porque ficha sem identificação não é aproveitável.
+A definitiva depende da orientação (item D4). **Falta ainda a validação no cliente**, para o usuário
+ver o erro antes de enviar.
 
-| Situação | Hoje | Deveria |
+### B3 — Status HTTP incorretos 🟡 *verificado* — ✅ **resolvido em 25/09/2026**
+
+| Situação | Antes | Agora |
 |---|---|---|
 | `id` duplicado ao salvar | `500` | `409` |
 | `DELETE` de `id` inexistente | `500` | `404` |
+
+Tratados pelos códigos do Prisma: `P2002` para restrição única e `P2025` para registro não encontrado.
 
 ### B4 — Popup e download individual inalcançáveis 🟡
 
@@ -243,7 +254,7 @@ alguém reativar aquela função, "Amamentou" sairá sempre vazio no relatório.
 
 ## Ordem sugerida
 
-**Antes de qualquer paciente real:** A1 · ~~A2~~ · A3 · A4 · B2
+**Antes de qualquer paciente real:** ~~A1~~ · ~~A2~~ · ~~A3~~ · A4 · B2 (falta o lado do cliente)
 
 **Em seguida, estrutural:** C1 (resolve o desempenho sozinho) · C2 · C3 · B1 · B6
 
