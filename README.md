@@ -24,6 +24,9 @@ Plataforma desenvolvida para o registro e gerenciamento de anamneses mamárias d
 > autoteste (`npm run docs:test`) e confirma o bloqueio do hook nos três sistemas a cada
 > alteração. No Windows, o hook roda pelo Git Bash que acompanha o Git for Windows.
 >
+> Como o `prepare` roda durante o `npm ci`, a imagem de contêiner copia `scripts/` antes de
+> instalar as dependências. Ao mexer na ordem das camadas do `Dockerfile`, mantenha isso.
+>
 > O motivo já se materializou neste projeto: este README afirmava que o acesso era protegido por
 > middleware quando não era, e a frase atrasou a descoberta de uma falha crítica. Documentação
 > desatualizada é pior que documentação nenhuma, porque é lida como prova.
