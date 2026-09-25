@@ -75,6 +75,13 @@ verificar passa "formulário alterado, modelo-de-dados atualizado"
 git rm -q app/api/anamneses/route.js
 verificar falha "rota REMOVIDA, nenhuma documentação"
 
+printf 'FROM node\n' > Dockerfile; git add -A; git commit -q -m "acrescenta Dockerfile"
+echo "RUN echo alterado" >> Dockerfile; git add -A
+verificar falha "Dockerfile alterado, sem README"
+
+echo "RUN echo alterado" >> Dockerfile; substancial README.md; git add -A
+verificar passa "Dockerfile alterado, README atualizado"
+
 substancial docs/api.md; git add -A
 verificar passa "apenas documentação"
 

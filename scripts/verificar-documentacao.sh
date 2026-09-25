@@ -35,7 +35,7 @@ REGRAS=(
 )
 
 # Qualquer código que não caia numa regra específica ainda exige algum documento.
-CODIGO_GERAL='^(app/|components/|lib/|hooks/|prisma/|middleware\.js|next\.config\.mjs|package\.json)'
+CODIGO_GERAL='^(app/|components/|lib/|hooks/|prisma/|middleware\.js|next\.config\.mjs|package\.json|Dockerfile|docker-compose.*\.yml|docker-entrypoint\.sh)'
 DOC_QUALQUER='^(docs/|README\.md|CLAUDE\.md|AGENTS\.md|db/README\.md)'
 
 # Conta linhas acrescentadas não vazias num arquivo.
