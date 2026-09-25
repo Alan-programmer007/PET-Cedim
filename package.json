@@ -9,7 +9,9 @@
     "start": "next start",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev --name init",
-    "db:setup": "prisma migrate deploy && prisma db seed"
+    "db:setup": "prisma migrate deploy && prisma db seed",
+    "prepare": "git config core.hooksPath .githooks || true",
+    "docs:check": "./scripts/verificar-documentacao.sh --staged"
   },
   "prisma": {
     "seed": "node prisma/seed.js"
