@@ -45,7 +45,7 @@ Qualquer pessoa que defina um cookie arbitrário lê e escreve prontuário.
 Edge Runtime — **e** revalidar dentro de cada route handler. Middleware sozinho não é fronteira de
 segurança.
 
-### A2 — Exclusão arbitrária de arquivos 🔴 *verificado*
+### A2 — Exclusão arbitrária de arquivos 🔴 *verificado* — ✅ **resolvido em 25/09/2026**
 
 `app/api/delete-anamnese/route.js:11` monta `path.join(process.cwd(),'public','anamneses', id + '.jpg')`
 sem sanitizar `id`. Um `id` com `../` sai do diretório. Confirmado apagando um arquivo-isca fora do
@@ -53,7 +53,8 @@ projeto.
 
 Agravante: **a rota é código morto**, resquício da versão que gravava em disco. Nenhuma tela a chama.
 
-**Correção:** apagar `app/api/delete-anamnese/`.
+**Correção aplicada:** a pasta `app/api/delete-anamnese/` foi removida. Como nenhuma tela a chamava,
+a remoção não altera o comportamento do sistema.
 
 ### A3 — Vazamento de stack trace 🟠 *verificado*
 
@@ -242,7 +243,7 @@ alguém reativar aquela função, "Amamentou" sairá sempre vazio no relatório.
 
 ## Ordem sugerida
 
-**Antes de qualquer paciente real:** A1 · A2 · A3 · A4 · B2
+**Antes de qualquer paciente real:** A1 · ~~A2~~ · A3 · A4 · B2
 
 **Em seguida, estrutural:** C1 (resolve o desempenho sozinho) · C2 · C3 · B1 · B6
 

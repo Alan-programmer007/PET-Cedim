@@ -43,7 +43,6 @@ Leia [docs/MELHORIAS.md](docs/MELHORIAS.md) antes de propor mudanças. Os pontos
   `registros/page.jsx` é código morto (e tem um bug de chave: lê `aumento` em vez de `amamentou`).
 - **`handleOpenPopup` e `handleDownload` em `registros/page.jsx` nunca são chamados.** O popup é
   inalcançável.
-- **`/api/delete-anamnese` é órfã e vulnerável** a path traversal. Nada a chama.
 - **A pasta `dev/`** (77 MB) é build commitado por engano. Ignore-a.
 - **`seed.js` na raiz** não é o seed usado; o real é `prisma/seed.js`.
 - **`styles/globals.css`** duplica `app/globals.css`; o usado é o de `app/`.
