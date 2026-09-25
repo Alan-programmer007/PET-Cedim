@@ -28,7 +28,7 @@ A verificação é **por área**: não adianta tocar qualquer documento. Se voc�
 | `middleware.js` ou `lib/auth.js` | [`docs/api.md`](docs/api.md) — seção de autenticação |
 | `prisma/schema.prisma` ou migrations | [`docs/modelo-de-dados.md`](docs/modelo-de-dados.md) |
 | `anamnesis-form.jsx` ou `breast-marking-canvas.jsx` | [`docs/modelo-de-dados.md`](docs/modelo-de-dados.md) |
-| `next.config.mjs`, `Dockerfile`, compose | `README.md` |
+| `next.config.mjs`, `Dockerfile`, `docker-compose*.yml`, `docker-entrypoint.sh` | `README.md` |
 | Qualquer outro código | pelo menos um documento |
 
 Além destas, sempre que resolver um item de [`docs/MELHORIAS.md`](docs/MELHORIAS.md), marque-o como
