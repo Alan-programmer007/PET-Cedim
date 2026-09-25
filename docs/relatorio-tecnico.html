@@ -73,8 +73,9 @@ pre { font-family: "Courier New", monospace; font-size: 10pt; line-height: 1.2;
   campos, segurança e plano de trabalho</p>
   <p class="natureza">Relatório técnico apresentado à equipe de desenvolvimento e à orientação do
   Programa de Educação pelo Trabalho para a Saúde (PET-Saúde) da Universidade Estadual de Ciências
-  da Saúde de Alagoas, como registro da verificação realizada na plataforma de anamneses do CEDIM
-  e como proposta de distribuição de tarefas.</p>
+  da Saúde de Alagoas, como registro da verificação realizada na plataforma de anamneses do CEDIM,
+  das correções já aplicadas e da distribuição de tarefas da equipe.<br><br>
+  Versão de 25 de setembro de 2026.</p>
   <p class="local">Maceió<br>2026</p>
 </section>
 
@@ -92,8 +93,10 @@ pre { font-family: "Courier New", monospace; font-size: 10pt; line-height: 1.2;
   de sessão, sem conferir sua autenticidade, de forma que qualquer pessoa lê e grava prontuários
   sem credencial válida. Terceiro, propõe uma distribuição de tarefas entre os três desenvolvedores
   e a orientação do projeto, separando o que depende de conhecimento técnico do que depende de
-  conhecimento clínico. Recomenda-se que a plataforma não receba dados de pacientes reais antes da
-  conclusão da primeira etapa do plano apresentado.</p>
+  conhecimento clínico. Esta versão registra ainda as correções aplicadas até 25 de setembro de
+  2026: a primeira etapa do plano foi concluída, e o controle de acesso passou a validar a
+  assinatura da sessão, de modo que a falha descrita acima não se reproduz mais. Permanecem
+  pendentes os pontos de desempenho, de modelo de dados e de definição clínica.</p>
   <p class="palavras-chave"><strong>Palavras-chave:</strong> Registro eletrônico em saúde. Segurança
   da informação. Controle de acesso. Anamnese mamária. PET-Saúde.</p>
 </section>
@@ -116,14 +119,17 @@ pre { font-family: "Courier New", monospace; font-size: 10pt; line-height: 1.2;
   <p class="sumario-item n2"><span class="txt">5.2 Defeitos funcionais</span><span class="pontos"></span><span>13</span></p>
   <p class="sumario-item n2"><span class="txt">5.3 Desempenho e modelo de dados</span><span class="pontos"></span><span>13</span></p>
   <p class="sumario-item n2"><span class="txt">5.4 Documentação e qualidade</span><span class="pontos"></span><span>13</span></p>
-  <p class="sumario-item n1"><span class="txt">6 PLANO DE AÇÃO</span><span class="pontos"></span><span>15</span></p>
-  <p class="sumario-item n1"><span class="txt">7 DISTRIBUIÇÃO DE TAREFAS</span><span class="pontos"></span><span>16</span></p>
-  <p class="sumario-item n2"><span class="txt">7.1 José Alan — Segurança e autenticação</span><span class="pontos"></span><span>16</span></p>
-  <p class="sumario-item n2"><span class="txt">7.2 Alan da Silva — Dados e desempenho</span><span class="pontos"></span><span>16</span></p>
-  <p class="sumario-item n2"><span class="txt">7.3 Lucas Pedroza — Interface e qualidade</span><span class="pontos"></span><span>17</span></p>
-  <p class="sumario-item n2"><span class="txt">7.4 Professor Gustavo Figueiredo — Definição clínica</span><span class="pontos"></span><span>17</span></p>
-  <p class="sumario-item n1"><span class="txt">8 CONSIDERAÇÕES FINAIS</span><span class="pontos"></span><span>19</span></p>
-  <p class="sumario-item n1"><span class="txt">REFERÊNCIAS</span><span class="pontos"></span><span>20</span></p>
+  <p class="sumario-item n1"><span class="txt">6 CORREÇÕES JÁ APLICADAS</span><span class="pontos"></span><span>15</span></p>
+  <p class="sumario-item n2"><span class="txt">6.1 O controle de acesso passou a funcionar</span><span class="pontos"></span><span>15</span></p>
+  <p class="sumario-item n2"><span class="txt">6.2 Demais correções</span><span class="pontos"></span><span>16</span></p>
+  <p class="sumario-item n1"><span class="txt">7 PLANO DE AÇÃO</span><span class="pontos"></span><span>17</span></p>
+  <p class="sumario-item n1"><span class="txt">8 DISTRIBUIÇÃO DE TAREFAS</span><span class="pontos"></span><span>18</span></p>
+  <p class="sumario-item n2"><span class="txt">8.1 José Alan — Segurança e autenticação</span><span class="pontos"></span><span>18</span></p>
+  <p class="sumario-item n2"><span class="txt">8.2 Alan da Silva — Dados e desempenho</span><span class="pontos"></span><span>18</span></p>
+  <p class="sumario-item n2"><span class="txt">8.3 Lucas Pedroza — Interface e qualidade</span><span class="pontos"></span><span>19</span></p>
+  <p class="sumario-item n2"><span class="txt">8.4 Professor Gustavo Figueiredo — Definição clínica</span><span class="pontos"></span><span>20</span></p>
+  <p class="sumario-item n1"><span class="txt">9 CONSIDERAÇÕES FINAIS</span><span class="pontos"></span><span>21</span></p>
+  <p class="sumario-item n1"><span class="txt">REFERÊNCIAS</span><span class="pontos"></span><span>22</span></p>
 </section>
 
 <!-- ========================== 1 INTRODUÇÃO ======================== -->
@@ -372,17 +378,96 @@ Permanecem ainda uma tela órfã, uma função de sessenta linhas nunca chamada,
 uma pasta de 77 MB de compilação incluída no repositório por engano.</p>
 
 <!-- ======================== 6 PLANO DE AÇÃO ====================== -->
-<h1>6 PLANO DE AÇÃO</h1>
+<!-- =================== 6 CORREÇÕES JÁ APLICADAS ================== -->
+<h1>6 CORREÇÕES JÁ APLICADAS</h1>
+
+<p>Entre a verificação, em 23 de setembro, e a redação desta versão do relatório, parte dos pontos
+levantados já foi corrigida e colocada em produção. Esta seção registra o que mudou, para que a
+leitura das seções anteriores não induza a equipe a trabalhar sobre um problema resolvido.</p>
+
+<p class="titulo-quadro"><strong>Quadro 8</strong> — Situação dos pontos em 25/09/2026</p>
+<table>
+<tr><th style="width:10%">Item</th><th style="width:40%">Ponto levantado</th><th style="width:22%">Situação</th><th>Responsável</th></tr>
+<tr><td>A1</td><td>Bypass total de autenticação</td><td><strong>Resolvido</strong></td><td>José Alan</td></tr>
+<tr><td>A2</td><td>Remoção arbitrária de arquivos do servidor</td><td><strong>Resolvido</strong></td><td>José Alan</td></tr>
+<tr><td>A3</td><td>Exposição de detalhes internos em erros</td><td><strong>Resolvido</strong></td><td>José Alan</td></tr>
+<tr><td>A4</td><td>Credenciais de teste em repositório público</td><td>Pendente</td><td>José Alan</td></tr>
+<tr><td>B2</td><td>Ausência de validação</td><td>Servidor feito; falta o cliente</td><td>José Alan / Lucas Pedroza</td></tr>
+<tr><td>B3</td><td>Códigos de erro incorretos</td><td><strong>Resolvido</strong></td><td>José Alan</td></tr>
+<tr><td colspan="4">Os demais vinte e três pontos permanecem como descritos na seção 5.</td></tr>
+</table>
+<p class="fonte-quadro">Fonte: elaborado pelo autor.</p>
+
+<h2>6.1 O controle de acesso passou a funcionar</h2>
+
+<p>A verificação da sessão foi centralizada em um único ponto do código e passou a conferir a
+assinatura do token, e não apenas a sua presença. A conferência acontece em <strong>duas
+camadas</strong>: no componente que protege as rotas e, de novo, dentro de cada rota que lê ou grava
+anamneses — justamente porque, como observado na seção 5.1, o primeiro não constitui fronteira de
+segurança suficiente sozinho.</p>
+
+<p>Um detalhe técnico condicionou a escolha da ferramenta. O componente de proteção de rotas do
+Next.js roda em um ambiente de execução restrito, o <em>Edge Runtime</em>, onde as funções
+criptográficas do Node não existem — a biblioteca usada até então para assinar os tokens
+simplesmente não funcionaria ali. Adotou-se em seu lugar uma biblioteca baseada nas funções
+criptográficas padronizadas dos navegadores, que serve aos dois ambientes, de modo que a proteção de
+rotas e as rotas de API compartilham exatamente a mesma verificação, sem duplicação de lógica.</p>
+
+<p>A correção foi verificada com um token <strong>bem formado</strong>, de estrutura e conteúdo
+válidos, assinado com uma chave diferente da do servidor. Esse é o teste que distingue validação de
+assinatura de simples recusa de texto malformado:</p>
+
+<p class="titulo-quadro"><strong>Quadro 9</strong> — Comportamento antes e depois, em produção</p>
+<table>
+<tr><th style="width:52%">Requisição</th><th style="width:24%">Antes</th><th>Depois</th></tr>
+<tr><td>Cookie arbitrário → listar anamneses</td><td>200 (listava)</td><td><strong>401</strong></td></tr>
+<tr><td>Cookie arbitrário → gravar anamnese</td><td>200 (gravava)</td><td><strong>401</strong></td></tr>
+<tr><td>Token assinado com chave errada → listar</td><td>200</td><td><strong>401</strong></td></tr>
+<tr><td>Token assinado com chave errada → tela de registros</td><td>200</td><td><strong>307</strong> para o acesso</td></tr>
+<tr><td>Sem credencial alguma</td><td>307</td><td><strong>401</strong></td></tr>
+</table>
+<p class="fonte-quadro">Fonte: elaborado pelo autor, a partir de testes contra o ambiente publicado.</p>
+
+<p>Houve ainda uma mudança de comportamento deliberada: as rotas de API passaram a responder
+<strong>401</strong> em vez de redirecionar para a tela de acesso. O redirecionamento fazia com que
+as telas recebessem uma página HTML onde esperavam dados, e falhassem na leitura da resposta.</p>
+
+<h2>6.2 Demais correções</h2>
+
+<p>A rota que permitia apagar arquivos do servidor (item A2) foi <strong>removida</strong>, e não
+apenas corrigida: por ser resquício sem uso, sanitizar o caminho manteria viva uma superfície de
+ataque desnecessária.</p>
+
+<p>As mensagens de erro deixaram de carregar o detalhe técnico da falha (A3), que expunha o caminho
+absoluto das pastas do servidor. O erro completo continua registrado internamente, onde é útil para
+diagnóstico sem ficar visível a terceiros.</p>
+
+<p>Os códigos de resposta foram corrigidos (B3): identificador repetido responde <strong>409</strong>
+e exclusão de registro inexistente responde <strong>404</strong>, em lugar do <em>erro interno do
+servidor</em> que ambos devolviam.</p>
+
+<p>Por fim, o servidor passou a recusar anamnese sem nome de paciente (B2). A lista de campos
+exigidos está isolada em um único ponto do código, preparada para receber a definição do protocolo.
+<strong>Ela é provisória e contém apenas o nome</strong>, por ser o mínimo para que uma ficha seja
+aproveitável — não se presumiu qual é a exigência clínica, que permanece com a orientação
+(seção 4.6). Falta ainda a validação na própria tela, para que a usuária veja o erro antes de
+enviar.</p>
+
+<p>O ambiente publicado acompanha automaticamente a versão mais recente do código: cada alteração
+aceita entra em produção em cerca de dois minutos, sem intervenção manual, com verificação
+automática de compilação antes e retorno à versão anterior caso a nova não responda.</p>
+
+<h1>7 PLANO DE AÇÃO</h1>
 
 <p>Os vinte e nove pontos não têm a mesma urgência. A ordenação a seguir parte do risco envolvido,
 e não da facilidade de execução.</p>
 
-<p class="titulo-quadro"><strong>Quadro 8</strong> — Plano de ação por etapas</p>
+<p class="titulo-quadro"><strong>Quadro 10</strong> — Plano de ação por etapas</p>
 <table>
 <tr><th style="width:15%">Etapa</th><th style="width:43%">Ações</th><th>Justificativa</th></tr>
-<tr><td><strong>1ª</strong><br>Antes de qualquer dado real</td>
-    <td>Validar a assinatura do token nas rotas; remover a rota vulnerável; deixar de expor mensagens internas de erro; trocar as credenciais publicadas; implantar validação do formulário</td>
-    <td>Sem estas, o sistema não oferece proteção alguma aos dados que armazena</td></tr>
+<tr><td><strong>1ª</strong><br>Antes de qualquer dado real<br><strong>— concluída em 25/09</strong></td>
+    <td>Validar a assinatura do token nas rotas; remover a rota vulnerável; deixar de expor mensagens internas de erro; implantar validação no servidor. <em>Restam:</em> trocar as credenciais publicadas e validar também na tela</td>
+    <td>Sem estas, o sistema não oferecia proteção alguma aos dados que armazena</td></tr>
 <tr><td><strong>2ª</strong><br>Estrutural</td>
     <td>Restringir os campos devolvidos pela listagem e paginar; promover nome, cidade e datas a colunas próprias; deixar de gravar a imagem do relatório; corrigir a tela de anamnese completa; implementar edição</td>
     <td>Determinam se o sistema suporta o volume de um serviço real</td></tr>
@@ -395,74 +480,93 @@ e não da facilidade de execução.</p>
 </table>
 <p class="fonte-quadro">Fonte: elaborado pelo autor.</p>
 
-<p>Reforça-se a recomendação central: <strong>a plataforma não deve receber dados de pacientes
-reais antes da conclusão da primeira etapa</strong>, ainda que utilizada apenas em rede interna.</p>
+<p>A recomendação central permanece, agora com uma ressalva: a primeira etapa foi concluída e o
+controle de acesso funciona, mas <strong>o endereço publicado continua sem autenticação na camada de
+rede</strong> — decisão consciente, tomada para facilitar a demonstração. Enquanto assim permanecer,
+a plataforma não deve receber dados de pacientes reais, ainda que o acesso à aplicação já exija
+credencial válida.</p>
 
 <!-- ==================== 7 DISTRIBUIÇÃO DE TAREFAS ================ -->
-<h1>7 DISTRIBUIÇÃO DE TAREFAS</h1>
+<!-- ================= 8 DISTRIBUIÇÃO DE TAREFAS ================== -->
+<h1>8 DISTRIBUIÇÃO DE TAREFAS</h1>
 
 <p>A equipe é formada por José Alan, Alan da Silva e Lucas Pedroza, sob orientação do Professor
-Gustavo Figueiredo. A divisão proposta agrupa as
-tarefas por afinidade técnica, de modo que cada pessoa trabalhe em arquivos distintos e os três
-possam avançar em paralelo, sem conflito de edição.</p>
+Gustavo Figueiredo. A divisão agrupa as tarefas por afinidade técnica, de modo que cada pessoa
+trabalhe predominantemente em arquivos distintos e os três avancem em paralelo.</p>
 
-<h2>7.1 José Alan — Segurança e autenticação</h2>
+<p>Registre-se uma ressalva sobre essa separação: as rotas de programação que tratam das anamneses
+são tocadas tanto por José Alan, no controle de acesso, quanto por Alan da Silva, no desempenho das
+consultas. São arquivos curtos, e alterações simultâneas neles colidem com facilidade. A ordem
+proposta resolve o problema — o trabalho de José Alan sobre essas rotas já foi concluído, de forma
+que Alan da Silva e Lucas Pedroza podem agora alterá-las sem conflito.</p>
 
-<p>Responsável pela primeira etapa do plano, que é bloqueante para as demais.</p>
+<h2>8.1 José Alan — Segurança e autenticação</h2>
 
-<p class="titulo-quadro"><strong>Quadro 9</strong> — Tarefas de José Alan</p>
+<p>Responsável pela primeira etapa do plano, que era bloqueante para as demais. <strong>Concluída em
+25 de setembro de 2026</strong>, o que liberou o trabalho dos outros dois desenvolvedores.</p>
+
+<p class="titulo-quadro"><strong>Quadro 11</strong> — Tarefas de José Alan</p>
 <table>
-<tr><th style="width:46%">Tarefa</th><th>Onde</th></tr>
-<tr><td>Validar a assinatura do token no componente de proteção de rotas</td><td><code>middleware.js</code></td></tr>
-<tr><td>Repetir a validação dentro de cada rota que lê ou grava anamneses</td><td><code>app/api/anamneses/</code>, <code>app/api/save-anamnese/</code></td></tr>
-<tr><td>Remover a rota vulnerável, que não é usada por nenhuma tela</td><td><code>app/api/delete-anamnese/</code></td></tr>
-<tr><td>Parar de devolver a mensagem técnica do erro ao navegador</td><td><code>app/api/save-anamnese/</code></td></tr>
-<tr><td>Validar no servidor os campos definidos como obrigatórios pela orientação</td><td>rotas de gravação</td></tr>
-<tr><td>Corrigir os códigos de erro: registro inexistente e identificador repetido</td><td>rotas de anamnese</td></tr>
+<tr><th style="width:56%">Tarefa</th><th>Situação</th></tr>
+<tr><td>Validar a assinatura do token no componente de proteção de rotas</td><td><strong>Concluída</strong></td></tr>
+<tr><td>Repetir a validação dentro de cada rota que lê ou grava anamneses</td><td><strong>Concluída</strong></td></tr>
+<tr><td>Remover a rota que permitia apagar arquivos do servidor</td><td><strong>Concluída</strong></td></tr>
+<tr><td>Parar de devolver o detalhe técnico do erro ao navegador</td><td><strong>Concluída</strong></td></tr>
+<tr><td>Corrigir os códigos de resposta de registro repetido e inexistente</td><td><strong>Concluída</strong></td></tr>
+<tr><td>Validar no servidor os campos definidos como obrigatórios</td><td>Mecanismo pronto; aguarda a definição da orientação</td></tr>
+<tr><td>Substituir as credenciais de teste publicadas no repositório (A4)</td><td>Pendente</td></tr>
 </table>
 <p class="fonte-quadro">Fonte: elaborado pelo autor.</p>
 
-<h2>7.2 Alan da Silva — Dados e desempenho</h2>
+<h2>8.2 Alan da Silva — Dados e desempenho</h2>
 
-<p>Responsável pela segunda etapa. Trabalha na camada de banco e nas rotas de leitura.</p>
+<p>Responsável pela segunda etapa, na camada de banco e nas rotas de leitura. <strong>Pode começar
+imediatamente</strong>: as rotas que também são de sua responsabilidade já receberam as alterações
+de segurança, de modo que não há mais risco de conflito.</p>
 
-<p class="titulo-quadro"><strong>Quadro 10</strong> — Tarefas de Alan da Silva</p>
+<p class="titulo-quadro"><strong>Quadro 12</strong> — Tarefas de Alan da Silva</p>
 <table>
-<tr><th style="width:46%">Tarefa</th><th>Onde</th></tr>
-<tr><td>Excluir as colunas de imagem da listagem e implantar paginação</td><td><code>app/api/anamneses/</code></td></tr>
-<tr><td>Promover nome, cidade, data de emissão e data de nascimento a colunas próprias, com índice</td><td><code>prisma/schema.prisma</code> e nova migration</td></tr>
-<tr><td>Deixar de gravar a imagem do relatório; gerá-la sob demanda a partir do JSON</td><td>rota de gravação e tela de registros</td></tr>
-<tr><td>Registrar autoria: vincular cada anamnese ao usuário que a criou</td><td><code>prisma/schema.prisma</code></td></tr>
-<tr><td>Remover a pasta de compilação de 77 MB do repositório</td><td><code>dev/</code> e <code>.gitignore</code></td></tr>
+<tr><th style="width:56%">Tarefa</th><th>Situação</th></tr>
+<tr><td>Excluir as colunas de imagem da listagem e implantar paginação</td><td>Pendente — maior ganho isolado</td></tr>
+<tr><td>Promover nome, cidade, data de emissão e data de nascimento a colunas próprias, com índice</td><td>Pendente</td></tr>
+<tr><td>Deixar de gravar a imagem do relatório; gerá-la sob demanda</td><td>Pendente</td></tr>
+<tr><td>Registrar autoria: vincular cada anamnese ao usuário que a criou</td><td>Pendente</td></tr>
+<tr><td>Remover do repositório a pasta de compilação de 77 MB</td><td>Pendente</td></tr>
 </table>
 <p class="fonte-quadro">Fonte: elaborado pelo autor.</p>
 
-<h2>7.3 Lucas Pedroza — Interface e qualidade</h2>
+<h2>8.3 Lucas Pedroza — Interface e qualidade</h2>
 
-<p>Responsável pelos defeitos visíveis ao usuário e pela dívida técnica acumulada.</p>
+<p>Responsável pelos defeitos visíveis a quem usa o sistema e pela dívida técnica acumulada.
+<strong>Pode começar imediatamente.</strong></p>
 
-<p class="titulo-quadro"><strong>Quadro 11</strong> — Tarefas de Lucas Pedroza</p>
+<p>Uma observação importante: a rota de edição a ser criada precisa chamar a verificação de sessão
+por conta própria, seguindo o padrão já estabelecido nas demais rotas (seção 6.1). Sem isso, a
+funcionalidade nasce desprotegida, reintroduzindo o problema que acaba de ser corrigido.</p>
+
+<p class="titulo-quadro"><strong>Quadro 13</strong> — Tarefas de Lucas Pedroza</p>
 <table>
-<tr><th style="width:46%">Tarefa</th><th>Onde</th></tr>
-<tr><td>Validar o formulário antes do envio, conforme os campos obrigatórios definidos</td><td><code>components/anamnesis-form.jsx</code></td></tr>
-<tr><td>Corrigir a tela de anamnese completa, que busca os dados no lugar errado</td><td><code>app/registros/[id]/page.jsx</code></td></tr>
-<tr><td>Implementar a edição de anamnese já gravada</td><td>formulário e nova rota</td></tr>
-<tr><td>Acionar o resumo e o download individual, hoje sem botão</td><td><code>app/registros/page.jsx</code></td></tr>
-<tr><td>Remover a coluna "Sexo" da exportação ou acrescentar o campo ao formulário</td><td><code>app/metricas/page.jsx</code></td></tr>
-<tr><td>Aplicar as listas fixas definidas pela orientação para cidade e motivo</td><td>formulário</td></tr>
-<tr><td>Remover o código sem uso e comentar o arquivo central por seção clínica</td><td>vários</td></tr>
+<tr><th style="width:56%">Tarefa</th><th>Situação</th></tr>
+<tr><td>Validar o formulário antes do envio, conforme os campos obrigatórios definidos</td><td>Pendente — complementa o que o servidor já recusa</td></tr>
+<tr><td>Corrigir a tela de anamnese completa, que busca os dados no lugar errado</td><td>Pendente</td></tr>
+<tr><td>Implementar a edição de anamnese já gravada</td><td>Pendente — exige verificação de sessão</td></tr>
+<tr><td>Acionar o resumo e o download individual, hoje sem botão</td><td>Pendente</td></tr>
+<tr><td>Remover a coluna "Sexo" da exportação ou acrescentar o campo ao formulário</td><td>Pendente</td></tr>
+<tr><td>Aplicar as listas fixas definidas pela orientação para cidade e motivo</td><td>Aguarda a orientação</td></tr>
+<tr><td>Remover o código sem uso e comentar o arquivo central por seção clínica</td><td>Pendente</td></tr>
 </table>
 <p class="fonte-quadro">Fonte: elaborado pelo autor.</p>
 
-<h2>7.4 Professor Gustavo Figueiredo — Definição clínica</h2>
+<h2>8.4 Professor Gustavo Figueiredo — Definição clínica</h2>
 
 <p>Nenhuma das tarefas abaixo pode ser resolvida pela equipe de desenvolvimento, pois dependem do
-protocolo do serviço e da leitura radiológica, área de formação do orientador. São, ao mesmo tempo, pré-requisito para parte do
-trabalho dos três desenvolvedores.</p>
+protocolo do serviço e da leitura radiológica, área de formação do orientador. São, ao mesmo tempo,
+pré-requisito para parte do trabalho dos três desenvolvedores — a coluna à direita indica quem fica
+à espera de cada definição.</p>
 
-<p class="titulo-quadro"><strong>Quadro 12</strong> — Tarefas do Professor Gustavo Figueiredo</p>
+<p class="titulo-quadro"><strong>Quadro 14</strong> — Tarefas do Professor Gustavo Figueiredo</p>
 <table>
-<tr><th style="width:52%">Tarefa</th><th>Desbloqueia</th></tr>
+<tr><th style="width:56%">Tarefa</th><th>Desbloqueia</th></tr>
 <tr><td>Responder aos sete pontos do Quadro 6, em especial a condição da DUM e a distinção entre os dois desenhos esquemáticos</td><td>Lucas Pedroza</td></tr>
 <tr><td>Definir quais campos são obrigatórios para que a anamnese seja considerada válida</td><td>José Alan e Lucas Pedroza</td></tr>
 <tr><td>Revisar o vocabulário de alterações de pele e mamilo, à luz da terminologia radiológica adotada</td><td>Lucas Pedroza</td></tr>
@@ -476,8 +580,7 @@ trabalho dos três desenvolvedores.</p>
 <p>Sugere-se que a seção 4 deste relatório seja revisada em conjunto com a orientação e, uma vez
 validada, incorporada à documentação do repositório como dicionário de dados oficial do projeto.</p>
 
-<!-- ==================== 8 CONSIDERAÇÕES FINAIS =================== -->
-<h1>8 CONSIDERAÇÕES FINAIS</h1>
+<h1>9 CONSIDERAÇÕES FINAIS</h1>
 
 <p>A plataforma cumpre o que se propôs: digitaliza um processo feito em papel, permite consultar e
 exportar o que foi registrado e produz indicadores agregados. A compilação de produção funciona, o
