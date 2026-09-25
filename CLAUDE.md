@@ -4,12 +4,11 @@ Orientação para qualquer assistente de IA que trabalhe neste repositório.
 
 ---
 
-## ⛔ REGRA INEGOCIÁVEL: código sem documentação não entra
+## Documentação: atualize junto com o código
 
-**Toda alteração de código exige a atualização da documentação correspondente, no mesmo
-commit.** Isto não é uma recomendação, não depende do tamanho da mudança e não é dispensável
-por pressa. Um pull request que altere código sem tocar a documentação **é barrado
-automaticamente** pela verificação `Documentação acompanha o código`, no GitHub Actions.
+**Toda alteração de código deve vir com a documentação correspondente, no mesmo commit.** Não há
+verificação automática — a conferência é feita **na revisão do pull request**, pela equipe. A
+responsabilidade é sua: ninguém vai te lembrar.
 
 O motivo é concreto e já aconteceu neste projeto: o `README.md` afirmava que todo o acesso era
 protegido por middleware. Era falso — o middleware só conferia se o cookie existia. Quem lia a
@@ -19,62 +18,27 @@ nenhuma, porque é lida como prova.
 
 ### O que atualizar, conforme o que você mexeu
 
-A verificação é **por área**: não adianta tocar qualquer documento. Se você alterou uma rota, é
-`docs/api.md` que precisa mudar, e nenhum outro arquivo substitui isso.
-
-| Se você mexeu em… | Atualize — obrigatoriamente |
+| Se você mexeu em… | Atualize |
 |---|---|
 | Qualquer rota em `app/api/` | [`docs/api.md`](docs/api.md) — contrato, códigos de resposta, exemplos |
 | `middleware.js` ou `lib/auth.js` | [`docs/api.md`](docs/api.md) — seção de autenticação |
 | `prisma/schema.prisma` ou migrations | [`docs/modelo-de-dados.md`](docs/modelo-de-dados.md) |
-| `anamnesis-form.jsx` ou `breast-marking-canvas.jsx` | [`docs/modelo-de-dados.md`](docs/modelo-de-dados.md) |
-| `next.config.mjs`, `Dockerfile`, `docker-compose*.yml`, `docker-entrypoint.sh` | `README.md` |
-| Qualquer outro código | pelo menos um documento |
+| Campos do formulário de anamnese | [`docs/modelo-de-dados.md`](docs/modelo-de-dados.md) |
+| Instalação, execução, `Dockerfile`, compose | `README.md` |
+| Arquitetura, armadilhas, convenções | este arquivo |
 
-Além destas, sempre que resolver um item de [`docs/MELHORIAS.md`](docs/MELHORIAS.md), marque-o como
-resolvido com a data, e atualize [`docs/relatorio-tecnico.html`](docs/relatorio-tecnico.html) quando
-mudar comportamento que ele descreve (regerando o PDF).
+Sempre que resolver um item de [`docs/MELHORIAS.md`](docs/MELHORIAS.md), marque-o como resolvido
+com a data e substitua a seção "Correção" pela correção que foi de fato aplicada — o documento é o
+histórico do projeto, não uma lista de afazeres. Quando mudar comportamento descrito no
+[relatório técnico](docs/relatorio-tecnico.html), atualize-o e regere o PDF.
 
-### Como a regra é aplicada
-
-Não é honra. São duas camadas, que rodam o **mesmo** script,
-[`scripts/verificar-documentacao.sh`](scripts/verificar-documentacao.sh):
-
-1. **No seu commit.** O hook `.githooks/pre-commit` roda antes de cada commit e o **recusa** se a
-   documentação exigida não estiver junto. Ele é instalado sozinho pelo `npm install`. Na prática,
-   você não consegue concluir a tarefa sem escrever a documentação.
-2. **No pull request.** O job `Documentação acompanha o código` repete a conferência no GitHub
-   Actions e reprova o PR.
-
-A verificação também recusa alterações **rasas**: acrescentar uma linha em branco ou um caractere
-solto no documento certo não passa. É preciso descrever o que mudou — no mínimo duas linhas de
-conteúdo real.
-
-Para conferir antes de commitar: `npm run docs:check`
-Para rodar o autoteste da própria verificação: `npm run docs:test`
-
-A verificação é testada automaticamente em **macOS, Linux e Windows** pelo job `portabilidade`,
-que roda o autoteste e confirma que o hook recusa um commit sem documentação e aceita um commit
-com ela — nos três sistemas. Se você alterar `scripts/verificar-documentacao.sh`, o autoteste
-precisa continuar passando nos três.
-
-### Ao resolver um item de MELHORIAS.md
-
-Não basta apagar o item. Marque-o como resolvido, com a data, e **substitua a seção "Correção"
-pela correção que foi de fato aplicada**. O documento é o histórico do projeto, não uma lista de
-afazeres.
+Descreva o comportamento novo, não o commit: quem lê a documentação não vê o diff.
 
 ### Se você acha que sua mudança não precisa de documentação
 
-Você provavelmente está enganado. Renomear uma variável muda o que está escrito em `docs/api.md`
-se ela aparece num exemplo. Mudar um código de resposta muda o contrato. Se após reler a tabela
-acima ainda achar que não há o que atualizar, **diga isso ao usuário e deixe que ele decida**.
-
-Não contorne a regra: não use `git commit --no-verify`, não desative o hook, não altere
-`scripts/verificar-documentacao.sh` para afrouxar a conferência e não remova o job do workflow.
-Fazer qualquer uma dessas coisas sem o usuário ter pedido é desobedecer a instrução, não resolvê-la.
-
----
+Pode ser que não precise mesmo — comentar código ou renomear algo interno costuma não mudar nada
+do que está escrito. Mas confira a tabela acima antes de concluir isso, e **diga ao usuário** o
+que você avaliou, para que ele possa discordar na revisão.
 
 ## O que é o projeto
 
