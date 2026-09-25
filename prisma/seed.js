@@ -4,8 +4,8 @@ const bcrypt = require('bcryptjs');
 const prisma = new PrismaClient();
 
 async function main() {
-  const email = 'petsdcedim@gmail.com';
-  const plainPassword = '1234567cedim';
+  const email = process.env.SEED_EMAIL || 'petsdcedim@gmail.com';
+  const plainPassword = process.env.SEED_PASSWORD || '1234567cedim';
 
   // Verifica se o usuário já existe
   const existingUser = await prisma.user.findUnique({

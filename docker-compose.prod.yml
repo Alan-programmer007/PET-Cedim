@@ -1,0 +1,35 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: cedim-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: anamneses_db
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    # sem "ports": o banco não fica exposto na rede, só o app o alcança
+
+  app:
+    build: .
+    container_name: cedim-app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: "mysql://root:${MYSQL_ROOT_PASSWORD}@db:3306/anamneses_db"
+      JWT_SECRET: ${JWT_SECRET}
+      SEED_EMAIL: ${SEED_EMAIL}
+      SEED_PASSWORD: ${SEED_PASSWORD}
+      NODE_ENV: production
+    ports:
+      - "3000:3000"
+
+volumes:
+  db_data:
