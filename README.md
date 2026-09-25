@@ -20,6 +20,10 @@ Plataforma desenvolvida para o registro e gerenciamento de anamneses mamárias d
 > O hook é instalado automaticamente pelo `npm install`. Para instalar à mão:
 > `git config core.hooksPath .githooks`
 >
+> Funciona em **macOS, Linux e Windows** — o job `portabilidade` do GitHub Actions roda o
+> autoteste (`npm run docs:test`) e confirma o bloqueio do hook nos três sistemas a cada
+> alteração. No Windows, o hook roda pelo Git Bash que acompanha o Git for Windows.
+>
 > O motivo já se materializou neste projeto: este README afirmava que o acesso era protegido por
 > middleware quando não era, e a frase atrasou a descoberta de uma falha crítica. Documentação
 > desatualizada é pior que documentação nenhuma, porque é lida como prova.

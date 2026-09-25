@@ -51,6 +51,12 @@ solto no documento certo não passa. É preciso descrever o que mudou — no mí
 conteúdo real.
 
 Para conferir antes de commitar: `npm run docs:check`
+Para rodar o autoteste da própria verificação: `npm run docs:test`
+
+A verificação é testada automaticamente em **macOS, Linux e Windows** pelo job `portabilidade`,
+que roda o autoteste e confirma que o hook recusa um commit sem documentação e aceita um commit
+com ela — nos três sistemas. Se você alterar `scripts/verificar-documentacao.sh`, o autoteste
+precisa continuar passando nos três.
 
 ### Ao resolver um item de MELHORIAS.md
 

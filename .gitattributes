@@ -1,0 +1,14 @@
+# Normalização de fim de linha.
+#
+# Scripts de shell e hooks PRECISAM de LF, inclusive em Windows: com CRLF o interpretador
+# recebe "\r" no fim da linha do shebang e falha com "bad interpreter". Sem isto, a
+# verificação de documentação quebraria em qualquer máquina com core.autocrlf=true.
+* text=auto
+
+*.sh text eol=lf
+.githooks/** text eol=lf
+
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
