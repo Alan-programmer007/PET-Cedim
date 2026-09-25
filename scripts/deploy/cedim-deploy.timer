@@ -1,0 +1,10 @@
+[Unit]
+Description=Verifica a cada 2 minutos se há versão nova do PET-Cedim
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=2min
+AccuracySec=30s
+
+[Install]
+WantedBy=timers.target

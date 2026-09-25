@@ -1,0 +1,44 @@
+# Validação automática do PET-Cedim.
+#
+# Roda em runner hospedado pelo GitHub — NÃO tem acesso ao homelab e não implanta nada.
+# A implantação é feita pelo agente que roda no próprio CT 104, descrito em scripts/deploy/.
+# O papel deste workflow é impedir que um commit que não compila chegue à branch principal.
+
+name: Validação
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  aplicacao:
+    name: Compilar a aplicação
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Gerar o cliente do Prisma
+        run: npx prisma generate
+
+      - name: Compilar
+        run: npm run build
+
+  imagem:
+    name: Construir a imagem de contêiner
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Constrói a mesma imagem que o CT 104 vai construir, para que um Dockerfile
+      # quebrado apareça aqui e não durante a implantação.
+      - name: Construir a imagem
+        run: docker build -t cedim-app:validacao .
