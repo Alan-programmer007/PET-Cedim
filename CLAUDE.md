@@ -19,14 +19,38 @@ nenhuma, porque é lida como prova.
 
 ### O que atualizar, conforme o que você mexeu
 
-| Se você mexeu em… | Atualize |
+A verificação é **por área**: não adianta tocar qualquer documento. Se você alterou uma rota, é
+`docs/api.md` que precisa mudar, e nenhum outro arquivo substitui isso.
+
+| Se você mexeu em… | Atualize — obrigatoriamente |
 |---|---|
 | Qualquer rota em `app/api/` | [`docs/api.md`](docs/api.md) — contrato, códigos de resposta, exemplos |
-| Campos do formulário, `prisma/schema.prisma` | [`docs/modelo-de-dados.md`](docs/modelo-de-dados.md) |
-| Qualquer item listado em MELHORIAS | [`docs/MELHORIAS.md`](docs/MELHORIAS.md) — marque o item como resolvido, com a data |
-| Instalação, execução, variáveis de ambiente | `README.md` |
-| Arquitetura, armadilhas, convenções | este arquivo |
-| Comportamento que o relatório descreve | [`docs/relatorio-tecnico.html`](docs/relatorio-tecnico.html) e regere o PDF |
+| `middleware.js` ou `lib/auth.js` | [`docs/api.md`](docs/api.md) — seção de autenticação |
+| `prisma/schema.prisma` ou migrations | [`docs/modelo-de-dados.md`](docs/modelo-de-dados.md) |
+| `anamnesis-form.jsx` ou `breast-marking-canvas.jsx` | [`docs/modelo-de-dados.md`](docs/modelo-de-dados.md) |
+| `next.config.mjs`, `Dockerfile`, compose | `README.md` |
+| Qualquer outro código | pelo menos um documento |
+
+Além destas, sempre que resolver um item de [`docs/MELHORIAS.md`](docs/MELHORIAS.md), marque-o como
+resolvido com a data, e atualize [`docs/relatorio-tecnico.html`](docs/relatorio-tecnico.html) quando
+mudar comportamento que ele descreve (regerando o PDF).
+
+### Como a regra é aplicada
+
+Não é honra. São duas camadas, que rodam o **mesmo** script,
+[`scripts/verificar-documentacao.sh`](scripts/verificar-documentacao.sh):
+
+1. **No seu commit.** O hook `.githooks/pre-commit` roda antes de cada commit e o **recusa** se a
+   documentação exigida não estiver junto. Ele é instalado sozinho pelo `npm install`. Na prática,
+   você não consegue concluir a tarefa sem escrever a documentação.
+2. **No pull request.** O job `Documentação acompanha o código` repete a conferência no GitHub
+   Actions e reprova o PR.
+
+A verificação também recusa alterações **rasas**: acrescentar uma linha em branco ou um caractere
+solto no documento certo não passa. É preciso descrever o que mudou — no mínimo duas linhas de
+conteúdo real.
+
+Para conferir antes de commitar: `npm run docs:check`
 
 ### Ao resolver um item de MELHORIAS.md
 
@@ -38,8 +62,11 @@ afazeres.
 
 Você provavelmente está enganado. Renomear uma variável muda o que está escrito em `docs/api.md`
 se ela aparece num exemplo. Mudar um código de resposta muda o contrato. Se após reler a tabela
-acima ainda achar que não há o que atualizar, **diga isso ao usuário e deixe que ele decida** —
-não desative a verificação, não a contorne e não remova o job do workflow.
+acima ainda achar que não há o que atualizar, **diga isso ao usuário e deixe que ele decida**.
+
+Não contorne a regra: não use `git commit --no-verify`, não desative o hook, não altere
+`scripts/verificar-documentacao.sh` para afrouxar a conferência e não remova o job do workflow.
+Fazer qualquer uma dessas coisas sem o usuário ter pedido é desobedecer a instrução, não resolvê-la.
 
 ---
 

@@ -10,10 +10,15 @@ Plataforma desenvolvida para o registro e gerenciamento de anamneses mamárias d
 
 ## Documentação
 
-> ⛔ **Código sem documentação não entra.** Toda alteração de código exige a atualização da
-> documentação correspondente, no mesmo commit — e pull requests que não o façam são **barrados
-> automaticamente** pelo GitHub Actions. A regra vale para pessoas e para assistentes de IA; o que
-> atualizar em cada caso está em [`CLAUDE.md`](CLAUDE.md).
+> ⛔ **Código sem documentação não entra.** Toda alteração de código exige a atualização do
+> documento **correspondente àquela área**, no mesmo commit. A regra vale para pessoas e para
+> assistentes de IA, e é aplicada em duas camadas: o hook de `pre-commit` **recusa o commit**, e o
+> GitHub Actions **reprova o pull request**. Tocar um documento qualquer, ou acrescentar uma linha
+> em branco, não satisfaz a verificação. O que atualizar em cada caso está em
+> [`CLAUDE.md`](CLAUDE.md); para conferir antes de commitar, rode `npm run docs:check`.
+>
+> O hook é instalado automaticamente pelo `npm install`. Para instalar à mão:
+> `git config core.hooksPath .githooks`
 >
 > O motivo já se materializou neste projeto: este README afirmava que o acesso era protegido por
 > middleware quando não era, e a frase atrasou a descoberta de uma falha crítica. Documentação

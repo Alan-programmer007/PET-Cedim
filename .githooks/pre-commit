@@ -1,0 +1,12 @@
+#!/bin/sh
+# Barra o commit quando a documentação exigida não acompanha o código.
+#
+# Instalado automaticamente pelo `npm install` (script "prepare" do package.json), que aponta
+# o core.hooksPath para este diretório. Para instalar à mão:
+#
+#     git config core.hooksPath .githooks
+#
+# Este hook existe para que o erro apareça no momento do commit — inclusive dentro do ciclo de
+# trabalho de um assistente de IA, que assim precisa escrever a documentação para conseguir
+# concluir a tarefa, em vez de descobrir a pendência só depois do push.
+exec ./scripts/verificar-documentacao.sh --staged
