@@ -42,3 +42,60 @@ jobs:
       # quebrado apareça aqui e não durante a implantação.
       - name: Construir a imagem
         run: docker build -t cedim-app:validacao .
+
+  documentacao:
+    name: Documentação acompanha o código
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Instrução em CLAUDE.md é um pedido: uma pessoa apressada ou um assistente de IA podem
+      # ignorá-la. Este job é o que torna a regra inegociável — ele reprova o pull request.
+      - name: Conferir se a documentação foi atualizada
+        run: |
+          set -u
+
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            base=$(git merge-base "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}")
+            head="${{ github.event.pull_request.head.sha }}"
+          else
+            base="${{ github.event.before }}"
+            head="${{ github.sha }}"
+            case "$base" in
+              0000000000000000000000000000000000000000|"") echo "Primeiro push da referência; nada a comparar."; exit 0 ;;
+            esac
+          fi
+
+          alterados=$(git diff --name-only "$base" "$head")
+          if [ -z "$alterados" ]; then
+            echo "Nenhum arquivo alterado."; exit 0
+          fi
+
+          codigo=$(echo "$alterados" | grep -E '^(app/|components/|lib/|hooks/|prisma/|middleware\.js|next\.config\.mjs)' | grep -v '^components/ui/' || true)
+          docs=$(echo "$alterados" | grep -E '^(docs/|README\.md|CLAUDE\.md|AGENTS\.md|db/README\.md)' || true)
+
+          echo "── Código alterado ──"
+          [ -n "$codigo" ] && echo "$codigo" || echo "(nenhum)"
+          echo "── Documentação alterada ──"
+          [ -n "$docs" ] && echo "$docs" || echo "(nenhuma)"
+          echo
+
+          if [ -n "$codigo" ] && [ -z "$docs" ]; then
+            echo "::error::Código foi alterado sem atualizar a documentação."
+            echo
+            echo "Esta regra não é negociável. Veja CLAUDE.md para saber o que atualizar:"
+            echo
+            echo "  rotas em app/api/   -> docs/api.md"
+            echo "  campos ou schema    -> docs/modelo-de-dados.md"
+            echo "  item de melhoria    -> docs/MELHORIAS.md (marque como resolvido, com a data)"
+            echo "  instalação/execução -> README.md"
+            echo "  arquitetura         -> CLAUDE.md"
+            echo
+            echo "Se você acredita que esta alteração realmente não exige documentação, fale com a"
+            echo "equipe. Não desative este job."
+            exit 1
+          fi
+
+          echo "Documentação acompanhou o código."

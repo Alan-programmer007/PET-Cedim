@@ -10,12 +10,22 @@ Plataforma desenvolvida para o registro e gerenciamento de anamneses mamárias d
 
 ## Documentação
 
+> ⛔ **Código sem documentação não entra.** Toda alteração de código exige a atualização da
+> documentação correspondente, no mesmo commit — e pull requests que não o façam são **barrados
+> automaticamente** pelo GitHub Actions. A regra vale para pessoas e para assistentes de IA; o que
+> atualizar em cada caso está em [`CLAUDE.md`](CLAUDE.md).
+>
+> O motivo já se materializou neste projeto: este README afirmava que o acesso era protegido por
+> middleware quando não era, e a frase atrasou a descoberta de uma falha crítica. Documentação
+> desatualizada é pior que documentação nenhuma, porque é lida como prova.
+
 | Documento | Conteúdo |
 |---|---|
 | [Relação de melhorias](docs/MELHORIAS.md) | Levantamento do que precisa ser corrigido, por prioridade |
 | [Modelo de dados](docs/modelo-de-dados.md) | Formato de cada campo da anamnese e como são gravados |
 | [API](docs/api.md) | Contrato das seis rotas, com o comportamento real verificado |
 | [Relatório técnico (PDF)](docs/relatorio-tecnico.pdf) | Versão em formato ABNT, para circulação e leitura fora do repositório |
+| [CLAUDE.md](CLAUDE.md) | Orientação para assistentes de IA e regra de documentação |
 
 ---
 
