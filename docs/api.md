@@ -106,14 +106,13 @@ Dois problemas verificados:
 
 ---
 
-## `POST /api/delete-anamnese`
+## `POST /api/delete-anamnese` — **removida**
 
-> 🔴 **Rota órfã e perigosa.** Nenhuma tela do sistema a chama — é resquício da versão que
-> guardava imagens em disco. Ela monta um caminho de arquivo concatenando o `id` recebido sem
-> qualquer sanitização, o que permite apagar qualquer arquivo `.jpg` do servidor via `../`.
-> Verificado na prática. Ver [MELHORIAS.md](MELHORIAS.md), item A2.
+Rota eliminada em 25/09/2026. Era resquício da versão que guardava as imagens em disco: nenhuma tela
+do sistema a chamava, e ela montava o caminho do arquivo concatenando o `id` recebido sem
+sanitização, o que permitia apagar qualquer arquivo `.jpg` do servidor com `../`.
 
-Recomendação: apagar o arquivo `app/api/delete-anamnese/route.js`.
+Item A2 de [MELHORIAS.md](MELHORIAS.md) — **resolvido**.
 
 ---
 
