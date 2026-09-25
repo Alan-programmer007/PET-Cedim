@@ -4,16 +4,17 @@
 
 ## Documentação
 
-⛔ **Obrigatório.** Código sem documentação é barrado automaticamente — ver `CLAUDE.md`.
+A conferência é manual, na revisão. Marque o que se aplica:
 
 - [ ] Atualizei a documentação correspondente à alteração
 - [ ] Se resolvi um item de `docs/MELHORIAS.md`, marquei-o como resolvido com a data
+- [ ] Avaliei e concluí que esta alteração não exige documentação — explico abaixo por quê
 
-| Mexi em… | Atualizei |
+| Mexi em… | Documento |
 |---|---|
-| Rotas em `app/api/` | `docs/api.md` |
-| Campos ou `prisma/schema.prisma` | `docs/modelo-de-dados.md` |
-| Instalação ou execução | `README.md` |
+| Rotas em `app/api/`, `middleware.js`, `lib/auth.js` | `docs/api.md` |
+| `prisma/schema.prisma` ou campos do formulário | `docs/modelo-de-dados.md` |
+| Instalação, execução, `Dockerfile` | `README.md` |
 | Arquitetura ou convenções | `CLAUDE.md` |
 
 ## Como validei

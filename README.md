@@ -10,26 +10,13 @@ Plataforma desenvolvida para o registro e gerenciamento de anamneses mamárias d
 
 ## Documentação
 
-> ⛔ **Código sem documentação não entra.** Toda alteração de código exige a atualização do
-> documento **correspondente àquela área**, no mesmo commit. A regra vale para pessoas e para
-> assistentes de IA, e é aplicada em duas camadas: o hook de `pre-commit` **recusa o commit**, e o
-> GitHub Actions **reprova o pull request**. Tocar um documento qualquer, ou acrescentar uma linha
-> em branco, não satisfaz a verificação. O que atualizar em cada caso está em
-> [`CLAUDE.md`](CLAUDE.md); para conferir antes de commitar, rode `npm run docs:check`.
+> **Código deve vir com documentação.** Toda alteração de código deve atualizar o documento
+> correspondente, no mesmo commit. A conferência é feita **na revisão do pull request** — o que
+> atualizar em cada caso está em [`CLAUDE.md`](CLAUDE.md).
 >
-> O hook é instalado automaticamente pelo `npm install`. Para instalar à mão:
-> `git config core.hooksPath .githooks`
->
-> Funciona em **macOS, Linux e Windows** — o job `portabilidade` do GitHub Actions roda o
-> autoteste (`npm run docs:test`) e confirma o bloqueio do hook nos três sistemas a cada
-> alteração. No Windows, o hook roda pelo Git Bash que acompanha o Git for Windows.
->
-> Como o `prepare` roda durante o `npm ci`, a imagem de contêiner copia `scripts/` antes de
-> instalar as dependências. Ao mexer na ordem das camadas do `Dockerfile`, mantenha isso.
->
-> O motivo já se materializou neste projeto: este README afirmava que o acesso era protegido por
-> middleware quando não era, e a frase atrasou a descoberta de uma falha crítica. Documentação
-> desatualizada é pior que documentação nenhuma, porque é lida como prova.
+> O motivo já se materializou aqui: este README afirmava que o acesso era protegido por middleware
+> quando não era, e a frase atrasou a descoberta de uma falha crítica. Documentação desatualizada
+> é pior que documentação nenhuma, porque é lida como prova.
 
 | Documento | Conteúdo |
 |---|---|

@@ -8,11 +8,8 @@ RUN apt-get update \
 
 WORKDIR /app
 
-# Dependências primeiro, para aproveitar o cache de camadas.
-# scripts/ vem junto porque o "prepare" do package.json roda durante o npm ci e precisa
-# de scripts/instalar-hooks.js; sem isto o build falha com "Cannot find module".
+# Dependências primeiro, para aproveitar o cache de camadas
 COPY package.json package-lock.json ./
-COPY scripts ./scripts
 RUN npm ci
 
 COPY . .
