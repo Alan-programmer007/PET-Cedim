@@ -1,6 +1,9 @@
 #!/bin/sh
 set -e
 
+echo "[entrypoint] conferindo o ambiente..."
+node scripts/verificar-ambiente.js
+
 echo "[entrypoint] aguardando o banco de dados e aplicando migrations..."
 i=0
 until npx prisma migrate deploy; do

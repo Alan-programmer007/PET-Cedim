@@ -17,11 +17,9 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# Qualquer sufixo: .env.bak, .env.producao, .env.uncisal — só o exemplo é rastreado.
+.env*
+!.env.example
 
 # vercel
 .vercel

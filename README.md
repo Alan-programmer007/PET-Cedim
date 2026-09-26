@@ -135,7 +135,7 @@ git rm -r --cached dev/ && echo "dev/" >> .gitignore
 Antes da aplicação entrar em uso oficial no contexto real, as seguintes informações de acesso devem ser estritamente alteradas para garantir a segurança da plataforma e dos dados:
 
 1. **Credenciais do Banco de Dados (`.env`):** Substitua a `DATABASE_URL` para apontar para o banco de dados MySQL oficial, garantindo o uso de um usuário e senha seguros.
-2. **Segredo de Autenticação (`.env`):** Modifique a variável `JWT_SECRET` para uma chave complexa, longa e segura. Ela garante a integridade do login e das sessões da aplicação.
+2. **Segredo de Autenticação (`.env`):** Gere o `JWT_SECRET` com `openssl rand -base64 48`. Ele é a única coisa que torna um token de sessão não forjável: quem o conhece assina uma sessão válida sem precisar de senha. Em produção a aplicação **recusa subir** com o valor de exemplo ou com menos de 32 caracteres (item A7).
 3. **Acesso do Administrador:** Defina `SEED_EMAIL` e `SEED_PASSWORD` no `.env` antes de estruturar o banco pela primeira vez, com as credenciais oficiais exigidas pelo administrador ou coordenação do projeto. Em produção isso não é recomendação: **sem essas variáveis o seed falha e a aplicação não sobe.**
 
 Os três pontos acima só têm efeito porque a assinatura do token passou a ser validada (item A1 de

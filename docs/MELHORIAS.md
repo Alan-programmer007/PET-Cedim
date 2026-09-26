@@ -13,7 +13,7 @@ seção [Alterações de documentação](#alterações-de-documentação-feitas-
 
 | | Tema | Itens | Situação |
 |---|---|---|---|
-| **A** | Segurança | 6 | 🟠 A1–A4 resolvidos; A5 e A6 em aberto |
+| **A** | Segurança | 7 | 🟠 A1–A4 e A7 resolvidos; A5 e A6 em aberto |
 | **B** | Defeitos funcionais | 7 | 🟠 afeta o usuário |
 | **C** | Desempenho e modelo de dados | 4 | 🟠 impede crescer |
 | **D** | Documentação | 7 | 🟡 4 resolvidos aqui |
@@ -185,6 +185,38 @@ autoria, o papel não adianta para auditoria).
 
 ---
 
+### A7 — `JWT_SECRET` de exemplo assina sessão válida 🔴 — ✅ **resolvido em 25/09/2026**
+
+O `.env.example` publicava um `JWT_SECRET` funcional (`segredo_jwt_padrao_para_testes`), e
+`lib/auth.js` apenas conferia se a variável **existia**. Como a assinatura HS256 é a única coisa que
+torna um token não forjável, quem conhece o segredo assina o que quiser:
+
+```js
+jwt.sign({ id: 1, email: 'qualquer@coisa' }, 'segredo_jwt_padrao_para_testes')
+```
+
+Isso devolve um cookie que `lerSessao` aceita como sessão legítima — **sem senha, sem usuário, sem
+passar pelo login**. É o A1 de volta, entrando pela configuração em vez do código, e mais grave que
+o A4: o A4 exigia usar a tela de login, isto a dispensa.
+
+**Correção aplicada:** `scripts/verificar-ambiente.js`, executado pelo `docker-entrypoint.sh` antes
+de subir a aplicação. Em produção recusa a lista de valores de exemplo e qualquer segredo com menos
+de 32 caracteres; em qualquer ambiente recusa a ausência da variável. Sai com código 1, o que
+derruba o contêiner e faz a implantação reverter. O `.env.example` passou a trazer
+`TROQUE_ESTE_VALOR`, que também está na lista de recusados.
+
+⚠️ **Por que a conferência não está em `lib/auth.js`.** A chamada de `segredo()` acontece dentro do
+`try` de `lerSessao`, cujo `catch` devolve `null`. Um `throw` ali seria engolido: toda sessão viraria
+inválida, `/login` continuaria respondendo `200` — é a única rota liberada sem sessão — e o health
+check do `cedim-deploy.sh`, que testa exatamente `/login`, **declararia a implantação bem-sucedida**.
+O sintoma seria pior que uma queda: o login funciona, a pessoa é devolvida à tela de login
+indefinidamente, sem reversão e sem alerta. A conferência tem de ser na subida, não na requisição.
+
+O valor antigo permanece no histórico do Git e deve ser considerado comprometido em qualquer
+ambiente que o tenha usado. Trocar o `JWT_SECRET` invalida todas as sessões emitidas.
+
+---
+
 ## B. Defeitos funcionais
 
 ### B1 — `/registros/[id]` nunca funciona 🟠 *verificado*
@@ -321,7 +353,7 @@ mesma: documentação que não acompanhou o código no mesmo commit. A regra que
 A seção "Sobre o controle de acesso" do README agora descreve `lerSessao`, lista as camadas que a
 chamam e explica por que as rotas repetem a verificação do middleware.
 
-### D2 — `db/` documenta um caminho que quebra o projeto 🟠 ✅ **sinalizado aqui**
+### D2 — `db/` documenta um caminho que quebra o projeto 🟠 ✅ **resolvido em 25/09/2026**
 
 `db/README.md` e `db/schema.sql` são anteriores ao Prisma. Ainda listam como "próximos passos
 opcionais" coisas que já existem. Pior: os dois schemas são incompatíveis.
@@ -337,9 +369,18 @@ Quem seguir `db/README.md` monta um banco onde a aplicação não roda: o códig
 coluna numérica e os nomes de coluna não batem. `TEXT` também estouraria com as imagens reais,
 medidas em ~250 KB.
 
-Feito aqui: aviso de obsolescência no topo de `db/README.md`, apontando o Prisma como fonte de
-verdade. **Decisão pendente sua:** apagar a pasta `db/` de vez. Documentação obsoleta que quebra o
-projeto é pior que documentação nenhuma, mas apagar arquivos foge do escopo desta passagem.
+Feito na passagem de 23/09: aviso de obsolescência no topo de `db/README.md`, apontando o Prisma
+como fonte de verdade.
+
+**A pasta `db/` foi apagada em 25/09/2026.** O aviso não bastava: quem chega num arquivo de
+instalação tende a seguir os passos que estão abaixo dele, e o caminho descrito quebra a aplicação —
+sem contar que `TEXT` truncaria imagens de ~250 KB silenciosamente, o que é perda de dado sem erro
+visível. Manter dois esquemas incompatíveis no repositório convida ao erro.
+
+Uma ideia do arquivo apagado merece registro, porque era melhor que o que ficou: `db/schema.sql`
+tinha `user_id` com chave estrangeira para `users` — exatamente a autoria que falta hoje (item C4).
+A estrutura proposta em [dimensionamento.md](dimensionamento.md) a recupera, e o histórico do Git
+preserva o arquivo para quem precisar.
 
 ### D3 — Instalação falha em npm 11+ 🟡 ✅ **documentado aqui**
 

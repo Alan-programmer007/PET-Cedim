@@ -25,6 +25,7 @@ nenhuma, porque é lida como prova.
 | `prisma/schema.prisma` ou migrations | [`docs/modelo-de-dados.md`](docs/modelo-de-dados.md) |
 | Campos do formulário de anamnese | [`docs/modelo-de-dados.md`](docs/modelo-de-dados.md) |
 | Instalação, execução, `Dockerfile`, compose | `README.md` |
+| `scripts/verificar-ambiente.js` ou variáveis de ambiente | `README.md` e este arquivo |
 | Arquitetura, armadilhas, convenções | este arquivo |
 
 Sempre que resolver um item de [`docs/MELHORIAS.md`](docs/MELHORIAS.md), marque-o como resolvido
@@ -106,5 +107,19 @@ a reversão automática agir.
 
 ## Ao mexer no banco
 
-`prisma/schema.prisma` é a fonte de verdade. **Ignore `db/schema.sql`** — é de antes do Prisma e
-incompatível.
+`prisma/schema.prisma` é a fonte de verdade, sem concorrente: a pasta `db/`, que trazia um schema
+SQL incompatível de antes do Prisma, foi apagada em 25/09/2026 (item D2).
+
+## A aplicação recusa subir com ambiente inválido
+
+`scripts/verificar-ambiente.js` roda no `docker-entrypoint.sh`, **antes** das migrations e do seed.
+Em produção ele encerra com código 1 se o `JWT_SECRET` faltar, for um dos valores de exemplo ou tiver
+menos de 32 caracteres. O `prisma/seed.js` faz o mesmo com `SEED_EMAIL`/`SEED_PASSWORD`.
+
+Isso é proposital: código 1 derruba o contêiner, o health check do `cedim-deploy.sh` não recebe
+resposta e a implantação reverte. **Ambiente mal configurado não entra no ar.**
+
+Se você acrescentar uma variável de ambiente que seja fronteira de segurança, confira-a **ali**, não
+dentro do código que atende requisição. O motivo está no item A7 de
+[`docs/MELHORIAS.md`](docs/MELHORIAS.md): uma exceção lançada dentro de `lerSessao` é engolida pelo
+`catch`, `/login` continua respondendo 200 e a implantação passa achando que deu tudo certo.
