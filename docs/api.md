@@ -40,7 +40,8 @@ português.
 
 ## `GET /api/auth/me`
 
-Lê o cookie e valida a assinatura do JWT. É a **única** rota que faz essa verificação.
+Lê o cookie e valida a assinatura do JWT com `lerSessao`, como as demais rotas protegidas, e devolve
+o conteúdo do token.
 
 | Situação | Status | Resposta |
 |---|---|---|
@@ -51,7 +52,9 @@ Lê o cookie e valida a assinatura do JWT. É a **única** rota que faz essa ver
 
 ## `POST /api/auth/logout`
 
-Sem corpo. Sempre `200`, com `Set-Cookie` expirando o token (`maxAge=0`).
+Sem corpo. Com sessão válida responde `200`, com `Set-Cookie` expirando o token (`maxAge=0`). **Sem
+sessão válida, o middleware responde `401` antes de a rota rodar** — a rota em si não verifica nada,
+mas está dentro do `matcher`.
 
 ---
 
@@ -81,6 +84,12 @@ Remove um registro pelo `id` na query string.
 | Removido | `200` | `{"success":true}` |
 | `id` ausente | `400` | `{"error":"ID não fornecido"}` |
 | `id` inexistente | `404` | `{"error":"Anamnese não encontrada"}` |
+| Erro no banco | `500` | `{"error":"Erro ao deletar anamnese"}` |
+
+> ⚠️ **Esta rota está com os dias contados.** A orientação definiu em 25/09/2026 que anamnese não se
+> apaga, apenas se edita (item A5 de [MELHORIAS.md](MELHORIAS.md)). A rota e o botão que a chama em
+> `app/registros/page.jsx` saem juntos, depois que a edição (B6) existir. Até lá, ela funciona como
+> descrito acima — e apaga a linha de verdade.
 
 ---
 
@@ -114,7 +123,7 @@ Item A2 de [MELHORIAS.md](MELHORIAS.md) — **resolvido**.
 
 ## Rotas de página protegidas pelo middleware
 
-O `matcher` em `middleware.js:19` cobre tudo, exceto `_next`, `api/auth/login`, `cedim.png`,
+O `matcher` em `middleware.js:32` cobre tudo, exceto `_next`, `api/auth/login`, `cedim.png`,
 `CEDIM_LOGO.jpg` e `favicon.ico`. Sem cookie, qualquer outro caminho recebe `307` para `/login`.
 
 Isso inclui `robots.txt`, que por isso **nunca é entregue a um crawler**.

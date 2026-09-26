@@ -298,7 +298,8 @@ clínico adotado pelo serviço. Constituem a pauta sugerida para a orientação 
 
 <p>Foram identificados vinte e nove pontos de melhoria: quatro de segurança, sete de defeitos
 funcionais, quatro de desempenho e modelo de dados, sete de documentação e sete de qualidade de
-código. Esta seção detalha os mais relevantes.</p>
+código. Esta seção detalha os mais relevantes. Em 25/09/2026, depois deste levantamento, três pontos de
+segurança foram acrescentados (A5, A6 e A7 — ver o Quadro 8), elevando o total a trinta e dois.</p>
 
 <h2>5.1 Segurança</h2>
 
@@ -391,10 +392,15 @@ leitura das seções anteriores não induza a equipe a trabalhar sobre um proble
 <tr><td>A1</td><td>Bypass total de autenticação</td><td><strong>Resolvido</strong></td><td>José Alan</td></tr>
 <tr><td>A2</td><td>Remoção arbitrária de arquivos do servidor</td><td><strong>Resolvido</strong></td><td>José Alan</td></tr>
 <tr><td>A3</td><td>Exposição de detalhes internos em erros</td><td><strong>Resolvido</strong></td><td>José Alan</td></tr>
-<tr><td>A4</td><td>Credenciais de teste em repositório público</td><td>Pendente</td><td>José Alan</td></tr>
+<tr><td>A4</td><td>Credenciais de teste em repositório público</td><td><strong>Resolvido</strong></td><td>José Alan</td></tr>
 <tr><td>B2</td><td>Ausência de validação</td><td>Servidor feito; falta o cliente</td><td>José Alan / Lucas Pedroza</td></tr>
 <tr><td>B3</td><td>Códigos de erro incorretos</td><td><strong>Resolvido</strong></td><td>José Alan</td></tr>
-<tr><td colspan="4">Os demais vinte e três pontos permanecem como descritos na seção 5.</td></tr>
+<tr><td>B6</td><td>Ausência de edição de anamnese</td><td>Pendente — <strong>promovido a bloqueante</strong>: a orientação proibiu a exclusão, e a edição virou o único meio de correção</td><td>Lucas Pedroza</td></tr>
+<tr><td>A5</td><td>Guarda permanente sem mecanismo que a sustente <em>(acrescentado em 25/09)</em></td><td>Pendente — a exclusão sai junto com a edição</td><td>José Alan / Lucas Pedroza</td></tr>
+<tr><td>A6</td><td>Ausência de escopo de permissões <em>(acrescentado em 25/09)</em></td><td>Pendente — matriz de papéis a definir com a coordenação</td><td>José Alan</td></tr>
+<tr><td>A7</td><td>Segredo de assinatura de exemplo aceito em produção <em>(acrescentado em 25/09)</em></td><td><strong>Resolvido</strong></td><td>José Alan</td></tr>
+<tr><td>D2</td><td>Esquema SQL obsoleto que quebrava a instalação</td><td><strong>Resolvido</strong> — pasta apagada</td><td>José Alan</td></tr>
+<tr><td colspan="4">Os códigos seguem a numeração de <code>docs/MELHORIAS.md</code>. Os itens A5, A6 e A7 foram acrescentados em 25/09/2026, depois do levantamento original de vinte e nove pontos, que passa a somar trinta e dois. Os demais permanecem como descritos na seção 5.</td></tr>
 </table>
 <p class="fonte-quadro">Fonte: elaborado pelo autor.</p>
 
@@ -466,7 +472,7 @@ e não da facilidade de execução.</p>
 <table>
 <tr><th style="width:15%">Etapa</th><th style="width:43%">Ações</th><th>Justificativa</th></tr>
 <tr><td><strong>1ª</strong><br>Antes de qualquer dado real<br><strong>— concluída em 25/09</strong></td>
-    <td>Validar a assinatura do token nas rotas; remover a rota vulnerável; deixar de expor mensagens internas de erro; implantar validação no servidor. <em>Restam:</em> trocar as credenciais publicadas e validar também na tela</td>
+    <td>Validar a assinatura do token nas rotas; remover a rota vulnerável; deixar de expor mensagens internas de erro; implantar validação no servidor. <em>Resta:</em> validar também na tela — as credenciais publicadas foram tratadas em 25/09 (A4)</td>
     <td>Sem estas, o sistema não oferecia proteção alguma aos dados que armazena</td></tr>
 <tr><td><strong>2ª</strong><br>Estrutural</td>
     <td>Restringir os campos devolvidos pela listagem e paginar; promover nome, cidade e datas a colunas próprias; deixar de gravar a imagem do relatório; corrigir a tela de anamnese completa; implementar edição</td>
@@ -498,12 +504,15 @@ trabalhe predominantemente em arquivos distintos e os três avancem em paralelo.
 são tocadas tanto por José Alan, no controle de acesso, quanto por Alan da Silva, no desempenho das
 consultas. São arquivos curtos, e alterações simultâneas neles colidem com facilidade. A ordem
 proposta resolve o problema — o trabalho de José Alan sobre essas rotas já foi concluído, de forma
-que Alan da Silva e Lucas Pedroza podem agora alterá-las sem conflito.</p>
+que Alan da Silva e Lucas Pedroza podem agora alterá-las sem conflito. Há uma exceção futura e
+combinada: a remoção da rota de exclusão (A5) volta a tocar <code>app/api/anamneses/route.js</code>, e
+deve sair na mesma alteração que remove o botão da interface, depois que a edição existir.</p>
 
 <h2>8.1 José Alan — Segurança e autenticação</h2>
 
 <p>Responsável pela primeira etapa do plano, que era bloqueante para as demais. <strong>Concluída em
-25 de setembro de 2026</strong>, o que liberou o trabalho dos outros dois desenvolvedores.</p>
+25 de setembro de 2026</strong>, o que liberou o trabalho dos outros dois desenvolvedores. As tarefas
+que o quadro abaixo mantém como pendentes pertencem a etapas posteriores e não bloqueiam ninguém.</p>
 
 <p class="titulo-quadro"><strong>Quadro 11</strong> — Tarefas de José Alan</p>
 <table>
@@ -515,7 +524,7 @@ que Alan da Silva e Lucas Pedroza podem agora alterá-las sem conflito.</p>
 <tr><td>Corrigir os códigos de resposta de registro repetido e inexistente</td><td><strong>Concluída</strong></td></tr>
 <tr><td>Validar no servidor os campos definidos como obrigatórios</td><td>Mecanismo pronto; aguarda a definição da orientação</td></tr>
 <tr><td>Substituir as credenciais de teste publicadas no repositório (A4)</td><td><strong>Concluída</strong> — em produção o seed recusa as credenciais publicadas e a implantação falha fechada</td></tr>
-<tr><td>Remover a exclusão de anamnese e sustentar a guarda permanente com data de última alteração e autoria (A5)</td><td>Pendente — aguarda a edição do Quadro 13; as duas saem na mesma alteração</td></tr>
+<tr><td>Remover a rota de exclusão de anamnese e acrescentar a data de última alteração (A5)</td><td>Pendente — aguarda a edição do Quadro 13; a rota (aqui) e o botão (Quadro 13) saem na mesma alteração</td></tr>
 <tr><td>Implantar o escopo de permissões: papel no cadastro, no token e nas rotas (A6)</td><td>Pendente — princípio definido em 25/09/2026; matriz de papéis a definir</td></tr>
 <tr><td>Impedir que o segredo de assinatura de exemplo suba em produção (A7)</td><td><strong>Concluída</strong> — a aplicação recusa subir com segredo de exemplo, ausente ou curto</td></tr>
 <tr><td>Apagar o esquema SQL obsoleto que quebrava a instalação (D2)</td><td><strong>Concluída</strong></td></tr>
@@ -554,6 +563,7 @@ funcionalidade nasce desprotegida, reintroduzindo o problema que acaba de ser co
 <tr><td>Validar o formulário antes do envio, conforme os campos obrigatórios definidos</td><td>Pendente — complementa o que o servidor já recusa</td></tr>
 <tr><td>Corrigir a tela de anamnese completa, que busca os dados no lugar errado</td><td>Pendente</td></tr>
 <tr><td>Implementar a edição de anamnese já gravada</td><td>Pendente e <strong>bloqueante</strong> — virou o único meio de correção, já que não se pode apagar; exige verificação de sessão e preservação do conteúdo anterior</td></tr>
+<tr><td>Remover o botão de excluir da tela de registros, junto com a rota (A5)</td><td>Pendente — depois da edição, na mesma alteração que a rota</td></tr>
 <tr><td>Acionar o resumo e o download individual, hoje sem botão</td><td>Pendente</td></tr>
 <tr><td>Remover a coluna "Sexo" da exportação ou acrescentar o campo ao formulário</td><td>Pendente</td></tr>
 <tr><td>Aplicar as listas fixas definidas pela orientação para cidade e motivo</td><td>Aguarda a orientação</td></tr>

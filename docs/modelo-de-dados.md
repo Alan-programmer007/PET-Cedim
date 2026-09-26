@@ -32,9 +32,12 @@ tabela inteira. Ver [MELHORIAS.md](MELHORIAS.md), item C2.
 indefinidamente.** Não há expurgo programado, nem prazo após o qual uma anamnese possa ser
 descartada.
 
-A definição partiu do prazo legal. A Lei 13.787/2018 e a Resolução CFM 1.821/2007 estabelecem
-guarda mínima de **20 anos contados do último registro** do prontuário — não da criação da ficha.
-O projeto optou por ir além do mínimo e não estipular fim.
+A definição partiu do prazo legal, e ela bate com a norma de um jeito mais forte do que parecia. A
+Lei 13.787/2018 fixa prazo mínimo de **20 anos contados do último registro** — não da criação da
+ficha — para prontuários em papel e digitalizados. A Resolução CFM 1.821/2007 fixa os mesmos 20 anos
+para o papel (art. 8º) e **guarda permanente** para os prontuários arquivados eletronicamente
+(art. 7º). Para um sistema nato-digital como este, portanto, a guarda indefinida não é escolha acima
+do mínimo: é o que a resolução do CFM exige.
 
 **Anamnese não se apaga; corrige-se por edição.** A exclusão deixa de existir como
 funcionalidade — não há lixeira nem marcação de excluída. Uma informação errada é corrigida
@@ -65,7 +68,7 @@ autocadastro.
 
 Hoje o sistema não consegue expressar essa distinção: `User` tem apenas `id`, `email`, `password`
 e `createdAt` (`prisma/schema.prisma:10`), e o token carrega só `{ id, email }`
-(`app/api/auth/login/route.js:23`). **Todo usuário autenticado é equivalente e pode tudo** — ler,
+(`app/api/auth/login/route.js:24`). **Todo usuário autenticado é equivalente e pode tudo** — ler,
 gravar e apagar qualquer anamnese. Falta o escopo de permissões. Ver
 [MELHORIAS.md](MELHORIAS.md), item A6.
 

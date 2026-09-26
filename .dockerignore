@@ -7,5 +7,6 @@ dev
 npm-debug.log*
 README.md
 
-.DS_Store
-._*
+# lixo do macOS em qualquer nível — sem **/ o .dockerignore só cobre a raiz do contexto
+**/.DS_Store
+**/._*

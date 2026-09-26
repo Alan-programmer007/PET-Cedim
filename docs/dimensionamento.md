@@ -30,7 +30,7 @@ Cabe decidir, antes de receber dado de paciente:
 | Atendimentos por dia | 80 a 100 |
 | Dias úteis por ano | ~250 |
 | **Registros por ano** | **20.000 a 25.000** |
-| Registros em 20 anos (mínimo legal de guarda) | 400.000 a 500.000 |
+| Registros em 20 anos (prazo de referência da Lei 13.787/2018) | 400.000 a 500.000 |
 
 As projeções deste documento usam **25.000 por ano**, o limite superior, para que o dimensionamento
 seja conservador.
@@ -49,11 +49,15 @@ A verificação técnica de 23/09/2026, feita com a aplicação em execução, m
 
 A composição desses 781 KB é o dado central deste documento:
 
-| Conteúdo | Tamanho | Fração do registro |
-|---|---|---|
-| JSON clínico (todos os campos da anamnese) | 1,7 KB | **0,2%** |
-| Imagem do relatório (`imagem`) | ~500 KB | ~64% |
-| Marcações das mamas (`imagemMamaA`, `imagemMamaB`) | ~280 KB | ~36% |
+| Conteúdo | Tamanho | Fração do registro | Origem |
+|---|---|---|---|
+| JSON clínico (todos os campos da anamnese) | 1,7 KB | **0,2%** | calculado |
+| Imagem do relatório (`imagem`) | ~500 KB | ~64% | *estimado* |
+| Marcações das mamas (`imagemMamaA`, `imagemMamaB`) | ~280 KB | ~36% | *estimado* |
+
+A medição de 23/09 registrou o **total** das três imagens (779 KB), não cada uma. A divisão entre
+relatório e marcações é estimativa — o relatório é um HTML inteiro rasterizado, as marcações são dois
+desenhos simples — e não afeta nenhuma conclusão: as duas saem do registro.
 
 **As imagens são 99,8% do registro.** Toda a informação clínica — identificação, histórico mamário,
 história reprodutiva, história familiar, hábitos e exame físico — cabe em menos de dois kilobytes.
@@ -66,7 +70,7 @@ explicitamente.
 
 ## 4. O cenário corrigido
 
-Três mudanças, todas já catalogadas em [MELHORIAS.md](MELHORIAS.md):
+Quatro mudanças, todas já catalogadas em [MELHORIAS.md](MELHORIAS.md):
 
 | Item | Mudança |
 |---|---|
@@ -134,9 +138,14 @@ dias por construção**. Na prática, com 100 atendimentos diários a tela fica 
 
 **O backup deixa de ser um projeto.** Copiar 372 GB com retenção permanente é infraestrutura séria:
 volume, janela de execução, custo e teste de restauração. Copiar 2,4 GB é rotina. A decisão de
-guardar indefinidamente só é sustentável do lado corrigido da tabela — e vale registrar que hoje o
-ambiente de demonstração está **fora do backup**, decisão adequada para dado fictício e inadmissível
-para dado real.
+guardar indefinidamente só é sustentável do lado corrigido da tabela.
+
+Sobre o ambiente de demonstração: ele **está** no backup noturno do Proxmox — snapshot do CT inteiro,
+2,1 GB por dia, retenção de dois dias, restauração nunca testada. Isso protege contra falha do host;
+não é backup de banco com retenção compatível com guarda permanente, e não protege contra uma
+exclusão descoberta três dias depois. Para dado real, o backup precisa ser do banco, com histórico
+longo e restauração ensaiada. (Uma versão anterior deste parágrafo dizia que o ambiente estava fora do
+backup — estava errada, copiada de um registro que a configuração do Proxmox não confirmava.)
 
 **O dimensionamento da VM deixa de ser questão.** Qualquer máquina virtual modesta atende décadas.
 Não há capacidade a negociar com a instituição.
@@ -155,7 +164,7 @@ projeto novo inteiro. O que se perderia:
 | Ativo | Por que é caro |
 |---|---|
 | Definição clínica dos campos | Depende do tempo da orientação, não da equipe — é o ativo mais custoso do projeto |
-| Esteira de implantação com reversão automática | Funciona e foi validada em produção |
+| Esteira de implantação com reversão automática | Em produção desde 25/09; a reversão automática ainda não foi exercitada por falha real |
 | Correções de segurança A1 a A4 | Concluídas em 25/09/2026 |
 | Divisão de tarefas entre três pessoas | Acordada e em execução |
 
@@ -225,14 +234,18 @@ Os três primeiros são dias de trabalho e resolvem por completo o colapso de de
 
 Este documento distingue os três, para que ninguém leia projeção como medição.
 
-**Medido**, com a aplicação em execução (23/09/2026): os 781 KB por registro e os 800 KB de
-resposta; e os 400 MB de resposta para 500 registros.
+**Medido**, com a aplicação em execução (23/09/2026): os 781 KB de um registro com três imagens e os
+800 KB da resposta correspondente.
+
+**Extrapolado** a partir dessa única medição: os 400 MB para 500 registros e todas as tabelas das
+seções 5 e 6 — supõem que o registro medido é representativo.
 
 **Calculado**: os 1,7 KB do JSON clínico. Foi montado um registro realista com **todos** os campos
 do formulário preenchidos, incluindo textos livres de história da doença, parentesco e exame físico.
 Um caso com descrições longas chega a 3 ou 4 KB, o que não altera nenhuma conclusão.
 
-**Estimado**: os 3,0 KB das marcações vetoriais supõem, por mama, um contorno de nódulo com 90
+**Estimado**: a divisão dos 779 KB de imagem entre relatório (~500 KB) e marcações (~280 KB) — a
+medição registrou só o total. E os 3,0 KB das marcações vetoriais, que supõem, por mama, um contorno de nódulo com 90
 pontos e duas hachuras curtas de 30 pontos, em coordenadas inteiras. Uma marcação muito detalhada
 pode chegar a 15 ou 20 KB somando as duas mamas — ainda assim cerca de **quinze vezes** menor que
 os ~280 KB dos dois JPEG.
@@ -282,7 +295,7 @@ for anos in (1, 5, 20, 30):
 
 print(f"\nresposta de /registros (página de 50): "
       f"{50*LINHA_LISTAGEM/1024:.1f} KB, constante")
-for n, rot in ((500, '1 semana'), (2_000, '1 mês'), (POR_ANO, '1 ano')):
+for n, rot in ((500, '1 semana'), (2_000, '1 mês'), (POR_ANO, '1 ano'), (POR_ANO*20, '20 anos')):
     print(f"  hoje, com {n} registros: {n*800/1024/1024:.1f} GB")
 ```
 

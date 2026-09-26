@@ -8,16 +8,22 @@ const prisma = new PrismaClient();
 const EMAIL_LOCAL = 'petsdcedim@gmail.com';
 const SENHA_LOCAL = '1234567cedim';
 
+// Senhas que nunca podem valer em produção: a publicada e o marcador do .env.example.
+const SENHAS_PROIBIDAS = [SENHA_LOCAL, 'TROQUE_ESTA_SENHA'];
+
 // O docker-compose repassa ${SEED_EMAIL} mesmo quando a variável não existe no host, entregando
 // string vazia. Tratar vazio como ausente é o que impede o fallback silencioso para as credenciais
 // publicadas em uma implantação real.
-function variavel(nome) {
+// `aparar` só para o e-mail: senha se guarda exatamente como veio, porque o login compara o que a
+// pessoa digita com o que foi gravado — aparar aqui criaria uma senha diferente da configurada.
+function variavel(nome, { aparar = false } = {}) {
   const valor = process.env[nome];
-  return typeof valor === 'string' && valor.trim() !== '' ? valor.trim() : null;
+  if (typeof valor !== 'string' || valor.trim() === '') return null;
+  return aparar ? valor.trim() : valor;
 }
 
 function credenciais() {
-  const email = variavel('SEED_EMAIL');
+  const email = variavel('SEED_EMAIL', { aparar: true });
   const senha = variavel('SEED_PASSWORD');
   const ehProducao = process.env.NODE_ENV === 'production';
 
@@ -42,10 +48,10 @@ function credenciais() {
 
   // Só a senha é segredo; o e-mail é nome de usuário. Manter petsdcedim@gmail.com como conta do
   // administrador é legítimo, desde que a senha seja outra — por isso aqui só se avisa.
-  if (senha === SENHA_LOCAL) {
+  if (SENHAS_PROIBIDAS.includes(senha)) {
     throw new Error(
-      'SEED_PASSWORD repete a senha publicada no repositório. Ela consta do histórico do Git e ' +
-        'deve ser considerada comprometida. Escolha outra.'
+      'SEED_PASSWORD é a senha publicada no repositório ou o marcador do .env.example. Nenhuma das ' +
+        'duas pode valer em produção. Escolha outra.'
     );
   }
 

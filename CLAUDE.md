@@ -66,7 +66,8 @@ npm run lint             # QUEBRADO: eslint não está instalado e não há conf
 - `app/` — rotas. `page.jsx` é o formulário; `registros/`, `metricas/`, `login/`, `api/`.
 - `components/anamnesis-form.jsx` — 1.004 linhas, o coração do sistema. Todo o formulário e o
   gerador do relatório HTML que vira JPEG.
-- `components/breast-marking-canvas.jsx` — canvas de marcação. Expõe só `getDataUrl`.
+- `components/breast-marking-canvas.jsx` — canvas de marcação. Expõe `getDataUrl` e `clear`; não há
+  como recarregar marcações (item B7).
 - `lib/auth.js` — verificação de sessão. **Toda rota nova que leia ou grave dados deve chamar
   `lerSessao` por conta própria**; o middleware não basta como fronteira de segurança.
 - `lib/prisma.js` — cliente Prisma (singleton). **`lib/db.js` é código morto**, pool mysql2 sem uso.
@@ -90,6 +91,12 @@ Leia [docs/MELHORIAS.md](docs/MELHORIAS.md) antes de propor mudanças. Os pontos
 - **A pasta `dev/`** (77 MB) é build commitado por engano. Ignore-a.
 - **`seed.js` na raiz** não é o seed usado; o real é `prisma/seed.js`.
 - **`styles/globals.css`** duplica `app/globals.css`; o usado é o de `app/`.
+- **`git clean -x` apaga o `.env`.** O `.env` é ignorado pelo Git de propósito, e `-x`/`-X` removem
+  ignorados. Em `/opt/cedim` os segredos não existem em outro lugar. Para limpar resíduo (`._*`,
+  `.DS_Store`), use `find … -delete`, nunca `git clean -x`. Ver o item D2 de `docs/MELHORIAS.md`.
+- **Recusa de ambiente vai no entrypoint, não em `lerSessao`.** Um `throw` dentro de `lerSessao` cai
+  no `catch` que devolve `null`; `/login` segue respondendo 200; o health check da implantação passa
+  e o site fica "no ar" sem ninguém conseguir entrar. Ver o item A7.
 
 ## Convenções
 
@@ -117,7 +124,10 @@ Em produção ele encerra com código 1 se o `JWT_SECRET` faltar, for um dos val
 menos de 32 caracteres. O `prisma/seed.js` faz o mesmo com `SEED_EMAIL`/`SEED_PASSWORD`.
 
 Isso é proposital: código 1 derruba o contêiner, o health check do `cedim-deploy.sh` não recebe
-resposta e a implantação reverte. **Ambiente mal configurado não entra no ar.**
+resposta e a implantação reverte. **A versão nova não entra no ar.** Repare no limite disso: a
+reversão sobe a versão *anterior* com o *mesmo* `.env` — se a variável estava errada, a versão antiga
+(que não a conferia) volta a rodar com ela. A conferência protege a implantação, não corrige o
+ambiente; quem corrige é quem lê o log da recusa.
 
 Se você acrescentar uma variável de ambiente que seja fronteira de segurança, confira-a **ali**, não
 dentro do código que atende requisição. O motivo está no item A7 de

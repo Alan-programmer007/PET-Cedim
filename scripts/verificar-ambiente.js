@@ -22,7 +22,11 @@ const MINIMO_CARACTERES = 32
 const COMO_GERAR = 'openssl rand -base64 48'
 
 const producao = process.env.NODE_ENV === 'production'
-const segredo = (process.env.JWT_SECRET || '').trim()
+
+// Aspas literais em volta do valor (JWT_SECRET='"abc"') fariam o segredo publicado passar como se
+// fosse outro. Para a comparação, removem-se aspas externas e espaços; a aplicação usa o valor cru.
+const bruto = (process.env.JWT_SECRET || '').trim()
+const segredo = bruto.replace(/^(["'])(.*)\1$/, '$2').trim()
 const erros = []
 
 if (!segredo) {

@@ -6,8 +6,10 @@ Todos os itens marcados como *verificado* foram reproduzidos por execução real
 rodando, não deduzidos por leitura de código. Os demais vêm de análise do código e estão marcados
 como tal.
 
-**Nenhum código de aplicação foi alterado neste levantamento.** As únicas mudanças feitas estão na
-seção [Alterações de documentação](#alterações-de-documentação-feitas-nesta-passagem), ao final.
+**O levantamento de 23/09 não alterou código de aplicação** — as mudanças daquela passagem estão na
+seção [Alterações de documentação](#alterações-de-documentação-feitas-nesta-passagem), ao final. Desde
+então o documento passou a registrar também as correções aplicadas, cada uma datada no próprio item:
+ele é o histórico do projeto, não só o diagnóstico.
 
 ## Sumário por prioridade
 
@@ -16,15 +18,16 @@ seção [Alterações de documentação](#alterações-de-documentação-feitas-
 | **A** | Segurança | 7 | 🟠 A1–A4 e A7 resolvidos; A5 e A6 em aberto |
 | **B** | Defeitos funcionais | 7 | 🟠 afeta o usuário |
 | **C** | Desempenho e modelo de dados | 4 | 🟠 impede crescer |
-| **D** | Documentação | 7 | 🟡 4 resolvidos aqui |
+| **D** | Documentação | 7 | 🟡 D1–D3 resolvidos; D4 e D5 aguardam a orientação |
 | **E** | Qualidade e manutenção | 7 | 🟢 dívida técnica |
 
 ---
 
 ## A. Segurança
 
-> Enquanto A1 não for resolvido, o sistema **não deve receber dado de paciente real**, nem em rede
-> interna.
+> O A1 foi resolvido em 25/09/2026. Ainda assim o sistema **não deve receber dado de paciente real**
+> enquanto A5 e A6 estiverem em aberto: todo usuário autenticado pode tudo — inclusive apagar em
+> definitivo — e nenhuma ação tem autoria.
 
 ### A1 — Bypass total de autenticação 🔴 *verificado* — ✅ **resolvido em 25/09/2026**
 
@@ -97,8 +100,9 @@ ambiente:
 | Fora de produção, sem as variáveis | usa a credencial local e **avisa no console** |
 
 A recusa sai com código 1, o que derruba o contêiner pelo `set -e` do entrypoint. O
-`cedim-deploy.sh` não recebe resposta na porta 3000, reverte para a versão anterior e avisa por
-Telegram — falha fechada, sem site fora do ar.
+`cedim-deploy.sh` não recebe resposta na porta 3000, reverte para a versão anterior e, se `TG_TOKEN` e
+`TG_CHAT` estiverem preenchidos em `/etc/cedim-deploy.env`, avisa por Telegram — falha fechada, sem
+site fora do ar.
 
 ⚠️ **O que a correção não faz:** o seed continua idempotente e **não troca a senha de quem já
 existe**. Uma instalação que já rodou com a credencial publicada segue com ela até alguém apagar o
@@ -110,8 +114,10 @@ comprometida onde quer que tenha sido usada.
 ### A5 — Guarda permanente sem mecanismo que a sustente 🟠
 
 **Contexto:** em 25/09/2026 a orientação definiu que os registros são conservados
-indefinidamente. O prazo legal mínimo é de 20 anos a contar do último registro (Lei 13.787/2018;
-Resolução CFM 1.821/2007); o projeto optou por não estipular fim.
+indefinidamente. A Lei 13.787/2018 fixa 20 anos do último registro para prontuário em papel e
+digitalizado; a Resolução CFM 1.821/2007 fixa os mesmos 20 anos para o papel (art. 8º) e **guarda
+permanente** para o arquivado eletronicamente (art. 7º). Para um sistema nato-digital, a decisão não
+excede a norma — coincide com ela.
 
 O código contradiz a política em três pontos:
 
@@ -152,8 +158,8 @@ combinada entre os dois, e não em duas passagens independentes.
 
 ⚠️ **A edição precisa preservar o que havia antes.** Sem isso, "só editar" é apagar com outro nome:
 basta sobrescrever o conteúdo de uma ficha para destruí-la, sem passar pela exclusão e sem deixar
-rastro. Correção em prontuário não sobrescreve — ela se acrescenta de forma rastreável
-(Lei 13.787/2018; Resolução CFM 1.821/2007). Portanto a edição do B6 depende de `updatedAt`,
+rastro. Correção em prontuário não sobrescreve — ela se acrescenta de forma rastreável, que é o que dá
+sentido à guarda permanente exigida pela Resolução CFM 1.821/2007 (art. 7º). Portanto a edição do B6 depende de `updatedAt`,
 autoria (C4) e alguma forma de histórico de versões.
 
 ---
@@ -169,7 +175,7 @@ O sistema não consegue expressar essa distinção:
 | Onde | Situação |
 |---|---|
 | `prisma/schema.prisma:10` | `User` tem só `id`, `email`, `password`, `createdAt` — sem papel |
-| `app/api/auth/login/route.js:23` | o token carrega apenas `{ id, email }` |
+| `app/api/auth/login/route.js:24` | o token carrega apenas `{ id, email }` |
 | Todas as rotas | verificam **se** há sessão, nunca **quem** é |
 
 Consequência: todo usuário autenticado é equivalente e pode tudo — inclusive apagar em definitivo
@@ -348,7 +354,7 @@ resolvida e não investiga. Corrigido — o README agora descreve o comportament
 seguiu afirmando que o middleware "verifica apenas se o cookie existe" e mandando não registrar
 paciente real — descrevendo uma falha que já não existia. O sentido do erro inverteu; a causa é a
 mesma: documentação que não acompanhou o código no mesmo commit. A regra que exige isso
-(`94fcec8`) só nasceu três commits depois e não retroagiu.
+(`94fcec8`) só nasceu dois commits depois e não retroagiu.
 
 A seção "Sobre o controle de acesso" do README agora descreve `lerSessao`, lista as camadas que a
 chamam e explica por que as rotas repetem a verificação do middleware.
@@ -383,11 +389,16 @@ A estrutura proposta em [dimensionamento.md](dimensionamento.md) a recupera, e o
 preserva o arquivo para quem precisar.
 
 **No servidor a pasta sobreviveu à exclusão**, porque continha `._README.md` e `._schema.sql` —
-arquivos AppleDouble do macOS, resíduo do `tar` usado na primeira cópia para o CT. São 81 no total,
-não rastreados, e o `git reset --hard` da implantação não os remove. O `.gitignore` e o
-`.dockerignore` passaram a cobrir `._*` e `.DS_Store`, para que não entrem no repositório num
-`git add -A` feito de um Mac. Limpar os que já estão no servidor é `git clean -fd` em `/opt/cedim`,
-que não toca no `.env` porque ele é ignorado.
+arquivos AppleDouble do macOS, resíduo do `tar` usado na primeira cópia para o CT. Eram 81, não
+rastreados, e o `git reset --hard` da implantação não os remove. O `.gitignore` e o `.dockerignore`
+passaram a cobrir `._*` e `.DS_Store`, para que não entrem no repositório num `git add -A` feito de
+um Mac. Foram removidos do servidor em 26/09/2026 com
+`find /opt/cedim -name '._*' -type f -not -path '*/node_modules/*' -not -path '*/.git/*' -delete`.
+
+⚠️ **Não use `git clean` para isso.** Depois que o `.gitignore` passou a cobrir `._*`, o `git clean -fd`
+deixou de vê-los — e o passo seguinte natural, `-x`, **apaga também os ignorados, inclusive o
+`.env`**, cujos segredos não existem em nenhum outro lugar. Num repositório onde o `.env` é ignorado,
+`git clean -x` é destrutivo disfarçado de faxina.
 
 ### D3 — Instalação falha em npm 11+ 🟡 ✅ **documentado aqui**
 
