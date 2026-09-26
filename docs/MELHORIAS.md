@@ -13,7 +13,7 @@ seção [Alterações de documentação](#alterações-de-documentação-feitas-
 
 | | Tema | Itens | Situação |
 |---|---|---|---|
-| **A** | Segurança | 4 | 🔴 bloqueia uso real |
+| **A** | Segurança | 6 | 🟠 A1–A3 resolvidos; A4, A5 e A6 em aberto |
 | **B** | Defeitos funcionais | 7 | 🟠 afeta o usuário |
 | **C** | Desempenho e modelo de dados | 4 | 🟠 impede crescer |
 | **D** | Documentação | 7 | 🟡 4 resolvidos aqui |
@@ -74,6 +74,58 @@ credencial de qualquer instalação que não a tenha trocado.
 
 **Correção:** já é possível sobrepor via `SEED_EMAIL` / `SEED_PASSWORD` (ver `prisma/seed.js`).
 Documentar isso como o caminho padrão e tratar a senha do README como válida só para o local.
+
+---
+
+### A5 — Guarda permanente sem mecanismo que a sustente 🟠
+
+**Contexto:** em 25/09/2026 a orientação definiu que os registros são conservados
+indefinidamente. O prazo legal mínimo é de 20 anos a contar do último registro (Lei 13.787/2018;
+Resolução CFM 1.821/2007); o projeto optou por não estipular fim.
+
+O código contradiz a política em três pontos:
+
+1. **`DELETE /api/anamneses` apaga de verdade.** `app/api/anamneses/route.js` chama
+   `prisma.anamnese.delete`. Qualquer usuário autenticado destrói uma anamnese em definitivo, com
+   uma requisição. Não há exclusão lógica nem cópia.
+2. **Não existe `updatedAt`.** `prisma/schema.prisma` guarda só `createdAt`. Como o prazo legal
+   conta do último registro, não há como saber quando a ficha foi tocada pela última vez.
+3. **Não há autoria** (ver C4). Uma alteração ou exclusão não pode ser atribuída a ninguém.
+
+**Correção proposta:** coluna `excluidaEm` no schema, com a rota marcando em vez de apagar e as
+listagens ignorando as marcadas; `updatedAt` com `@updatedAt`; autoria resolvida junto de C4. A
+alternativa mais simples é remover a rota de exclusão, ao custo de quebrar o botão de apagar na
+interface.
+
+⚠️ **Decisão tomada em 25/09/2026: documentar agora, corrigir depois.** Enquanto isso, a guarda
+permanente é uma intenção declarada, não uma garantia do sistema.
+
+---
+
+### A6 — Não há escopo de permissões 🟠
+
+**Princípio definido em 25/09/2026:** o acesso é restrito a profissionais e estudantes da área da
+saúde — médicos, enfermeiros, estagiários e demais pessoas autorizadas pelo serviço. Usuário comum
+não tem acesso. Não há autocadastro, e não deve haver.
+
+O sistema não consegue expressar essa distinção:
+
+| Onde | Situação |
+|---|---|
+| `prisma/schema.prisma:10` | `User` tem só `id`, `email`, `password`, `createdAt` — sem papel |
+| `app/api/auth/login/route.js:23` | o token carrega apenas `{ id, email }` |
+| Todas as rotas | verificam **se** há sessão, nunca **quem** é |
+
+Consequência: todo usuário autenticado é equivalente e pode tudo — inclusive apagar em definitivo
+(ver A5). Um estagiário tem exatamente os mesmos poderes de quem coordena o serviço.
+
+**Correção proposta:** coluna `papel` em `User`, o papel dentro do token, e uma verificação de
+autorização — não só de autenticação — nas rotas. A matriz de papéis **ainda precisa ser definida**
+com a orientação e a coordenação do serviço: quem autoriza uma nova conta, e o que cada papel pode
+fazer. Em especial, se estagiário pode excluir, e se alguém pode.
+
+Relacionado a A5 (a guarda permanente só se sustenta se a exclusão for restrita) e a C4 (sem
+autoria, o papel não adianta para auditoria).
 
 ---
 
@@ -268,7 +320,7 @@ alguém reativar aquela função, "Amamentou" sairá sempre vazio no relatório.
 
 **Em seguida, estrutural:** C1 (resolve o desempenho sozinho) · C2 · C3 · B1 · B6
 
-**Depois:** D4 com a equipe clínica · C4 · B3 · B4 · B5 · B7
+**Depois:** D4 com a equipe clínica · **A6 · C4 · A5** (o trio de papéis, autoria e exclusão, que se resolve junto) · ~~B3~~ · B4 · B5 · B7
 
 **Dívida técnica, quando houver folga:** D7 · E1 · E2 · E5 · E3 · E4 · E6 · E7
 

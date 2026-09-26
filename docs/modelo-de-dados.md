@@ -26,6 +26,40 @@ Consequência prática: **nenhum campo clínico é coluna**. Não há índice, t
 nome, cidade ou data — tudo vive dentro de `data`. Buscar uma paciente pelo nome exige varrer a
 tabela inteira. Ver [MELHORIAS.md](MELHORIAS.md), item C2.
 
+## Retenção dos registros
+
+**Política definida em 25/09/2026, pela orientação: os registros são conservados
+indefinidamente.** Não há expurgo programado, nem prazo após o qual uma anamnese possa ser
+descartada.
+
+A definição partiu do prazo legal. A Lei 13.787/2018 e a Resolução CFM 1.821/2007 estabelecem
+guarda mínima de **20 anos contados do último registro** do prontuário — não da criação da ficha.
+O projeto optou por ir além do mínimo e não estipular fim.
+
+O que o sistema **não** tem hoje para sustentar essa política:
+
+| Falta | Consequência |
+|---|---|
+| Coluna `updatedAt` | não há como saber quando a ficha foi tocada pela última vez |
+| Exclusão lógica | `DELETE /api/anamneses` apaga a linha de verdade, sem cópia |
+| Registro de autoria | uma alteração ou exclusão não pode ser atribuída a ninguém |
+
+Enquanto isso não for resolvido, a guarda permanente é uma intenção declarada, não uma garantia do
+sistema. Ver [MELHORIAS.md](MELHORIAS.md), item A5.
+
+### Quem pode acessar
+
+**Princípio definido em 25/09/2026:** o sistema é restrito a **profissionais e estudantes da área
+da saúde** — médicos, enfermeiros, estagiários e demais pessoas autorizadas pelo serviço. Usuário
+comum, fora do escopo da saúde, não tem acesso em nenhum nível. Não há e não deve haver
+autocadastro.
+
+Hoje o sistema não consegue expressar essa distinção: `User` tem apenas `id`, `email`, `password`
+e `createdAt` (`prisma/schema.prisma:10`), e o token carrega só `{ id, email }`
+(`app/api/auth/login/route.js:23`). **Todo usuário autenticado é equivalente e pode tudo** — ler,
+gravar e apagar qualquer anamnese. Falta o escopo de permissões. Ver
+[MELHORIAS.md](MELHORIAS.md), item A6.
+
 ## Campos gerados no momento de salvar
 
 Estes não vêm do formulário; são criados em `handleSave`:
