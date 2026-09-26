@@ -3,32 +3,74 @@ const bcrypt = require('bcryptjs');
 
 const prisma = new PrismaClient();
 
-async function main() {
-  const email = process.env.SEED_EMAIL || 'petsdcedim@gmail.com';
-  const plainPassword = process.env.SEED_PASSWORD || '1234567cedim';
+// Credenciais que já estiveram publicadas no README e permanecem no histórico do repositório.
+// Servem apenas para o ambiente local; em produção o seed se recusa a usá-las.
+const EMAIL_LOCAL = 'petsdcedim@gmail.com';
+const SENHA_LOCAL = '1234567cedim';
 
-  // Verifica se o usuário já existe
-  const existingUser = await prisma.user.findUnique({
-    where: { email },
-  });
+// O docker-compose repassa ${SEED_EMAIL} mesmo quando a variável não existe no host, entregando
+// string vazia. Tratar vazio como ausente é o que impede o fallback silencioso para as credenciais
+// publicadas em uma implantação real.
+function variavel(nome) {
+  const valor = process.env[nome];
+  return typeof valor === 'string' && valor.trim() !== '' ? valor.trim() : null;
+}
 
-  if (!existingUser) {
-    const hashedPassword = await bcrypt.hash(plainPassword, 10);
-    const user = await prisma.user.create({
-      data: {
-        email,
-        password: hashedPassword,
-      },
-    });
-    console.log(`Usuário administrador criado com sucesso: ${user.email}`);
-  } else {
-    console.log(`Usuário administrador (${email}) já existe. Pulando criação.`);
+function credenciais() {
+  const email = variavel('SEED_EMAIL');
+  const senha = variavel('SEED_PASSWORD');
+  const ehProducao = process.env.NODE_ENV === 'production';
+
+  if (!ehProducao) {
+    if (email && senha) return { email, senha };
+    console.warn(
+      '[seed] AVISO: usando as credenciais locais publicadas no repositório. ' +
+        'Defina SEED_EMAIL e SEED_PASSWORD para qualquer ambiente acessível por terceiros.'
+    );
+    return { email: email || EMAIL_LOCAL, senha: senha || SENHA_LOCAL };
   }
+
+  // Em produção, faltar variável é erro: seguir adiante criaria o administrador com a senha que
+  // está publicada. É preferível falhar e deixar a implantação reverter.
+  const faltando = [!email && 'SEED_EMAIL', !senha && 'SEED_PASSWORD'].filter(Boolean);
+  if (faltando.length > 0) {
+    throw new Error(
+      `${faltando.join(' e ')} não definida(s). Em produção o seed não usa as credenciais ` +
+        'publicadas no repositório. Defina as variáveis no .env do servidor e suba novamente.'
+    );
+  }
+
+  if (email === EMAIL_LOCAL || senha === SENHA_LOCAL) {
+    throw new Error(
+      'SEED_EMAIL/SEED_PASSWORD repetem as credenciais publicadas no repositório. ' +
+        'Elas constam do histórico do Git e devem ser consideradas comprometidas.'
+    );
+  }
+
+  return { email, senha };
+}
+
+async function main() {
+  const { email, senha } = credenciais();
+
+  const existente = await prisma.user.findUnique({ where: { email } });
+
+  if (existente) {
+    // O seed nunca troca a senha de quem já existe: rodar de novo não é caminho de rotação.
+    // Para trocar, apague o usuário e rode outra vez, ou altere a senha pela aplicação.
+    console.log(`Usuário administrador (${email}) já existe. Pulando criação.`);
+    return;
+  }
+
+  const usuario = await prisma.user.create({
+    data: { email, password: await bcrypt.hash(senha, 10) }
+  });
+  console.log(`Usuário administrador criado com sucesso: ${usuario.email}`);
 }
 
 main()
   .catch((e) => {
-    console.error('Erro ao executar o seed:', e);
+    console.error('Erro ao executar o seed:', e.message);
     process.exit(1);
   })
   .finally(async () => {

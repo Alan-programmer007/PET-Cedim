@@ -71,12 +71,17 @@ Como a plataforma é restrita e fechada (não permite auto-cadastro por seguran�
 - **Email:** `petsdcedim@gmail.com`
 - **Senha:** `1234567cedim`
 
-> ⚠️ Esta credencial está publicada neste repositório e serve **apenas para o ambiente local**. Em
-> qualquer ambiente acessível por terceiros, defina `SEED_EMAIL` e `SEED_PASSWORD` no `.env` antes
-> de rodar o seed — ele usa essas variáveis quando existirem.
+> ⚠️ Esta credencial está publicada neste repositório e **consta do histórico do Git**. Considere-a
+> comprometida: ela serve apenas para o ambiente local.
 >
-> O seed é idempotente: ele **não** altera a senha de um usuário que já existe. Para trocar a senha,
-> apague o usuário antes de rodar novamente.
+> **Com `NODE_ENV=production` o seed se recusa a usá-la.** Sem `SEED_EMAIL` e `SEED_PASSWORD`
+> definidos, ele encerra com erro em vez de criar o administrador com a senha publicada — e recusa
+> também se as variáveis repetirem essa mesma credencial. A recusa derruba o contêiner de
+> propósito, e a implantação reverte sozinha para a versão anterior.
+>
+> O seed é idempotente: ele **não** altera a senha de um usuário que já existe. Rodar de novo não é
+> caminho de rotação. Para trocar a senha de uma instalação que já rodou com a credencial
+> publicada, defina as variáveis, apague o usuário antigo e suba outra vez.
 
 ---
 
@@ -129,7 +134,7 @@ Antes da aplicação entrar em uso oficial no contexto real, as seguintes inform
 
 1. **Credenciais do Banco de Dados (`.env`):** Substitua a `DATABASE_URL` para apontar para o banco de dados MySQL oficial, garantindo o uso de um usuário e senha seguros.
 2. **Segredo de Autenticação (`.env`):** Modifique a variável `JWT_SECRET` para uma chave complexa, longa e segura. Ela garante a integridade do login e das sessões da aplicação.
-3. **Acesso do Administrador:** Defina `SEED_EMAIL` e `SEED_PASSWORD` no `.env` antes de estruturar o banco pela primeira vez, com as credenciais oficiais exigidas pelo administrador ou coordenação do projeto.
+3. **Acesso do Administrador:** Defina `SEED_EMAIL` e `SEED_PASSWORD` no `.env` antes de estruturar o banco pela primeira vez, com as credenciais oficiais exigidas pelo administrador ou coordenação do projeto. Em produção isso não é recomendação: **sem essas variáveis o seed falha e a aplicação não sobe.**
 
 Os três pontos acima só têm efeito porque a assinatura do token passou a ser validada (item A1 de
 [docs/MELHORIAS.md](docs/MELHORIAS.md), resolvido em 25/09/2026). Trocar o `JWT_SECRET` invalida
