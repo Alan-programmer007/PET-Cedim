@@ -91,8 +91,9 @@ ambiente:
 | Situação | Comportamento |
 |---|---|
 | `NODE_ENV=production`, sem as variáveis | encerra com erro, sem criar usuário |
-| `NODE_ENV=production`, variáveis repetindo a credencial publicada | encerra com erro |
+| `NODE_ENV=production`, `SEED_PASSWORD` repetindo a senha publicada | encerra com erro |
 | `NODE_ENV=production`, variáveis próprias | cria normalmente |
+| `NODE_ENV=production`, `SEED_EMAIL` repetindo o e-mail publicado | permitido, com aviso — identificador não é segredo |
 | Fora de produção, sem as variáveis | usa a credencial local e **avisa no console** |
 
 A recusa sai com código 1, o que derruba o contêiner pelo `set -e` do entrypoint. O
