@@ -89,14 +89,26 @@ Como a plataforma é restrita e fechada (não permite auto-cadastro por seguran�
 
 ### Sobre o controle de acesso
 
-O `middleware.js` redireciona para `/login` qualquer requisição que chegue **sem** o cookie `token`.
+A sessão é um JWT assinado em HS256, guardado no cookie `token`. A verificação está isolada em
+[`lib/auth.js`](lib/auth.js), na função `lerSessao`: ela confere a **assinatura** e a validade do
+token, e devolve `null` para cookie ausente, assinatura inválida ou token expirado. Presença de
+cookie não é autenticação.
 
-> 🔴 **Atenção:** o middleware verifica apenas se o cookie existe — ele **não valida a assinatura do
-> JWT**, e as rotas de API não refazem essa verificação. Na prática, um cookie `token` com qualquer
-> conteúdo dá acesso de leitura e escrita a todas as anamneses. Isso foi confirmado por teste.
->
-> **Enquanto isso não for corrigido, não registre dados de paciente real nesta plataforma**, nem em
-> rede interna. Detalhes e correção em [docs/MELHORIAS.md](docs/MELHORIAS.md), item A1.
+Quem chama `lerSessao`:
+
+| Camada | Comportamento sem sessão válida |
+|---|---|
+| `middleware.js` | `401` em JSON para `/api/*`; redirecionamento para `/login` nas páginas |
+| `GET`/`DELETE` `/api/anamneses` | `401` |
+| `POST` `/api/save-anamnese` | `401` |
+| `GET` `/api/auth/me` | `401` |
+
+> **Por que as rotas repetem a verificação do middleware:** o middleware não é uma fronteira de
+> segurança suficiente sozinho — a matriz do `matcher` pode ser alterada, e rotas novas podem nascer
+> fora dela. **Toda rota que leia ou grave dados deve chamar `lerSessao` por conta própria.**
+
+`lib/auth.js` usa `jose`, e não `jsonwebtoken`, porque o middleware roda no Edge Runtime, onde o
+módulo `crypto` do Node não existe. Contrato completo das rotas em [docs/api.md](docs/api.md).
 
 ---
 
@@ -118,5 +130,10 @@ Antes da aplicação entrar em uso oficial no contexto real, as seguintes inform
 1. **Credenciais do Banco de Dados (`.env`):** Substitua a `DATABASE_URL` para apontar para o banco de dados MySQL oficial, garantindo o uso de um usuário e senha seguros.
 2. **Segredo de Autenticação (`.env`):** Modifique a variável `JWT_SECRET` para uma chave complexa, longa e segura. Ela garante a integridade do login e das sessões da aplicação.
 3. **Acesso do Administrador:** Defina `SEED_EMAIL` e `SEED_PASSWORD` no `.env` antes de estruturar o banco pela primeira vez, com as credenciais oficiais exigidas pelo administrador ou coordenação do projeto.
-4. **Validação do token:** corrigir o item A1 de [docs/MELHORIAS.md](docs/MELHORIAS.md). Os três
-   pontos acima não têm efeito enquanto o token não for validado.
+
+Os três pontos acima só têm efeito porque a assinatura do token passou a ser validada (item A1 de
+[docs/MELHORIAS.md](docs/MELHORIAS.md), resolvido em 25/09/2026). Trocar o `JWT_SECRET` invalida
+todas as sessões já emitidas — os usuários precisarão entrar de novo.
+
+Continua em aberto, antes do uso com paciente real: a validação no cliente (item B2 — o servidor já
+recusa anamnese sem nome do paciente, mas o formulário só mostra o erro depois de enviar).

@@ -180,6 +180,16 @@ O texto dizia:
 Isso é falso (ver A1). O problema é mais grave que o bug: quem lê conclui que a proteção está
 resolvida e não investiga. Corrigido — o README agora descreve o comportamento real e aponta para A1.
 
+**Reincidiu, ao contrário — corrigido em 25/09/2026.** Quando A1 foi resolvido, o commit
+`3b89ed9` atualizou `CLAUDE.md`, `docs/api.md` e este documento, mas **não** o `README.md`. O README
+seguiu afirmando que o middleware "verifica apenas se o cookie existe" e mandando não registrar
+paciente real — descrevendo uma falha que já não existia. O sentido do erro inverteu; a causa é a
+mesma: documentação que não acompanhou o código no mesmo commit. A regra que exige isso
+(`94fcec8`) só nasceu três commits depois e não retroagiu.
+
+A seção "Sobre o controle de acesso" do README agora descreve `lerSessao`, lista as camadas que a
+chamam e explica por que as rotas repetem a verificação do middleware.
+
 ### D2 — `db/` documenta um caminho que quebra o projeto 🟠 ✅ **sinalizado aqui**
 
 `db/README.md` e `db/schema.sql` são anteriores ao Prisma. Ainda listam como "próximos passos
