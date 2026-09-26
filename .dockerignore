@@ -6,3 +6,6 @@ dev
 .env.*
 npm-debug.log*
 README.md
+
+.DS_Store
+._*

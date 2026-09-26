@@ -382,6 +382,13 @@ tinha `user_id` com chave estrangeira para `users` — exatamente a autoria que 
 A estrutura proposta em [dimensionamento.md](dimensionamento.md) a recupera, e o histórico do Git
 preserva o arquivo para quem precisar.
 
+**No servidor a pasta sobreviveu à exclusão**, porque continha `._README.md` e `._schema.sql` —
+arquivos AppleDouble do macOS, resíduo do `tar` usado na primeira cópia para o CT. São 81 no total,
+não rastreados, e o `git reset --hard` da implantação não os remove. O `.gitignore` e o
+`.dockerignore` passaram a cobrir `._*` e `.DS_Store`, para que não entrem no repositório num
+`git add -A` feito de um Mac. Limpar os que já estão no servidor é `git clean -fd` em `/opt/cedim`,
+que não toca no `.env` porque ele é ignorado.
+
 ### D3 — Instalação falha em npm 11+ 🟡 ✅ **documentado aqui**
 
 O README manda `npm install` e `npm run db:setup`. No npm 11, que bloqueia install scripts por

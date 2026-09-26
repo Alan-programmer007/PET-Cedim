@@ -27,3 +27,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# lixo do macOS (AppleDouble de tar/cópia e metadados do Finder)
+.DS_Store
+._*
