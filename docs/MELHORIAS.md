@@ -107,6 +107,19 @@ O sistema hoje faz o oposto exato da política:
 `handleDeleteRegistro` de `app/registros/page.jsx`. A rota e o botão precisam sair **juntos** — só
 a rota deixa o botão devolvendo 405 na cara de quem usa.
 
+**Ordem decidida em 25/09/2026: a exclusão só sai depois que a edição (B6) existir.** Até lá o
+botão continua vivo, contrariando a política já definida. A alternativa — remover agora — deixaria
+o serviço sem nenhuma forma de corrigir um engano, e sob guarda permanente um erro de digitação
+ficaria na ficha para sempre. Preferiu-se conviver com a exclusão por mais um tempo a perder a
+capacidade de corrigir.
+
+Consequência prática: **enquanto a exclusão existir, a política de guarda permanente não está em
+vigor de fato.** Vale para o registro, não para o sistema.
+
+A remoção atravessa duas áreas — a rota é de José Alan, o botão é de Lucas Pedroza. O relatório já
+alertava que esses arquivos colidem com facilidade, então convém que saiam na mesma alteração,
+combinada entre os dois, e não em duas passagens independentes.
+
 ⚠️ **A edição precisa preservar o que havia antes.** Sem isso, "só editar" é apagar com outro nome:
 basta sobrescrever o conteúdo de uma ficha para destruí-la, sem passar pela exclusão e sem deixar
 rastro. Correção em prontuário não sobrescreve — ela se acrescenta de forma rastreável
@@ -195,7 +208,12 @@ não se pode editar, um erro de digitação é permanente e incorrigível. A edi
 conveniência e virou o **único** mecanismo de correção do sistema.
 
 Daí uma ordem obrigatória: a exclusão só pode ser removida **depois** que a edição existir, ou
-junto com ela. Removê-la antes deixa o serviço sem nenhuma forma de consertar um engano.
+junto com ela. Removê-la antes deixa o serviço sem nenhuma forma de consertar um engano. **Essa foi
+a ordem decidida em 25/09/2026** — a exclusão fica no ar até a edição entrar, e as duas mudanças
+saem juntas.
+
+Enquanto isso, este item é o que segura a política de guarda: nada do que foi decidido sobre
+retenção vale de fato antes de ele existir.
 
 A edição precisa preservar o conteúdo anterior — ver A5. Sem histórico, ela vira a exclusão que a
 política acabou de proibir. E a rota nova tem de chamar `lerSessao` por conta própria, como as
