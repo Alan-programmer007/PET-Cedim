@@ -36,13 +36,22 @@ A definição partiu do prazo legal. A Lei 13.787/2018 e a Resolução CFM 1.821
 guarda mínima de **20 anos contados do último registro** do prontuário — não da criação da ficha.
 O projeto optou por ir além do mínimo e não estipular fim.
 
+**Anamnese não se apaga; corrige-se por edição.** A exclusão deixa de existir como
+funcionalidade — não há lixeira nem marcação de excluída. Uma informação errada é corrigida
+editando a ficha, nunca removendo-a.
+
 O que o sistema **não** tem hoje para sustentar essa política:
 
 | Falta | Consequência |
 |---|---|
+| Remoção da rota `DELETE` | `app/registros/page.jsx:199` ainda apaga a linha de verdade, sem cópia |
 | Coluna `updatedAt` | não há como saber quando a ficha foi tocada pela última vez |
-| Exclusão lógica | `DELETE /api/anamneses` apaga a linha de verdade, sem cópia |
-| Registro de autoria | uma alteração ou exclusão não pode ser atribuída a ninguém |
+| Histórico de versões | uma edição sobrescreve o conteúdo anterior, que se perde |
+| Registro de autoria | uma alteração não pode ser atribuída a ninguém |
+
+As duas últimas se combinam num risco específico: **sem histórico, editar equivale a apagar.**
+Sobrescrever o conteúdo de uma ficha a destrói sem passar pela exclusão e sem deixar rastro.
+Correção em prontuário não sobrescreve — ela se acrescenta de forma rastreável.
 
 Enquanto isso não for resolvido, a guarda permanente é uma intenção declarada, não uma garantia do
 sistema. Ver [MELHORIAS.md](MELHORIAS.md), item A5.

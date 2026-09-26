@@ -92,13 +92,26 @@ O código contradiz a política em três pontos:
    conta do último registro, não há como saber quando a ficha foi tocada pela última vez.
 3. **Não há autoria** (ver C4). Uma alteração ou exclusão não pode ser atribuída a ninguém.
 
-**Correção proposta:** coluna `excluidaEm` no schema, com a rota marcando em vez de apagar e as
-listagens ignorando as marcadas; `updatedAt` com `@updatedAt`; autoria resolvida junto de C4. A
-alternativa mais simples é remover a rota de exclusão, ao custo de quebrar o botão de apagar na
-interface.
+**Política definida em 25/09/2026: não se apaga anamnese, apenas se edita.** A exclusão deixa de
+existir como funcionalidade. Isso é mais forte do que a exclusão lógica cogitada antes: não há
+"lixeira", não há marcação de excluída, não há caminho para sumir com um registro.
 
-⚠️ **Decisão tomada em 25/09/2026: documentar agora, corrigir depois.** Enquanto isso, a guarda
-permanente é uma intenção declarada, não uma garantia do sistema.
+O sistema hoje faz o oposto exato da política:
+
+| Política | Sistema hoje |
+|---|---|
+| Apagar: proibido | `app/registros/page.jsx:199` tem botão de excluir funcionando, que chama `DELETE /api/anamneses` e apaga a linha |
+| Editar: permitido | não existe edição (item B6, pendente) |
+
+**Correção:** remover `DELETE` de `app/api/anamneses/route.js` e o botão com o
+`handleDeleteRegistro` de `app/registros/page.jsx`. A rota e o botão precisam sair **juntos** — só
+a rota deixa o botão devolvendo 405 na cara de quem usa.
+
+⚠️ **A edição precisa preservar o que havia antes.** Sem isso, "só editar" é apagar com outro nome:
+basta sobrescrever o conteúdo de uma ficha para destruí-la, sem passar pela exclusão e sem deixar
+rastro. Correção em prontuário não sobrescreve — ela se acrescenta de forma rastreável
+(Lei 13.787/2018; Resolução CFM 1.821/2007). Portanto a edição do B6 depende de `updatedAt`,
+autoria (C4) e alguma forma de histórico de versões.
 
 ---
 
@@ -172,10 +185,21 @@ baixar a imagem de um registro.
 `app/metricas/page.jsx` lê `r.sexo` em três pontos, mas o formulário não tem esse campo. O objeto
 `sexos` é calculado e não aparece em gráfico nenhum; a coluna "Sexo" do CSV sai sempre em branco.
 
-### B6 — Não há edição de anamnese 🟠
+### B6 — Não há edição de anamnese 🔴 *promovido em 25/09/2026*
 
 Não existe rota `PUT`/`PATCH`. Corrigir um erro de digitação exige apagar o registro e refazer a
 anamnese inteira.
+
+**A política de 25/09/2026 elimina essa saída e torna o item bloqueante.** Se não se pode apagar e
+não se pode editar, um erro de digitação é permanente e incorrigível. A edição deixou de ser
+conveniência e virou o **único** mecanismo de correção do sistema.
+
+Daí uma ordem obrigatória: a exclusão só pode ser removida **depois** que a edição existir, ou
+junto com ela. Removê-la antes deixa o serviço sem nenhuma forma de consertar um engano.
+
+A edição precisa preservar o conteúdo anterior — ver A5. Sem histórico, ela vira a exclusão que a
+política acabou de proibir. E a rota nova tem de chamar `lerSessao` por conta própria, como as
+demais.
 
 ### B7 — Marcações do canvas são write-only 🟡
 
@@ -318,7 +342,7 @@ alguém reativar aquela função, "Amamentou" sairá sempre vazio no relatório.
 
 **Antes de qualquer paciente real:** ~~A1~~ · ~~A2~~ · ~~A3~~ · A4 · B2 (falta o lado do cliente)
 
-**Em seguida, estrutural:** C1 (resolve o desempenho sozinho) · C2 · C3 · B1 · B6
+**Em seguida, estrutural:** **B6 (agora bloqueante — sem ele não há como corrigir nada)** · C1 (resolve o desempenho sozinho) · C2 · C3 · B1
 
 **Depois:** D4 com a equipe clínica · **A6 · C4 · A5** (o trio de papéis, autoria e exclusão, que se resolve junto) · ~~B3~~ · B4 · B5 · B7
 
