@@ -268,6 +268,10 @@ Medição real: **1 registro com 3 imagens = 781 KB no banco e 800 KB de respost
 
 **Correção:** `select` sem as colunas de imagem, mais paginação. Resolve o problema sozinho.
 
+Projeção do impacto em [dimensionamento.md](dimensionamento.md): com 100 atendimentos/dia, a tela
+fica inviável em cerca de **uma semana** de uso real. Com paginação, a resposta passa a ser
+constante — 5,5 KB por página, independente do tamanho do banco.
+
 ### C2 — Nenhum campo clínico é coluna 🟠
 
 A tabela `anamneses` tem seis colunas e todo o conteúdo clínico vive dentro do JSON `data`. Não há
@@ -282,6 +286,9 @@ mantendo o JSON para o restante.
 de guardar, impossível de indexar e que não pode ser corrigida depois que o registro é salvo.
 
 **Correção:** gerar o relatório sob demanda a partir do JSON e parar de persistir `imagem`.
+
+É **64% de cada registro**: o JSON clínico ocupa 1,7 KB dos 781 KB medidos, e as imagens os outros
+779 KB. Ver [dimensionamento.md](dimensionamento.md).
 
 ### C4 — Sem registro de autoria 🟠
 

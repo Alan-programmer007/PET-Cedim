@@ -23,6 +23,7 @@ Plataforma desenvolvida para o registro e gerenciamento de anamneses mamárias d
 | [Relação de melhorias](docs/MELHORIAS.md) | Levantamento do que precisa ser corrigido, por prioridade |
 | [Modelo de dados](docs/modelo-de-dados.md) | Formato de cada campo da anamnese e como são gravados |
 | [API](docs/api.md) | Contrato das seis rotas, com o comportamento real verificado |
+| [Dimensionamento](docs/dimensionamento.md) | Quanto o banco cresce com 80–100 atendimentos/dia, e por que corrigir em vez de reescrever |
 | [Relatório técnico (PDF)](docs/relatorio-tecnico.pdf) | Versão em formato ABNT, para circulação e leitura fora do repositório |
 | [CLAUDE.md](CLAUDE.md) | Orientação para assistentes de IA e regra de documentação |
 
