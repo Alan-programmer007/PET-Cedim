@@ -40,10 +40,19 @@ function credenciais() {
     );
   }
 
-  if (email === EMAIL_LOCAL || senha === SENHA_LOCAL) {
+  // Só a senha é segredo; o e-mail é nome de usuário. Manter petsdcedim@gmail.com como conta do
+  // administrador é legítimo, desde que a senha seja outra — por isso aqui só se avisa.
+  if (senha === SENHA_LOCAL) {
     throw new Error(
-      'SEED_EMAIL/SEED_PASSWORD repetem as credenciais publicadas no repositório. ' +
-        'Elas constam do histórico do Git e devem ser consideradas comprometidas.'
+      'SEED_PASSWORD repete a senha publicada no repositório. Ela consta do histórico do Git e ' +
+        'deve ser considerada comprometida. Escolha outra.'
+    );
+  }
+
+  if (email === EMAIL_LOCAL) {
+    console.warn(
+      `[seed] AVISO: ${EMAIL_LOCAL} é o e-mail publicado no repositório. Como identificador não é ` +
+        'segredo, segue permitido — mas a senha precisa ser própria, e é.'
     );
   }
 

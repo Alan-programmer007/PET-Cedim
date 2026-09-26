@@ -76,8 +76,9 @@ Como a plataforma é restrita e fechada (não permite auto-cadastro por seguran�
 >
 > **Com `NODE_ENV=production` o seed se recusa a usá-la.** Sem `SEED_EMAIL` e `SEED_PASSWORD`
 > definidos, ele encerra com erro em vez de criar o administrador com a senha publicada — e recusa
-> também se as variáveis repetirem essa mesma credencial. A recusa derruba o contêiner de
-> propósito, e a implantação reverte sozinha para a versão anterior.
+> também `SEED_PASSWORD` igual a ela. O e-mail publicado segue valendo como identificador, com
+> aviso: segredo é a senha. A recusa derruba o contêiner de propósito, e a implantação reverte
+> sozinha para a versão anterior.
 >
 > O seed é idempotente: ele **não** altera a senha de um usuário que já existe. Rodar de novo não é
 > caminho de rotação. Para trocar a senha de uma instalação que já rodou com a credencial
