@@ -13,7 +13,7 @@ seção [Alterações de documentação](#alterações-de-documentação-feitas-
 
 | | Tema | Itens | Situação |
 |---|---|---|---|
-| **A** | Segurança | 6 | 🟠 A1–A3 resolvidos; A4, A5 e A6 em aberto |
+| **A** | Segurança | 6 | 🟠 A1–A4 resolvidos; A5 e A6 em aberto |
 | **B** | Defeitos funcionais | 7 | 🟠 afeta o usuário |
 | **C** | Desempenho e modelo de dados | 4 | 🟠 impede crescer |
 | **D** | Documentação | 7 | 🟡 4 resolvidos aqui |
@@ -67,13 +67,42 @@ resposta expõe caminho absoluto do servidor, estrutura de chunks e o ORM.
 
 **Correção aplicada:** o erro completo vai para `console.error` e o cliente recebe apenas a mensagem.
 
-### A4 — Credenciais de teste em repositório público 🟠
+### A4 — Credenciais de teste em repositório público 🟠 *verificado* — ✅ **resolvido em 25/09/2026**
 
 O `README.md` publica e-mail e senha do usuário criado pelo seed. Quem encontrar o repositório tem a
 credencial de qualquer instalação que não a tenha trocado.
 
-**Correção:** já é possível sobrepor via `SEED_EMAIL` / `SEED_PASSWORD` (ver `prisma/seed.js`).
-Documentar isso como o caminho padrão e tratar a senha do README como válida só para o local.
+O aviso no README, acrescentado na passagem anterior, não bastava: as credenciais publicadas eram o
+**padrão do código**, não um exemplo no texto.
+
+```js
+// como era, prisma/seed.js
+const email = process.env.SEED_EMAIL || 'petsdcedim@gmail.com';
+const plainPassword = process.env.SEED_PASSWORD || '1234567cedim';
+```
+
+Pior, o `docker-compose.prod.yml` repassa `SEED_EMAIL: ${SEED_EMAIL}` mesmo quando a variável não
+existe no host — o Compose entrega **string vazia**, que é falsy em JS e cai direto no `||`. Uma
+implantação real sem as variáveis criava o administrador com a senha publicada, sem nada falhar.
+
+**Correção aplicada:** `prisma/seed.js` passou a tratar string vazia como ausente e a distinguir
+ambiente:
+
+| Situação | Comportamento |
+|---|---|
+| `NODE_ENV=production`, sem as variáveis | encerra com erro, sem criar usuário |
+| `NODE_ENV=production`, variáveis repetindo a credencial publicada | encerra com erro |
+| `NODE_ENV=production`, variáveis próprias | cria normalmente |
+| Fora de produção, sem as variáveis | usa a credencial local e **avisa no console** |
+
+A recusa sai com código 1, o que derruba o contêiner pelo `set -e` do entrypoint. O
+`cedim-deploy.sh` não recebe resposta na porta 3000, reverte para a versão anterior e avisa por
+Telegram — falha fechada, sem site fora do ar.
+
+⚠️ **O que a correção não faz:** o seed continua idempotente e **não troca a senha de quem já
+existe**. Uma instalação que já rodou com a credencial publicada segue com ela até alguém apagar o
+usuário e rodar de novo. A credencial também permanece no histórico do Git e deve ser considerada
+comprometida onde quer que tenha sido usada.
 
 ---
 
@@ -358,7 +387,7 @@ alguém reativar aquela função, "Amamentou" sairá sempre vazio no relatório.
 
 ## Ordem sugerida
 
-**Antes de qualquer paciente real:** ~~A1~~ · ~~A2~~ · ~~A3~~ · A4 · B2 (falta o lado do cliente)
+**Antes de qualquer paciente real:** ~~A1~~ · ~~A2~~ · ~~A3~~ · ~~A4~~ · B2 (falta o lado do cliente)
 
 **Em seguida, estrutural:** **B6 (agora bloqueante — sem ele não há como corrigir nada)** · C1 (resolve o desempenho sozinho) · C2 · C3 · B1
 
